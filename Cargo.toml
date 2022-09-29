@@ -1,0 +1,10 @@
+[package]
+name = "poseidonos-rtype"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "poseidonos"
+path = "src/main/main.rs"
+
+[dependencies]
