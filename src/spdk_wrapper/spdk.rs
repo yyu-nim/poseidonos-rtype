@@ -158,3 +158,10 @@ pub mod spdk_clib {
 
     // TODO: 나중에 linux profile추가할 때 bindgen 으로 header 생성해서, 손 좀 더 볼 것. 지금은 일단 컴파일만 되도록.
 }
+
+/* int (*parse)(int ch, char *arg) */
+/* static int
+    _AppParseCallback(int ch, char* arg)
+    {
+        return 0;
+    } */
