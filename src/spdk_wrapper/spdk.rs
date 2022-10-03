@@ -2,13 +2,17 @@
 #![allow(non_snake_case)]
 
 use std::borrow::Borrow;
+use std::ffi::{c_void, CStr, CString};
 use std::mem::size_of;
+use std::os::raw::{c_char, c_int};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread::JoinHandle;
 use lazy_static::lazy_static;
 use log::{error, info, warn};
 use std::thread;
 use std::time::Duration;
+use crate::generated::bindings::{option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_log_level_SPDK_LOG_INFO, spdk_pci_addr};
+use crate::spdk_wrapper::spdk::spdk_clib::spdk_app_opts_init;
 
 lazy_static!{
     static ref spdkInitialized : AtomicBool = AtomicBool::new(false);
@@ -32,29 +36,30 @@ impl Spdk {
         }
         self.spdkThread = Some(thread::spawn(move || {
             // _InitWorker
-            let mut opts = spdk_clib::spdk_app_opts::default();
-            spdk_clib::spdk_app_opts_init(&mut opts, size_of::<spdk_clib::spdk_app_opts>());
+            let mut opts : spdk_app_opts = spdk_app_opts::default();
+            spdk_app_opts_init(&mut opts, size_of::<spdk_app_opts>() as size_t);
             {
-                opts.name = "ibof_nvmf";
+                opts.name = CString::new("ibof_nvmf").unwrap().into_raw();
                 opts.mem_channel = -1;
-                opts.print_level = spdk_clib::spdk_log_level::SPDK_LOG_INFO;
-                opts.reactor_mask = "TODO";
+                opts.print_level = spdk_log_level_SPDK_LOG_INFO;
+                opts.reactor_mask = CString::new("TODO").unwrap().into_raw();
                 opts.main_core = 0; // TODO
             }
-            let empty_option = spdk_clib::option::default();
-            let parse_callback = 0 as *mut i32; // TODO
-            let usage_callback = 0 as *mut i32; // TODO
-            let rc = spdk_clib::spdk_app_parse_args(args.len() as i32,
-                                                    args.clone(), &opts, "", empty_option,
-                parse_callback, usage_callback);
-            if rc != spdk_clib::spdk_app_parse_args_rvals::SPDK_APP_PARSE_ARGS_SUCCESS
+            let mut empty_option : option = option::default();
+            let empty_args = 0 as *mut *mut ::std::os::raw::c_char;
+            let getopt_str = 0 as *const ::std::os::raw::c_char;
+            let rc = spdk_clib::spdk_app_parse_args(args.len() as i32, empty_args,
+                                                    &mut opts, getopt_str, &mut empty_option,
+                                                    None, None);
+
+            if rc != spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS
             {
                 error!("failed to parse spdk args: {:?}, error: {:?}", args, rc);
                 std::process::exit(rc as i32);
             }
             /* Blocks until the application is exiting */
-            let started_callback = 0 as *mut i32; // TODO
-            let rc = spdk_clib::spdk_app_start(&opts, started_callback /*Spdk::_AppStartedCallback*/, 0 as *mut i32);
+            let _started_callback = Some(0 as *mut i32); // TODO: pass that into spdk_app_start
+            let rc = spdk_clib::spdk_app_start(&mut opts, None /*Spdk::_AppStartedCallback*/, 0 as *mut c_void);
             info!("spdk_app_start result = {}", rc);
         }));
         while !spdkInitialized.load(Ordering::Relaxed) {
@@ -71,97 +76,91 @@ impl Spdk {
 
 // TODO: cfg로 linux profile vs. macos (windows) profile 만들어서 전자의 경우는 lib link, 후자의 경우는 stub
 pub mod spdk_clib {
-    type spdk_msg_fn = *mut i32;
-    type void_ptr = *mut i32;
-    type int_ptr = *mut i32;
+    use crate::generated::bindings::{option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_msg_fn};
 
-    pub(crate) struct spdk_app_opts {
-        pub name: &'static str,
-        pub reactor_mask: &'static str,
-        pub mem_channel: i32,
-        pub main_core: i32,
-        pub print_level: spdk_log_level,
-    }
-    impl Default for spdk_app_opts {
-        fn default() -> Self {
-            spdk_app_opts {
-                name: "",
-                reactor_mask: "",
-                mem_channel: 0,
-                main_core: 0,
-                print_level: spdk_log_level::SPDK_LOG_DISABLED
-            }
-        }
-    }
-    pub(crate) struct option {
-        pub name: &'static str,
-        pub has_arg: i32,
-        pub flag: int_ptr,
-        pub val: i32,
-    }
-    impl Default for option {
-        fn default() -> Self {
-            option {
-                name: "",
-                has_arg: 0,
-                flag: 0 as *mut i32,
-                val: 0
-            }
-        }
-    }
-    #[derive(Debug, PartialEq)]
-    pub(crate) enum spdk_app_parse_args_rvals {
-        SPDK_APP_PARSE_ARGS_HELP = 0,
-        SPDK_APP_PARSE_ARGS_SUCCESS = 1,
-        SPDK_APP_PARSE_ARGS_FAIL = 2
-    }
-    pub(crate) enum spdk_log_level {
-        SPDK_LOG_DISABLED = -1,
-        SPDK_LOG_ERROR,
-        SPDK_LOG_WARN,
-        SPDK_LOG_NOTICE,
-        SPDK_LOG_INFO,
-        SPDK_LOG_DEBUG,
-    }
-
-    /* void spdk_app_opts_init(struct spdk_app_opts *opts, size_t opts_size); */
-    pub(crate) fn spdk_app_opts_init(opts: &mut spdk_app_opts, opts_size: usize) {
-        // TODO: opts는 c-compatible 하게 pointer type으로 변경해야 할 것.
-    }
-
-    /* spdk_app_parse_args_rvals_t spdk_app_parse_args(int argc, char **argv,
-        struct spdk_app_opts *opts, const char *getopt_str,
-        struct option *app_long_opts,
-        int (*parse)(int ch, char *arg),
-        void (*usage)(void)); */
-    pub(crate) fn spdk_app_parse_args(argc: i32, argv: Vec<&str>, opts: &spdk_app_opts, getopt_str: &str,
-                                      _app_long_opts: option, parse: *mut i32, usage: *mut i32) -> spdk_app_parse_args_rvals {
+    pub(crate) fn spdk_app_opts_init(opts: &mut spdk_app_opts, opts_size: size_t) {
         // STUB
-        spdk_app_parse_args_rvals::SPDK_APP_PARSE_ARGS_SUCCESS
+        return;
     }
 
-    /* int spdk_app_start(struct spdk_app_opts *opts_user, spdk_msg_fn start_fn, void *ctx); */
-    pub(crate) fn spdk_app_start(opts_user: &spdk_app_opts, start_fn: spdk_msg_fn, ctx: void_ptr) -> i32 {
+    pub fn spdk_app_parse_args(
+        argc: ::std::os::raw::c_int,
+        argv: *mut *mut ::std::os::raw::c_char,
+        opts: *mut spdk_app_opts,
+        getopt_str: *const ::std::os::raw::c_char,
+        app_long_opts: *mut option,
+        parse: ::std::option::Option<
+            unsafe extern "C" fn(
+                ch: ::std::os::raw::c_int,
+                arg: *mut ::std::os::raw::c_char,
+            ) -> ::std::os::raw::c_int,
+        >,
+        usage: ::std::option::Option<unsafe extern "C" fn()>,
+    ) -> spdk_app_parse_args_rvals_t {
         // STUB
-        0
+        return spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS;
     }
 
-    /* void spdk_app_stop(int rc); */
-    fn spdk_app_stop(rc: i32) {
+    pub(crate) fn spdk_app_start(
+        opts_user: *mut spdk_app_opts,
+        start_fn: spdk_msg_fn,
+        ctx: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int {
+        // STUB
+        return 0;
+    }
+
+    pub fn spdk_app_stop(rc: ::std::os::raw::c_int) {
+        // STUB
+        return;
+    }
+
+    pub fn spdk_app_fini() {
         // STUB
     }
-
-    /* void spdk_app_fini(void); */
-    fn spdk_app_fini() {
-        // STUB
-    }
-
-    // TODO: 나중에 linux profile추가할 때 bindgen 으로 header 생성해서, 손 좀 더 볼 것. 지금은 일단 컴파일만 되도록.
 }
 
-/* int (*parse)(int ch, char *arg) */
-/* static int
-    _AppParseCallback(int ch, char* arg)
-    {
-        return 0;
-    } */
+impl Default for spdk_app_opts {
+    fn default() -> Self {
+        spdk_app_opts {
+            name: CString::new("default-name").unwrap().into_raw(),
+            json_config_file: 0 as *const c_char,
+            json_config_ignore_errors: false,
+            rpc_addr: 0 as *const c_char,
+            reactor_mask: 0 as *const c_char,
+            tpoint_group_mask: 0 as *const c_char,
+            shm_id: 0,
+            shutdown_cb: None,
+            enable_coredump: false,
+            mem_channel: 0,
+            main_core: 0,
+            mem_size: 0,
+            no_pci: false,
+            hugepage_single_segments: false,
+            unlink_hugepage: false,
+            hugedir: 0 as *const c_char,
+            print_level: 0,
+            num_pci_addr: 0,
+            pci_blocked: 0 as *mut spdk_pci_addr,
+            pci_allowed: 0 as *mut spdk_pci_addr,
+            iova_mode: 0 as *const c_char,
+            delay_subsystem_init: false,
+            num_entries: 0,
+            env_context: 0 as *mut c_void,
+            log: None,
+            base_virtaddr: 0,
+            opts_size: 0
+        }
+    }
+}
+
+impl Default for option {
+    fn default() -> Self {
+        option {
+            name: CString::new("default-option").unwrap().into_raw(),
+            has_arg: 0,
+            flag: 0 as *mut c_int,
+            val: 0
+        }
+    }
+}
