@@ -3226,6 +3226,84 @@ pub const optional_argument: u32 = 2;
 pub const SPDK_CPUSET_SIZE: u32 = 1024;
 pub const SPDK_DEFAULT_RPC_ADDR: &[u8; 19usize] = b"/var/tmp/spdk.sock\0";
 pub const SPDK_APP_GETOPT_STRING: &[u8; 31usize] = b"c:de:ghi:m:n:p:r:s:uvA:B:L:RW:\0";
+pub const SPDK_PCI_ANY_ID: u32 = 65535;
+pub const SPDK_PCI_VID_INTEL: u32 = 32902;
+pub const SPDK_PCI_VID_MEMBLAZE: u32 = 7263;
+pub const SPDK_PCI_VID_SAMSUNG: u32 = 5197;
+pub const SPDK_PCI_VID_VIRTUALBOX: u32 = 33006;
+pub const SPDK_PCI_VID_VIRTIO: u32 = 6900;
+pub const SPDK_PCI_VID_CNEXLABS: u32 = 7453;
+pub const SPDK_PCI_VID_VMWARE: u32 = 5549;
+pub const SPDK_PCI_CLASS_ANY_ID: u32 = 16777215;
+pub const SPDK_PCI_CLASS_NVME: u32 = 67586;
+pub const PCI_DEVICE_ID_INTEL_IDXD: u32 = 2853;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB0: u32 = 15392;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB1: u32 = 15393;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB2: u32 = 15394;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB3: u32 = 15395;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB4: u32 = 15396;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB5: u32 = 15397;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB6: u32 = 15398;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB7: u32 = 15399;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB8: u32 = 15406;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SNB9: u32 = 15407;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB0: u32 = 3616;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB1: u32 = 3617;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB2: u32 = 3618;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB3: u32 = 3619;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB4: u32 = 3620;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB5: u32 = 3621;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB6: u32 = 3622;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB7: u32 = 3623;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB8: u32 = 3630;
+pub const PCI_DEVICE_ID_INTEL_IOAT_IVB9: u32 = 3631;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW0: u32 = 12064;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW1: u32 = 12065;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW2: u32 = 12066;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW3: u32 = 12067;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW4: u32 = 12068;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW5: u32 = 12069;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW6: u32 = 12070;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW7: u32 = 12071;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW8: u32 = 12078;
+pub const PCI_DEVICE_ID_INTEL_IOAT_HSW9: u32 = 12079;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BWD0: u32 = 3152;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BWD1: u32 = 3153;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BWD2: u32 = 3154;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BWD3: u32 = 3155;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDXDE0: u32 = 28496;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDXDE1: u32 = 28497;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDXDE2: u32 = 28498;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDXDE3: u32 = 28499;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX0: u32 = 28448;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX1: u32 = 28449;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX2: u32 = 28450;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX3: u32 = 28451;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX4: u32 = 28452;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX5: u32 = 28453;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX6: u32 = 28454;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX7: u32 = 28455;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX8: u32 = 28462;
+pub const PCI_DEVICE_ID_INTEL_IOAT_BDX9: u32 = 28463;
+pub const PCI_DEVICE_ID_INTEL_IOAT_SKX: u32 = 8225;
+pub const PCI_DEVICE_ID_INTEL_IOAT_ICX: u32 = 2816;
+pub const PCI_DEVICE_ID_VIRTIO_BLK_LEGACY: u32 = 4097;
+pub const PCI_DEVICE_ID_VIRTIO_SCSI_LEGACY: u32 = 4100;
+pub const PCI_DEVICE_ID_VIRTIO_BLK_MODERN: u32 = 4162;
+pub const PCI_DEVICE_ID_VIRTIO_SCSI_MODERN: u32 = 4168;
+pub const PCI_DEVICE_ID_VIRTIO_VHOST_USER: u32 = 4119;
+pub const PCI_DEVICE_ID_INTEL_VMD: u32 = 8221;
+pub const SPDK_ENV_SOCKET_ID_ANY: i32 = -1;
+pub const SPDK_ENV_LCORE_ID_ANY: u32 = 4294967295;
+pub const SPDK_MALLOC_DMA: u32 = 1;
+pub const SPDK_MALLOC_SHARE: u32 = 2;
+pub const SPDK_MAX_MEMZONE_NAME_LEN: u32 = 32;
+pub const SPDK_MAX_MEMPOOL_NAME_LEN: u32 = 29;
+pub const SPDK_MEMZONE_NO_IOVA_CONTIG: u32 = 1048576;
+pub const SPDK_MEMPOOL_DEFAULT_CACHE_SIZE: i32 = -1;
+pub const SPDK_VTOPHYS_ERROR: i32 = -1;
+pub const SPDK_PCI_DRIVER_NEED_MAPPING: u32 = 1;
+pub const SPDK_PCI_DRIVER_WC_ACTIVATE: u32 = 2;
 extern "C" {
     pub fn __assert_rtn(
         arg1: *const ::std::os::raw::c_char,
@@ -32088,6 +32166,2361 @@ extern "C" {
     #[doc = " \\return true if enabled or false otherwise."]
     pub fn spdk_framework_context_switch_monitor_enabled() -> bool;
 }
+#[doc = " \\brief Environment initialization options"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_env_opts {
+    pub name: *const ::std::os::raw::c_char,
+    pub core_mask: *const ::std::os::raw::c_char,
+    pub shm_id: ::std::os::raw::c_int,
+    pub mem_channel: ::std::os::raw::c_int,
+    pub main_core: ::std::os::raw::c_int,
+    pub mem_size: ::std::os::raw::c_int,
+    pub no_pci: bool,
+    pub hugepage_single_segments: bool,
+    pub unlink_hugepage: bool,
+    pub num_pci_addr: size_t,
+    pub hugedir: *const ::std::os::raw::c_char,
+    pub pci_blocked: *mut spdk_pci_addr,
+    pub pci_allowed: *mut spdk_pci_addr,
+    pub iova_mode: *const ::std::os::raw::c_char,
+    pub base_virtaddr: u64,
+    #[doc = " Opaque context for use of the env implementation."]
+    pub env_context: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_spdk_env_opts() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_env_opts>(),
+        96usize,
+        concat!("Size of: ", stringify!(spdk_env_opts))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_env_opts>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_env_opts))
+    );
+    fn test_field_name() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(name)
+            )
+        );
+    }
+    test_field_name();
+    fn test_field_core_mask() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).core_mask) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(core_mask)
+            )
+        );
+    }
+    test_field_core_mask();
+    fn test_field_shm_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).shm_id) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(shm_id)
+            )
+        );
+    }
+    test_field_shm_id();
+    fn test_field_mem_channel() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mem_channel) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(mem_channel)
+            )
+        );
+    }
+    test_field_mem_channel();
+    fn test_field_main_core() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).main_core) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(main_core)
+            )
+        );
+    }
+    test_field_main_core();
+    fn test_field_mem_size() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mem_size) as usize - ptr as usize
+            },
+            28usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(mem_size)
+            )
+        );
+    }
+    test_field_mem_size();
+    fn test_field_no_pci() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).no_pci) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(no_pci)
+            )
+        );
+    }
+    test_field_no_pci();
+    fn test_field_hugepage_single_segments() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hugepage_single_segments) as usize - ptr as usize
+            },
+            33usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(hugepage_single_segments)
+            )
+        );
+    }
+    test_field_hugepage_single_segments();
+    fn test_field_unlink_hugepage() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).unlink_hugepage) as usize - ptr as usize
+            },
+            34usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(unlink_hugepage)
+            )
+        );
+    }
+    test_field_unlink_hugepage();
+    fn test_field_num_pci_addr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).num_pci_addr) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(num_pci_addr)
+            )
+        );
+    }
+    test_field_num_pci_addr();
+    fn test_field_hugedir() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hugedir) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(hugedir)
+            )
+        );
+    }
+    test_field_hugedir();
+    fn test_field_pci_blocked() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pci_blocked) as usize - ptr as usize
+            },
+            56usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(pci_blocked)
+            )
+        );
+    }
+    test_field_pci_blocked();
+    fn test_field_pci_allowed() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pci_allowed) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(pci_allowed)
+            )
+        );
+    }
+    test_field_pci_allowed();
+    fn test_field_iova_mode() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iova_mode) as usize - ptr as usize
+            },
+            72usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(iova_mode)
+            )
+        );
+    }
+    test_field_iova_mode();
+    fn test_field_base_virtaddr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).base_virtaddr) as usize - ptr as usize
+            },
+            80usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(base_virtaddr)
+            )
+        );
+    }
+    test_field_base_virtaddr();
+    fn test_field_env_context() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_env_opts>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).env_context) as usize - ptr as usize
+            },
+            88usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_env_opts),
+                "::",
+                stringify!(env_context)
+            )
+        );
+    }
+    test_field_env_context();
+}
+extern "C" {
+    #[doc = " Allocate dma/sharable memory based on a given dma_flg. It is a memory buffer"]
+    #[doc = " with the given size, alignment and socket id."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr **Deprecated**. Please use spdk_vtophys() for retrieving physical"]
+    #[doc = " addresses. A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = " \\param flags Combination of SPDK_MALLOC flags (\\ref SPDK_MALLOC_DMA, \\ref SPDK_MALLOC_SHARE)."]
+    #[doc = " At least one flag must be specified."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_malloc(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+        socket_id: ::std::os::raw::c_int,
+        flags: u32,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Allocate dma/sharable memory based on a given dma_flg. It is a memory buffer"]
+    #[doc = " with the given size, alignment and socket id. Also, the buffer will be zeroed."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr **Deprecated**. Please use spdk_vtophys() for retrieving physical"]
+    #[doc = " addresses. A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = " \\param flags Combination of SPDK_MALLOC flags (\\ref SPDK_MALLOC_DMA, \\ref SPDK_MALLOC_SHARE)."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_zmalloc(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+        socket_id: ::std::os::raw::c_int,
+        flags: u32,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Resize a dma/sharable memory buffer with the given new size and alignment."]
+    #[doc = " Existing contents are preserved."]
+    #[doc = ""]
+    #[doc = " \\param buf Buffer to resize."]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the resized memory buffer."]
+    pub fn spdk_realloc(
+        buf: *mut ::std::os::raw::c_void,
+        size: size_t,
+        align: size_t,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Free buffer memory that was previously allocated with spdk_malloc() or spdk_zmalloc()."]
+    #[doc = ""]
+    #[doc = " \\param buf Buffer to free."]
+    pub fn spdk_free(buf: *mut ::std::os::raw::c_void);
+}
+extern "C" {
+    #[doc = " Initialize the default value of opts."]
+    #[doc = ""]
+    #[doc = " \\param opts Data structure where SPDK will initialize the default options."]
+    pub fn spdk_env_opts_init(opts: *mut spdk_env_opts);
+}
+extern "C" {
+    #[doc = " Initialize or reinitialize the environment library."]
+    #[doc = " For initialization, this must be called prior to using any other functions"]
+    #[doc = " in this library. For reinitialization, the parameter `opts` must be set to"]
+    #[doc = " NULL and this must be called after the environment library was finished by"]
+    #[doc = " spdk_env_fini() within the same process."]
+    #[doc = ""]
+    #[doc = " \\param opts Environment initialization options."]
+    #[doc = " \\return 0 on success, or negative errno on failure."]
+    pub fn spdk_env_init(opts: *const spdk_env_opts) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Release any resources of the environment library that were allocated with"]
+    #[doc = " spdk_env_init(). After this call, no SPDK env function calls may be made."]
+    #[doc = " It is expected that common usage of this function is to call it just before"]
+    #[doc = " terminating the process or before reinitializing the environment library"]
+    #[doc = " within the same process."]
+    pub fn spdk_env_fini();
+}
+extern "C" {
+    #[doc = " Allocate a pinned memory buffer with the given size and alignment."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_dma_malloc(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Allocate a pinned, memory buffer with the given size, alignment and socket id."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_dma_malloc_socket(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+        socket_id: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Allocate a pinned memory buffer with the given size and alignment. The buffer"]
+    #[doc = " will be zeroed."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_dma_zmalloc(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Allocate a pinned memory buffer with the given size, alignment and socket id."]
+    #[doc = " The buffer will be zeroed."]
+    #[doc = ""]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory buffer."]
+    pub fn spdk_dma_zmalloc_socket(
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+        socket_id: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Resize the allocated and pinned memory buffer with the given new size and"]
+    #[doc = " alignment. Existing contents are preserved."]
+    #[doc = ""]
+    #[doc = " \\param buf Buffer to resize."]
+    #[doc = " \\param size Size in bytes."]
+    #[doc = " \\param align If non-zero, the allocated buffer is aligned to a multiple of"]
+    #[doc = " align. In this case, it must be a power of two. The returned buffer is always"]
+    #[doc = " aligned to at least cache line size."]
+    #[doc = " \\param phys_addr A pointer to the variable to hold the physical address of"]
+    #[doc = " the allocated buffer is passed. If NULL, the physical address is not returned."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the resized memory buffer."]
+    pub fn spdk_dma_realloc(
+        buf: *mut ::std::os::raw::c_void,
+        size: size_t,
+        align: size_t,
+        phys_addr: *mut u64,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Free a memory buffer previously allocated, for example from spdk_dma_zmalloc()."]
+    #[doc = " This call is never made from the performance path."]
+    #[doc = ""]
+    #[doc = " \\param buf Buffer to free."]
+    pub fn spdk_dma_free(buf: *mut ::std::os::raw::c_void);
+}
+extern "C" {
+    #[doc = " Reserve a named, process shared memory zone with the given size, socket_id"]
+    #[doc = " and flags. Unless `SPDK_MEMZONE_NO_IOVA_CONTIG` flag is provided, the returned"]
+    #[doc = " memory will be IOVA contiguous."]
+    #[doc = ""]
+    #[doc = " \\param name Name to set for this memory zone."]
+    #[doc = " \\param len Length in bytes."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = " \\param flags Flags to set for this memory zone."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory address on success, or NULL on failure."]
+    pub fn spdk_memzone_reserve(
+        name: *const ::std::os::raw::c_char,
+        len: size_t,
+        socket_id: ::std::os::raw::c_int,
+        flags: ::std::os::raw::c_uint,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Reserve a named, process shared memory zone with the given size, socket_id,"]
+    #[doc = " flags and alignment. Unless `SPDK_MEMZONE_NO_IOVA_CONTIG` flag is provided,"]
+    #[doc = " the returned memory will be IOVA contiguous."]
+    #[doc = ""]
+    #[doc = " \\param name Name to set for this memory zone."]
+    #[doc = " \\param len Length in bytes."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = " \\param flags Flags to set for this memory zone."]
+    #[doc = " \\param align Alignment for resulting memzone. Must be a power of 2."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated memory address on success, or NULL on failure."]
+    pub fn spdk_memzone_reserve_aligned(
+        name: *const ::std::os::raw::c_char,
+        len: size_t,
+        socket_id: ::std::os::raw::c_int,
+        flags: ::std::os::raw::c_uint,
+        align: ::std::os::raw::c_uint,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Lookup the memory zone identified by the given name."]
+    #[doc = ""]
+    #[doc = " \\param name Name of the memory zone."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the reserved memory address on success, or NULL on failure."]
+    pub fn spdk_memzone_lookup(name: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Free the memory zone identified by the given name."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_memzone_free(name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Dump debug information about all memzones."]
+    #[doc = ""]
+    #[doc = " \\param f File to write debug information to."]
+    pub fn spdk_memzone_dump(f: *mut FILE);
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_mempool {
+    _unused: [u8; 0],
+}
+extern "C" {
+    #[doc = " Create a thread-safe memory pool."]
+    #[doc = ""]
+    #[doc = " \\param name Name for the memory pool."]
+    #[doc = " \\param count Count of elements."]
+    #[doc = " \\param ele_size Element size in bytes."]
+    #[doc = " \\param cache_size How many elements may be cached in per-core caches. Use"]
+    #[doc = " SPDK_MEMPOOL_DEFAULT_CACHE_SIZE for a reasonable default, or 0 for no per-core cache."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the created memory pool."]
+    pub fn spdk_mempool_create(
+        name: *const ::std::os::raw::c_char,
+        count: size_t,
+        ele_size: size_t,
+        cache_size: size_t,
+        socket_id: ::std::os::raw::c_int,
+    ) -> *mut spdk_mempool;
+}
+#[doc = " An object callback function for memory pool."]
+#[doc = ""]
+#[doc = " Used by spdk_mempool_create_ctor()."]
+pub type spdk_mempool_obj_cb_t = ::std::option::Option<
+    unsafe extern "C" fn(
+        mp: *mut spdk_mempool,
+        opaque: *mut ::std::os::raw::c_void,
+        obj: *mut ::std::os::raw::c_void,
+        obj_idx: ::std::os::raw::c_uint,
+    ),
+>;
+extern "C" {
+    #[doc = " Create a thread-safe memory pool with user provided initialization function"]
+    #[doc = " and argument."]
+    #[doc = ""]
+    #[doc = " \\param name Name for the memory pool."]
+    #[doc = " \\param count Count of elements."]
+    #[doc = " \\param ele_size Element size in bytes."]
+    #[doc = " \\param cache_size How many elements may be cached in per-core caches. Use"]
+    #[doc = " SPDK_MEMPOOL_DEFAULT_CACHE_SIZE for a reasonable default, or 0 for no per-core cache."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = " \\param obj_init User provided object calllback initialization function."]
+    #[doc = " \\param obj_init_arg User provided callback initialization function argument."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the created memory pool."]
+    pub fn spdk_mempool_create_ctor(
+        name: *const ::std::os::raw::c_char,
+        count: size_t,
+        ele_size: size_t,
+        cache_size: size_t,
+        socket_id: ::std::os::raw::c_int,
+        obj_init: spdk_mempool_obj_cb_t,
+        obj_init_arg: *mut ::std::os::raw::c_void,
+    ) -> *mut spdk_mempool;
+}
+extern "C" {
+    #[doc = " Get the name of a memory pool."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to query."]
+    #[doc = ""]
+    #[doc = " \\return the name of the memory pool."]
+    pub fn spdk_mempool_get_name(mp: *mut spdk_mempool) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    #[doc = " Free a memory pool."]
+    pub fn spdk_mempool_free(mp: *mut spdk_mempool);
+}
+extern "C" {
+    #[doc = " Get an element from a memory pool. If no elements remain, return NULL."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to query."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the element."]
+    pub fn spdk_mempool_get(mp: *mut spdk_mempool) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = " Get multiple elements from a memory pool."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to get multiple elements from."]
+    #[doc = " \\param ele_arr Array of the elements to fill."]
+    #[doc = " \\param count Count of elements to get."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_mempool_get_bulk(
+        mp: *mut spdk_mempool,
+        ele_arr: *mut *mut ::std::os::raw::c_void,
+        count: size_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Put an element back into the memory pool."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to put element back into."]
+    #[doc = " \\param ele Element to put."]
+    pub fn spdk_mempool_put(mp: *mut spdk_mempool, ele: *mut ::std::os::raw::c_void);
+}
+extern "C" {
+    #[doc = " Put multiple elements back into the memory pool."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to put multiple elements back into."]
+    #[doc = " \\param ele_arr Array of the elements to put."]
+    #[doc = " \\param count Count of elements to put."]
+    pub fn spdk_mempool_put_bulk(
+        mp: *mut spdk_mempool,
+        ele_arr: *mut *mut ::std::os::raw::c_void,
+        count: size_t,
+    );
+}
+extern "C" {
+    #[doc = " Get the number of entries in the memory pool."]
+    #[doc = ""]
+    #[doc = " \\param pool Memory pool to query."]
+    #[doc = ""]
+    #[doc = " \\return the number of entries in the memory pool."]
+    pub fn spdk_mempool_count(pool: *const spdk_mempool) -> size_t;
+}
+extern "C" {
+    #[doc = " Iterate through all elements of the pool and call a function on each one."]
+    #[doc = ""]
+    #[doc = " \\param mp Memory pool to iterate on."]
+    #[doc = " \\param obj_cb Function to call on each element."]
+    #[doc = " \\param obj_cb_arg Opaque pointer passed to the callback function."]
+    #[doc = ""]
+    #[doc = " \\return Number of elements iterated."]
+    pub fn spdk_mempool_obj_iter(
+        mp: *mut spdk_mempool,
+        obj_cb: spdk_mempool_obj_cb_t,
+        obj_cb_arg: *mut ::std::os::raw::c_void,
+    ) -> u32;
+}
+extern "C" {
+    #[doc = " Lookup the memory pool identified by the given name."]
+    #[doc = ""]
+    #[doc = " \\param name Name of the memory pool."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the memory pool on success, or NULL on failure."]
+    pub fn spdk_mempool_lookup(name: *const ::std::os::raw::c_char) -> *mut spdk_mempool;
+}
+extern "C" {
+    #[doc = " Get the number of dedicated CPU cores utilized by this env abstraction."]
+    #[doc = ""]
+    #[doc = " \\return the number of dedicated CPU cores."]
+    pub fn spdk_env_get_core_count() -> u32;
+}
+extern "C" {
+    #[doc = " Get the CPU core index of the current thread."]
+    #[doc = ""]
+    #[doc = " This will only function when called from threads set up by"]
+    #[doc = " this environment abstraction. For any other threads \\c SPDK_ENV_LCORE_ID_ANY"]
+    #[doc = " will be returned."]
+    #[doc = ""]
+    #[doc = " \\return the CPU core index of the current thread."]
+    pub fn spdk_env_get_current_core() -> u32;
+}
+extern "C" {
+    #[doc = " Get the index of the first dedicated CPU core for this application."]
+    #[doc = ""]
+    #[doc = " \\return the index of the first dedicated CPU core."]
+    pub fn spdk_env_get_first_core() -> u32;
+}
+extern "C" {
+    #[doc = " Get the index of the last dedicated CPU core for this application."]
+    #[doc = ""]
+    #[doc = " \\return the index of the last dedicated CPU core."]
+    pub fn spdk_env_get_last_core() -> u32;
+}
+extern "C" {
+    #[doc = " Get the index of the next dedicated CPU core for this application."]
+    #[doc = ""]
+    #[doc = " If there is no next core, return UINT32_MAX."]
+    #[doc = ""]
+    #[doc = " \\param prev_core Index of previous core."]
+    #[doc = ""]
+    #[doc = " \\return the index of the next dedicated CPU core."]
+    pub fn spdk_env_get_next_core(prev_core: u32) -> u32;
+}
+extern "C" {
+    #[doc = " Get the socket ID for the given core."]
+    #[doc = ""]
+    #[doc = " \\param core CPU core to query."]
+    #[doc = ""]
+    #[doc = " \\return the socket ID for the given core."]
+    pub fn spdk_env_get_socket_id(core: u32) -> u32;
+}
+pub type thread_start_fn = ::std::option::Option<
+    unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int,
+>;
+extern "C" {
+    #[doc = " Launch a thread pinned to the given core. Only a single pinned thread may be"]
+    #[doc = " launched per core. Subsequent attempts to launch pinned threads on that core"]
+    #[doc = " will fail."]
+    #[doc = ""]
+    #[doc = " \\param core The core to pin the thread to."]
+    #[doc = " \\param fn Entry point on the new thread."]
+    #[doc = " \\param arg Argument apssed to thread_start_fn"]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_env_thread_launch_pinned(
+        core: u32,
+        fn_: thread_start_fn,
+        arg: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Wait for all threads to exit before returning."]
+    pub fn spdk_env_thread_wait_all();
+}
+extern "C" {
+    #[doc = " Check whether the calling process is primary process."]
+    #[doc = ""]
+    #[doc = " \\return true if the calling process is primary process, or false otherwise."]
+    pub fn spdk_process_is_primary() -> bool;
+}
+extern "C" {
+    #[doc = " Get a monotonic timestamp counter."]
+    #[doc = ""]
+    #[doc = " \\return the monotonic timestamp counter."]
+    pub fn spdk_get_ticks() -> u64;
+}
+extern "C" {
+    #[doc = " Get the tick rate of spdk_get_ticks() per second."]
+    #[doc = ""]
+    #[doc = " \\return the tick rate of spdk_get_ticks() per second."]
+    pub fn spdk_get_ticks_hz() -> u64;
+}
+extern "C" {
+    #[doc = " Delay the given number of microseconds."]
+    #[doc = ""]
+    #[doc = " \\param us Number of microseconds."]
+    pub fn spdk_delay_us(us: ::std::os::raw::c_uint);
+}
+extern "C" {
+    #[doc = " Pause CPU execution for a short while"]
+    pub fn spdk_pause();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_ring {
+    _unused: [u8; 0],
+}
+pub const spdk_ring_type_SPDK_RING_TYPE_SP_SC: spdk_ring_type = 0;
+pub const spdk_ring_type_SPDK_RING_TYPE_MP_SC: spdk_ring_type = 1;
+pub const spdk_ring_type_SPDK_RING_TYPE_MP_MC: spdk_ring_type = 2;
+pub type spdk_ring_type = ::std::os::raw::c_uint;
+extern "C" {
+    #[doc = " Create a ring."]
+    #[doc = ""]
+    #[doc = " \\param type Type for the ring. (SPDK_RING_TYPE_SP_SC or SPDK_RING_TYPE_MP_SC)."]
+    #[doc = " \\param count Size of the ring in elements."]
+    #[doc = " \\param socket_id Socket ID to allocate memory on, or SPDK_ENV_SOCKET_ID_ANY"]
+    #[doc = " for any socket."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the created ring."]
+    pub fn spdk_ring_create(
+        type_: spdk_ring_type,
+        count: size_t,
+        socket_id: ::std::os::raw::c_int,
+    ) -> *mut spdk_ring;
+}
+extern "C" {
+    #[doc = " Free the ring."]
+    #[doc = ""]
+    #[doc = " \\param ring Ring to free."]
+    pub fn spdk_ring_free(ring: *mut spdk_ring);
+}
+extern "C" {
+    #[doc = " Get the number of objects in the ring."]
+    #[doc = ""]
+    #[doc = " \\param ring the ring."]
+    #[doc = ""]
+    #[doc = " \\return the number of objects in the ring."]
+    pub fn spdk_ring_count(ring: *mut spdk_ring) -> size_t;
+}
+extern "C" {
+    #[doc = " Queue the array of objects (with length count) on the ring."]
+    #[doc = ""]
+    #[doc = " \\param ring A pointer to the ring."]
+    #[doc = " \\param objs A pointer to the array to be queued."]
+    #[doc = " \\param count Length count of the array of objects."]
+    #[doc = " \\param free_space If non-NULL, amount of free space after the enqueue has finished."]
+    #[doc = ""]
+    #[doc = " \\return the number of objects enqueued."]
+    pub fn spdk_ring_enqueue(
+        ring: *mut spdk_ring,
+        objs: *mut *mut ::std::os::raw::c_void,
+        count: size_t,
+        free_space: *mut size_t,
+    ) -> size_t;
+}
+extern "C" {
+    #[doc = " Dequeue count objects from the ring into the array objs."]
+    #[doc = ""]
+    #[doc = " \\param ring A pointer to the ring."]
+    #[doc = " \\param objs A pointer to the array to be dequeued."]
+    #[doc = " \\param count Maximum number of elements to be dequeued."]
+    #[doc = ""]
+    #[doc = " \\return the number of objects dequeued which is less than 'count'."]
+    pub fn spdk_ring_dequeue(
+        ring: *mut spdk_ring,
+        objs: *mut *mut ::std::os::raw::c_void,
+        count: size_t,
+    ) -> size_t;
+}
+extern "C" {
+    #[doc = " Reports whether the SPDK application is using the IOMMU for DMA"]
+    #[doc = ""]
+    #[doc = " \\return True if we are using the IOMMU, false otherwise."]
+    pub fn spdk_iommu_is_enabled() -> bool;
+}
+extern "C" {
+    #[doc = " Get the physical address of a buffer."]
+    #[doc = ""]
+    #[doc = " \\param buf A pointer to a buffer."]
+    #[doc = " \\param size Contains the size of the memory region pointed to by vaddr."]
+    #[doc = " If vaddr is successfully translated, then this is updated with the size of"]
+    #[doc = " the memory region for which the translation is valid."]
+    #[doc = ""]
+    #[doc = " \\return the physical address of this buffer on success, or SPDK_VTOPHYS_ERROR"]
+    #[doc = " on failure."]
+    pub fn spdk_vtophys(buf: *const ::std::os::raw::c_void, size: *mut u64) -> u64;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_addr {
+    pub domain: u32,
+    pub bus: u8,
+    pub dev: u8,
+    pub func: u8,
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_addr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_addr>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_pci_addr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_addr>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_pci_addr))
+    );
+    fn test_field_domain() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_addr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).domain) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_addr),
+                "::",
+                stringify!(domain)
+            )
+        );
+    }
+    test_field_domain();
+    fn test_field_bus() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_addr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bus) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_addr),
+                "::",
+                stringify!(bus)
+            )
+        );
+    }
+    test_field_bus();
+    fn test_field_dev() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_addr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dev) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_addr),
+                "::",
+                stringify!(dev)
+            )
+        );
+    }
+    test_field_dev();
+    fn test_field_func() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_addr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).func) as usize - ptr as usize
+            },
+            6usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_addr),
+                "::",
+                stringify!(func)
+            )
+        );
+    }
+    test_field_func();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_id {
+    #[doc = "< Class ID or SPDK_PCI_CLASS_ANY_ID."]
+    pub class_id: u32,
+    #[doc = "< Vendor ID or SPDK_PCI_ANY_ID."]
+    pub vendor_id: u16,
+    #[doc = "< Device ID or SPDK_PCI_ANY_ID."]
+    pub device_id: u16,
+    #[doc = "< Subsystem vendor ID or SPDK_PCI_ANY_ID."]
+    pub subvendor_id: u16,
+    #[doc = "< Subsystem device ID or SPDK_PCI_ANY_ID."]
+    pub subdevice_id: u16,
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_id() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_id>(),
+        12usize,
+        concat!("Size of: ", stringify!(spdk_pci_id))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_id>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_pci_id))
+    );
+    fn test_field_class_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_id>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).class_id) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_id),
+                "::",
+                stringify!(class_id)
+            )
+        );
+    }
+    test_field_class_id();
+    fn test_field_vendor_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_id>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vendor_id) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_id),
+                "::",
+                stringify!(vendor_id)
+            )
+        );
+    }
+    test_field_vendor_id();
+    fn test_field_device_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_id>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).device_id) as usize - ptr as usize
+            },
+            6usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_id),
+                "::",
+                stringify!(device_id)
+            )
+        );
+    }
+    test_field_device_id();
+    fn test_field_subvendor_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_id>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).subvendor_id) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_id),
+                "::",
+                stringify!(subvendor_id)
+            )
+        );
+    }
+    test_field_subvendor_id();
+    fn test_field_subdevice_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_id>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).subdevice_id) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_id),
+                "::",
+                stringify!(subdevice_id)
+            )
+        );
+    }
+    test_field_subdevice_id();
+}
+extern "C" {
+    pub fn spdk_pci_driver_register(
+        name: *const ::std::os::raw::c_char,
+        id_table: *mut spdk_pci_id,
+        flags: u32,
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_device {
+    pub parent: *mut spdk_pci_device,
+    pub dev_handle: *mut ::std::os::raw::c_void,
+    pub addr: spdk_pci_addr,
+    pub id: spdk_pci_id,
+    pub socket_id: ::std::os::raw::c_int,
+    pub type_: *const ::std::os::raw::c_char,
+    pub map_bar: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut spdk_pci_device,
+            bar: u32,
+            mapped_addr: *mut *mut ::std::os::raw::c_void,
+            phys_addr: *mut u64,
+            size: *mut u64,
+        ) -> ::std::os::raw::c_int,
+    >,
+    pub unmap_bar: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut spdk_pci_device,
+            bar: u32,
+            addr: *mut ::std::os::raw::c_void,
+        ) -> ::std::os::raw::c_int,
+    >,
+    pub cfg_read: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut spdk_pci_device,
+            value: *mut ::std::os::raw::c_void,
+            len: u32,
+            offset: u32,
+        ) -> ::std::os::raw::c_int,
+    >,
+    pub cfg_write: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut spdk_pci_device,
+            value: *mut ::std::os::raw::c_void,
+            len: u32,
+            offset: u32,
+        ) -> ::std::os::raw::c_int,
+    >,
+    pub internal: spdk_pci_device__spdk_pci_device_internal,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_device__spdk_pci_device_internal {
+    pub driver: *mut spdk_pci_driver,
+    pub attached: bool,
+    pub claim_fd: ::std::os::raw::c_int,
+    pub pending_removal: bool,
+    pub removed: bool,
+    pub tailq: spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1 {
+    pub tqe_next: *mut spdk_pci_device,
+    pub tqe_prev: *mut *mut spdk_pci_device,
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1>(),
+        16usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1)
+        )
+    );
+    fn test_field_tqe_next() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).tqe_next) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1),
+                "::",
+                stringify!(tqe_next)
+            )
+        );
+    }
+    test_field_tqe_next();
+    fn test_field_tqe_prev() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).tqe_prev) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal__bindgen_ty_1),
+                "::",
+                stringify!(tqe_prev)
+            )
+        );
+    }
+    test_field_tqe_prev();
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_device__spdk_pci_device_internal() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_device__spdk_pci_device_internal>(),
+        40usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_pci_device__spdk_pci_device_internal)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_device__spdk_pci_device_internal>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_pci_device__spdk_pci_device_internal)
+        )
+    );
+    fn test_field_driver() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).driver) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(driver)
+            )
+        );
+    }
+    test_field_driver();
+    fn test_field_attached() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).attached) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(attached)
+            )
+        );
+    }
+    test_field_attached();
+    fn test_field_claim_fd() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).claim_fd) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(claim_fd)
+            )
+        );
+    }
+    test_field_claim_fd();
+    fn test_field_pending_removal() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pending_removal) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(pending_removal)
+            )
+        );
+    }
+    test_field_pending_removal();
+    fn test_field_removed() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).removed) as usize - ptr as usize
+            },
+            17usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(removed)
+            )
+        );
+    }
+    test_field_removed();
+    fn test_field_tailq() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_pci_device__spdk_pci_device_internal>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).tailq) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device__spdk_pci_device_internal),
+                "::",
+                stringify!(tailq)
+            )
+        );
+    }
+    test_field_tailq();
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_device() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_device>(),
+        120usize,
+        concat!("Size of: ", stringify!(spdk_pci_device))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_device>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_pci_device))
+    );
+    fn test_field_parent() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).parent) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(parent)
+            )
+        );
+    }
+    test_field_parent();
+    fn test_field_dev_handle() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dev_handle) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(dev_handle)
+            )
+        );
+    }
+    test_field_dev_handle();
+    fn test_field_addr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).addr) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(addr)
+            )
+        );
+    }
+    test_field_addr();
+    fn test_field_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).id) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(id)
+            )
+        );
+    }
+    test_field_id();
+    fn test_field_socket_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).socket_id) as usize - ptr as usize
+            },
+            36usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(socket_id)
+            )
+        );
+    }
+    test_field_socket_id();
+    fn test_field_type() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(type_)
+            )
+        );
+    }
+    test_field_type();
+    fn test_field_map_bar() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).map_bar) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(map_bar)
+            )
+        );
+    }
+    test_field_map_bar();
+    fn test_field_unmap_bar() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).unmap_bar) as usize - ptr as usize
+            },
+            56usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(unmap_bar)
+            )
+        );
+    }
+    test_field_unmap_bar();
+    fn test_field_cfg_read() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cfg_read) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(cfg_read)
+            )
+        );
+    }
+    test_field_cfg_read();
+    fn test_field_cfg_write() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cfg_write) as usize - ptr as usize
+            },
+            72usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(cfg_write)
+            )
+        );
+    }
+    test_field_cfg_write();
+    fn test_field_internal() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_device>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).internal) as usize - ptr as usize
+            },
+            80usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_device),
+                "::",
+                stringify!(internal)
+            )
+        );
+    }
+    test_field_internal();
+}
+#[doc = " Callback for device attach handling."]
+#[doc = ""]
+#[doc = " \\param enum_ctx Opaque value."]
+#[doc = " \\param dev PCI device."]
+#[doc = ""]
+#[doc = " \\return -1 if an error occurred,"]
+#[doc = "          0 if device attached successfully,"]
+#[doc = "          1 if device not attached."]
+pub type spdk_pci_enum_cb = ::std::option::Option<
+    unsafe extern "C" fn(
+        enum_ctx: *mut ::std::os::raw::c_void,
+        dev: *mut spdk_pci_device,
+    ) -> ::std::os::raw::c_int,
+>;
+extern "C" {
+    #[doc = " Get the VMD PCI driver object."]
+    #[doc = ""]
+    #[doc = " \\return PCI driver."]
+    pub fn spdk_pci_vmd_get_driver() -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Get the I/OAT PCI driver object."]
+    #[doc = ""]
+    #[doc = " \\return PCI driver."]
+    pub fn spdk_pci_ioat_get_driver() -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Get the IDXD PCI driver object."]
+    #[doc = ""]
+    #[doc = " \\return PCI driver."]
+    pub fn spdk_pci_idxd_get_driver() -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Get the Virtio PCI driver object."]
+    #[doc = ""]
+    #[doc = " \\return PCI driver."]
+    pub fn spdk_pci_virtio_get_driver() -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Get PCI driver by name (e.g. \"nvme\", \"vmd\", \"ioat\")."]
+    pub fn spdk_pci_get_driver(name: *const ::std::os::raw::c_char) -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Get the NVMe PCI driver object."]
+    #[doc = ""]
+    #[doc = " \\return PCI driver."]
+    pub fn spdk_pci_nvme_get_driver() -> *mut spdk_pci_driver;
+}
+extern "C" {
+    #[doc = " Enumerate all PCI devices supported by the provided driver and try to"]
+    #[doc = " attach those that weren't attached yet. The provided callback will be"]
+    #[doc = " called for each such device and its return code will decide whether that"]
+    #[doc = " device is attached or not. Attached devices have to be manually detached"]
+    #[doc = " with spdk_pci_device_detach() to be attach-able again."]
+    #[doc = ""]
+    #[doc = " During enumeration all registered pci devices with exposed access to"]
+    #[doc = " userspace are getting probed internally unless not explicitly specified"]
+    #[doc = " on denylist. Because of that it becomes not possible to either use such"]
+    #[doc = " devices with another application or unbind the driver (e.g. vfio)."]
+    #[doc = ""]
+    #[doc = " 2s asynchronous delay is introduced to avoid race conditions between"]
+    #[doc = " user space software initialization and in-kernel device handling for"]
+    #[doc = " newly inserted devices. Subsequent enumerate call after the delay"]
+    #[doc = " shall allow for a successful device attachment."]
+    #[doc = ""]
+    #[doc = " \\param driver Driver for a specific device type."]
+    #[doc = " \\param enum_cb Callback to be called for each non-attached PCI device."]
+    #[doc = " \\param enum_ctx Additional context passed to the callback function."]
+    #[doc = ""]
+    #[doc = " \\return -1 if an internal error occurred or the provided callback returned -1,"]
+    #[doc = "         0 otherwise"]
+    pub fn spdk_pci_enumerate(
+        driver: *mut spdk_pci_driver,
+        enum_cb: spdk_pci_enum_cb,
+        enum_ctx: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Begin iterating over enumerated PCI device by calling this function to get"]
+    #[doc = " the first PCI device. If there no PCI devices enumerated, return NULL"]
+    #[doc = ""]
+    #[doc = " \\return a pointer to a PCI device on success, NULL otherwise."]
+    pub fn spdk_pci_get_first_device() -> *mut spdk_pci_device;
+}
+extern "C" {
+    #[doc = " Continue iterating over enumerated PCI devices."]
+    #[doc = " If no additional PCI devices, return NULL"]
+    #[doc = ""]
+    #[doc = " \\param prev Previous PCI device returned from \\ref spdk_pci_get_first_device"]
+    #[doc = " or \\ref spdk_pci_get_next_device"]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the next PCI device on success, NULL otherwise."]
+    pub fn spdk_pci_get_next_device(prev: *mut spdk_pci_device) -> *mut spdk_pci_device;
+}
+extern "C" {
+    #[doc = " Map a PCI BAR in the current process."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param bar BAR number."]
+    #[doc = " \\param mapped_addr A variable to store the virtual address of the mapping."]
+    #[doc = " \\param phys_addr A variable to store the physical address of the mapping."]
+    #[doc = " \\param size A variable to store the size of the bar (in bytes)."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success."]
+    pub fn spdk_pci_device_map_bar(
+        dev: *mut spdk_pci_device,
+        bar: u32,
+        mapped_addr: *mut *mut ::std::os::raw::c_void,
+        phys_addr: *mut u64,
+        size: *mut u64,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Unmap a PCI BAR from the current process. This happens automatically when"]
+    #[doc = " the PCI device is detached."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param bar BAR number."]
+    #[doc = " \\param mapped_addr Virtual address of the bar."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success."]
+    pub fn spdk_pci_device_unmap_bar(
+        dev: *mut spdk_pci_device,
+        bar: u32,
+        mapped_addr: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Get the domain of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI device domain."]
+    pub fn spdk_pci_device_get_domain(dev: *mut spdk_pci_device) -> u32;
+}
+extern "C" {
+    #[doc = " Get the bus number of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI bus number."]
+    pub fn spdk_pci_device_get_bus(dev: *mut spdk_pci_device) -> u8;
+}
+extern "C" {
+    #[doc = " Get the device number within the PCI bus the device is on."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI device number."]
+    pub fn spdk_pci_device_get_dev(dev: *mut spdk_pci_device) -> u8;
+}
+extern "C" {
+    #[doc = " Get the particular function number represented by struct spdk_pci_device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI function number."]
+    pub fn spdk_pci_device_get_func(dev: *mut spdk_pci_device) -> u8;
+}
+extern "C" {
+    #[doc = " Get the full DomainBDF address of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI address."]
+    pub fn spdk_pci_device_get_addr(dev: *mut spdk_pci_device) -> spdk_pci_addr;
+}
+extern "C" {
+    #[doc = " Get the vendor ID of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return vendor ID."]
+    pub fn spdk_pci_device_get_vendor_id(dev: *mut spdk_pci_device) -> u16;
+}
+extern "C" {
+    #[doc = " Get the device ID of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return device ID."]
+    pub fn spdk_pci_device_get_device_id(dev: *mut spdk_pci_device) -> u16;
+}
+extern "C" {
+    #[doc = " Get the subvendor ID of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return subvendor ID."]
+    pub fn spdk_pci_device_get_subvendor_id(dev: *mut spdk_pci_device) -> u16;
+}
+extern "C" {
+    #[doc = " Get the subdevice ID of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return subdevice ID."]
+    pub fn spdk_pci_device_get_subdevice_id(dev: *mut spdk_pci_device) -> u16;
+}
+extern "C" {
+    #[doc = " Get the PCI ID of a PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return PCI ID."]
+    pub fn spdk_pci_device_get_id(dev: *mut spdk_pci_device) -> spdk_pci_id;
+}
+extern "C" {
+    #[doc = " Get the NUMA node the PCI device is on."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return NUMA node index (>= 0)."]
+    pub fn spdk_pci_device_get_socket_id(dev: *mut spdk_pci_device) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Serialize the PCIe Device Serial Number into the provided buffer."]
+    #[doc = " The buffer will contain a 16-character-long serial number followed by"]
+    #[doc = " a NULL terminator."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param sn Buffer to store the serial number in."]
+    #[doc = " \\param len Length of buffer. Must be at least 17."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_get_serial_number(
+        dev: *mut spdk_pci_device,
+        sn: *mut ::std::os::raw::c_char,
+        len: size_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Claim a PCI device for exclusive SPDK userspace access."]
+    #[doc = ""]
+    #[doc = " Uses F_SETLK on a shared memory file with the PCI address embedded in its name."]
+    #[doc = " As long as this file remains open with the lock acquired, other processes will"]
+    #[doc = " not be able to successfully call this function on the same PCI device."]
+    #[doc = ""]
+    #[doc = " The device can be un-claimed by the owning process with spdk_pci_device_unclaim()."]
+    #[doc = " It will be also unclaimed automatically when detached."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device to claim."]
+    #[doc = ""]
+    #[doc = " \\return -EACCES if the device has already been claimed,"]
+    #[doc = "\t   negative errno on unexpected errors,"]
+    #[doc = "\t   0 on success."]
+    pub fn spdk_pci_device_claim(dev: *mut spdk_pci_device) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Undo spdk_pci_device_claim()."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device to unclaim."]
+    pub fn spdk_pci_device_unclaim(dev: *mut spdk_pci_device);
+}
+extern "C" {
+    #[doc = " Release all resources associated with the given device and detach it. As long"]
+    #[doc = " as the PCI device is physically available, it will attachable again."]
+    #[doc = ""]
+    #[doc = " \\param device PCI device."]
+    pub fn spdk_pci_device_detach(device: *mut spdk_pci_device);
+}
+extern "C" {
+    #[doc = " Attach a PCI device. This will bypass all blocked list rules and explicitly"]
+    #[doc = " attach a device at the provided address. The return code of the provided"]
+    #[doc = " callback will decide whether that device is attached or not. Attached"]
+    #[doc = " devices have to be manually detached with spdk_pci_device_detach() to be"]
+    #[doc = " attach-able again."]
+    #[doc = ""]
+    #[doc = " \\param driver Driver for a specific device type. The device will only be"]
+    #[doc = " attached if it's supported by this driver."]
+    #[doc = " \\param enum_cb Callback to be called for the PCI device once it's found."]
+    #[doc = " \\param enum_ctx Additional context passed to the callback function."]
+    #[doc = " \\param pci_address Address of the device to attach."]
+    #[doc = ""]
+    #[doc = " \\return -1 if a device at the provided PCI address couldn't be found,"]
+    #[doc = "         -1 if an internal error happened or the provided callback returned non-zero,"]
+    #[doc = "         0 otherwise"]
+    pub fn spdk_pci_device_attach(
+        driver: *mut spdk_pci_driver,
+        enum_cb: spdk_pci_enum_cb,
+        enum_ctx: *mut ::std::os::raw::c_void,
+        pci_address: *mut spdk_pci_addr,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Allow the specified PCI device to be probed by the calling process."]
+    #[doc = ""]
+    #[doc = " When using spdk_pci_enumerate(), only devices with allowed PCI addresses will"]
+    #[doc = " be probed.  By default, this is all PCI addresses, but the pci_allowed"]
+    #[doc = " and pci_blocked environment options can override this behavior."]
+    #[doc = " This API enables the caller to allow a new PCI address that may have previously"]
+    #[doc = " been blocked."]
+    #[doc = ""]
+    #[doc = " \\param pci_addr PCI address to allow"]
+    #[doc = " \\return 0 if successful"]
+    #[doc = " \\return -ENOMEM if environment-specific data structures cannot be allocated"]
+    #[doc = " \\return -EINVAL if specified PCI address is not valid"]
+    pub fn spdk_pci_device_allow(pci_addr: *mut spdk_pci_addr) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Read \\c len bytes from the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param buf A buffer to copy the data into."]
+    #[doc = " \\param len Number of bytes to read."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start reading from."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_read(
+        dev: *mut spdk_pci_device,
+        buf: *mut ::std::os::raw::c_void,
+        len: u32,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Write \\c len bytes into the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param buf A buffer to copy the data from."]
+    #[doc = " \\param len Number of bytes to write."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start writing to."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_write(
+        dev: *mut spdk_pci_device,
+        buf: *mut ::std::os::raw::c_void,
+        len: u32,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Read 1 byte from the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A buffer to copy the data into."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start reading from."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_read8(
+        dev: *mut spdk_pci_device,
+        value: *mut u8,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Write 1 byte into the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A value to write."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start writing to."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_write8(
+        dev: *mut spdk_pci_device,
+        value: u8,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Read 2 bytes from the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A buffer to copy the data into."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start reading from."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_read16(
+        dev: *mut spdk_pci_device,
+        value: *mut u16,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Write 2 bytes into the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A value to write."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start writing to."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_write16(
+        dev: *mut spdk_pci_device,
+        value: u16,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Read 4 bytes from the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A buffer to copy the data into."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start reading from."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_read32(
+        dev: *mut spdk_pci_device,
+        value: *mut u32,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Write 4 bytes into the PCI configuration space."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = " \\param value A value to write."]
+    #[doc = " \\param offset Offset (in bytes) in the PCI config space to start writing to."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, -1 on failure."]
+    pub fn spdk_pci_device_cfg_write32(
+        dev: *mut spdk_pci_device,
+        value: u32,
+        offset: u32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Check if device was requested to be removed from the process. This can be"]
+    #[doc = " caused either by physical device hotremoval or OS-triggered removal. In the"]
+    #[doc = " latter case, the device may continue to function properly even if this"]
+    #[doc = " function returns \\c true . The upper-layer driver may check this function"]
+    #[doc = " periodically and eventually detach the device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device."]
+    #[doc = ""]
+    #[doc = " \\return if device was requested to be removed"]
+    pub fn spdk_pci_device_is_removed(dev: *mut spdk_pci_device) -> bool;
+}
+extern "C" {
+    #[doc = " Compare two PCI addresses."]
+    #[doc = ""]
+    #[doc = " \\param a1 PCI address 1."]
+    #[doc = " \\param a2 PCI address 2."]
+    #[doc = ""]
+    #[doc = " \\return 0 if a1 == a2, less than 0 if a1 < a2, greater than 0 if a1 > a2"]
+    pub fn spdk_pci_addr_compare(
+        a1: *const spdk_pci_addr,
+        a2: *const spdk_pci_addr,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Convert a string representation of a PCI address into a struct spdk_pci_addr."]
+    #[doc = ""]
+    #[doc = " \\param addr PCI adddress output on success."]
+    #[doc = " \\param bdf PCI address in domain:bus:device.function format or"]
+    #[doc = "\tdomain.bus.device.function format."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_pci_addr_parse(
+        addr: *mut spdk_pci_addr,
+        bdf: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Convert a struct spdk_pci_addr to a string."]
+    #[doc = ""]
+    #[doc = " \\param bdf String into which a string will be output in the format"]
+    #[doc = "  domain:bus:device.function. The string must be at least 14 characters in size."]
+    #[doc = " \\param sz Size of bdf in bytes. Must be at least 14."]
+    #[doc = " \\param addr PCI address."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, or a negated errno on failure."]
+    pub fn spdk_pci_addr_fmt(
+        bdf: *mut ::std::os::raw::c_char,
+        sz: size_t,
+        addr: *const spdk_pci_addr,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Hook a custom PCI device into the PCI layer. The device will be attachable,"]
+    #[doc = " enumerable, and will call provided callbacks on each PCI resource access"]
+    #[doc = " request."]
+    #[doc = ""]
+    #[doc = " \\param drv driver that will be able to attach the device"]
+    #[doc = " \\param dev fully initialized PCI device struct"]
+    pub fn spdk_pci_hook_device(drv: *mut spdk_pci_driver, dev: *mut spdk_pci_device);
+}
+extern "C" {
+    #[doc = " Un-hook a custom PCI device from the PCI layer. The device must not be attached."]
+    #[doc = ""]
+    #[doc = " \\param dev fully initialized PCI device struct"]
+    pub fn spdk_pci_unhook_device(dev: *mut spdk_pci_device);
+}
+extern "C" {
+    #[doc = " Return the type of the PCI device."]
+    #[doc = ""]
+    #[doc = " \\param dev PCI device"]
+    #[doc = ""]
+    #[doc = " \\return string representing the type of the device"]
+    pub fn spdk_pci_device_get_type(dev: *const spdk_pci_device) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    #[doc = " Remove any CPU affinity from the current thread."]
+    pub fn spdk_unaffinitize_thread();
+}
+extern "C" {
+    #[doc = " Call a function with CPU affinity unset."]
+    #[doc = ""]
+    #[doc = " This can be used to run a function that creates other threads without inheriting the calling"]
+    #[doc = " thread's CPU affinity."]
+    #[doc = ""]
+    #[doc = " \\param cb Function to call"]
+    #[doc = " \\param arg Parameter to the function cb()."]
+    #[doc = ""]
+    #[doc = " \\return the return value of cb()."]
+    pub fn spdk_call_unaffinitized(
+        cb: ::std::option::Option<
+            unsafe extern "C" fn(arg: *mut ::std::os::raw::c_void) -> *mut ::std::os::raw::c_void,
+        >,
+        arg: *mut ::std::os::raw::c_void,
+    ) -> *mut ::std::os::raw::c_void;
+}
+#[doc = " Page-granularity memory address translation table."]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_mem_map {
+    _unused: [u8; 0],
+}
+pub const spdk_mem_map_notify_action_SPDK_MEM_MAP_NOTIFY_REGISTER: spdk_mem_map_notify_action = 0;
+pub const spdk_mem_map_notify_action_SPDK_MEM_MAP_NOTIFY_UNREGISTER: spdk_mem_map_notify_action = 1;
+pub type spdk_mem_map_notify_action = ::std::os::raw::c_uint;
+pub type spdk_mem_map_notify_cb = ::std::option::Option<
+    unsafe extern "C" fn(
+        cb_ctx: *mut ::std::os::raw::c_void,
+        map: *mut spdk_mem_map,
+        action: spdk_mem_map_notify_action,
+        vaddr: *mut ::std::os::raw::c_void,
+        size: size_t,
+    ) -> ::std::os::raw::c_int,
+>;
+pub type spdk_mem_map_contiguous_translations =
+    ::std::option::Option<unsafe extern "C" fn(addr_1: u64, addr_2: u64) -> ::std::os::raw::c_int>;
+#[doc = " A function table to be implemented by each memory map."]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_mem_map_ops {
+    pub notify_cb: spdk_mem_map_notify_cb,
+    pub are_contiguous: spdk_mem_map_contiguous_translations,
+}
+#[test]
+fn bindgen_test_layout_spdk_mem_map_ops() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_mem_map_ops>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_mem_map_ops))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_mem_map_ops>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_mem_map_ops))
+    );
+    fn test_field_notify_cb() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_mem_map_ops>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).notify_cb) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_mem_map_ops),
+                "::",
+                stringify!(notify_cb)
+            )
+        );
+    }
+    test_field_notify_cb();
+    fn test_field_are_contiguous() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_mem_map_ops>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).are_contiguous) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_mem_map_ops),
+                "::",
+                stringify!(are_contiguous)
+            )
+        );
+    }
+    test_field_are_contiguous();
+}
+extern "C" {
+    #[doc = " Allocate a virtual memory address translation map."]
+    #[doc = ""]
+    #[doc = " \\param default_translation Default translation for the map."]
+    #[doc = " \\param ops Table of callback functions for map operations."]
+    #[doc = " \\param cb_ctx Argument passed to the callback function."]
+    #[doc = ""]
+    #[doc = " \\return a pointer to the allocated virtual memory address translation map."]
+    pub fn spdk_mem_map_alloc(
+        default_translation: u64,
+        ops: *const spdk_mem_map_ops,
+        cb_ctx: *mut ::std::os::raw::c_void,
+    ) -> *mut spdk_mem_map;
+}
+extern "C" {
+    #[doc = " Free a memory map previously allocated by spdk_mem_map_alloc()."]
+    #[doc = ""]
+    #[doc = " \\param pmap Memory map to free."]
+    pub fn spdk_mem_map_free(pmap: *mut *mut spdk_mem_map);
+}
+extern "C" {
+    #[doc = " Register an address translation for a range of virtual memory."]
+    #[doc = ""]
+    #[doc = " \\param map Memory map."]
+    #[doc = " \\param vaddr Virtual address of the region to register - must be 2 MB aligned."]
+    #[doc = " \\param size Size of the region in bytes - must be multiple of 2 MB in the"]
+    #[doc = "  current implementation."]
+    #[doc = " \\param translation Translation to store in the map for this address range."]
+    #[doc = ""]
+    #[doc = " \\sa spdk_mem_map_clear_translation()."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_mem_map_set_translation(
+        map: *mut spdk_mem_map,
+        vaddr: u64,
+        size: u64,
+        translation: u64,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Unregister an address translation."]
+    #[doc = ""]
+    #[doc = " \\param map Memory map."]
+    #[doc = " \\param vaddr Virtual address of the region to unregister - must be 2 MB aligned."]
+    #[doc = " \\param size Size of the region in bytes - must be multiple of 2 MB in the"]
+    #[doc = "  current implementation."]
+    #[doc = ""]
+    #[doc = " \\sa spdk_mem_map_set_translation()."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_mem_map_clear_translation(
+        map: *mut spdk_mem_map,
+        vaddr: u64,
+        size: u64,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Look up the translation of a virtual address in a memory map."]
+    #[doc = ""]
+    #[doc = " \\param map Memory map."]
+    #[doc = " \\param vaddr Virtual address."]
+    #[doc = " \\param size Contains the size of the memory region pointed to by vaddr."]
+    #[doc = " If vaddr is successfully translated, then this is updated with the size of"]
+    #[doc = " the memory region for which the translation is valid."]
+    #[doc = ""]
+    #[doc = " \\return the translation of vaddr stored in the map, or default_translation"]
+    #[doc = " as specified in spdk_mem_map_alloc() if vaddr is not present in the map."]
+    pub fn spdk_mem_map_translate(map: *const spdk_mem_map, vaddr: u64, size: *mut u64) -> u64;
+}
+extern "C" {
+    #[doc = " Register the specified memory region for address translation."]
+    #[doc = ""]
+    #[doc = " The memory region must map to pinned huge pages (2MB or greater)."]
+    #[doc = ""]
+    #[doc = " \\param vaddr Virtual address to register."]
+    #[doc = " \\param len Length in bytes of the vaddr."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_mem_register(
+        vaddr: *mut ::std::os::raw::c_void,
+        len: size_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Unregister the specified memory region from vtophys address translation."]
+    #[doc = ""]
+    #[doc = " The caller must ensure all in-flight DMA operations to this memory region"]
+    #[doc = " are completed or cancelled before calling this function."]
+    #[doc = ""]
+    #[doc = " \\param vaddr Virtual address to unregister."]
+    #[doc = " \\param len Length in bytes of the vaddr."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negative errno on failure."]
+    pub fn spdk_mem_unregister(
+        vaddr: *mut ::std::os::raw::c_void,
+        len: size_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Reserve the address space specified in all memory maps."]
+    #[doc = ""]
+    #[doc = " This pre-allocates the necessary space in the memory maps such that"]
+    #[doc = " future calls to spdk_mem_register() on that region require no"]
+    #[doc = " internal memory allocations."]
+    #[doc = ""]
+    #[doc = " \\param vaddr Virtual address to reserve"]
+    #[doc = " \\param len Length in bytes of vaddr"]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, negated errno on failure."]
+    pub fn spdk_mem_reserve(
+        vaddr: *mut ::std::os::raw::c_void,
+        len: size_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Get the address's file descriptor and offset, it works with spdk memory allocation APIs"]
+    #[doc = ""]
+    #[doc = " \\param vaddr Virtual address to get"]
+    #[doc = " \\param offset Virtual address's map offset to the file descriptor"]
+    #[doc = ""]
+    #[doc = " \\return negative errno on failure, otherwise return the file descriptor"]
+    pub fn spdk_mem_get_fd_and_offset(
+        vaddr: *mut ::std::os::raw::c_void,
+        offset: *mut u64,
+    ) -> ::std::os::raw::c_int;
+}
+pub const spdk_pci_event_type_SPDK_UEVENT_ADD: spdk_pci_event_type = 0;
+pub const spdk_pci_event_type_SPDK_UEVENT_REMOVE: spdk_pci_event_type = 1;
+pub type spdk_pci_event_type = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_pci_event {
+    pub action: spdk_pci_event_type,
+    pub traddr: spdk_pci_addr,
+}
+#[test]
+fn bindgen_test_layout_spdk_pci_event() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_pci_event>(),
+        12usize,
+        concat!("Size of: ", stringify!(spdk_pci_event))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_pci_event>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_pci_event))
+    );
+    fn test_field_action() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_event>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).action) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_event),
+                "::",
+                stringify!(action)
+            )
+        );
+    }
+    test_field_action();
+    fn test_field_traddr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_pci_event>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).traddr) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_pci_event),
+                "::",
+                stringify!(traddr)
+            )
+        );
+    }
+    test_field_traddr();
+}
+pub type spdk_pci_error_handler = ::std::option::Option<
+    unsafe extern "C" fn(info: *mut siginfo_t, ctx: *mut ::std::os::raw::c_void),
+>;
+extern "C" {
+    #[doc = " Begin listening for PCI bus events. This is used to detect hot-insert and"]
+    #[doc = " hot-remove events. Once the system is listening, events may be retrieved"]
+    #[doc = " by calling spdk_pci_get_event() periodically."]
+    #[doc = ""]
+    #[doc = " \\return negative errno on failure, otherwise,  return a file descriptor"]
+    #[doc = " that may be later passed to spdk_pci_get_event()."]
+    pub fn spdk_pci_event_listen() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Get the next PCI bus event."]
+    #[doc = ""]
+    #[doc = " \\param fd A file descriptor returned by spdk_pci_event_listen()"]
+    #[doc = " \\param event An event on the PCI bus"]
+    #[doc = ""]
+    #[doc = " \\return Negative errno on failure. 0 for no event. A positive number"]
+    #[doc = " when an event has been returned"]
+    pub fn spdk_pci_get_event(
+        fd: ::std::os::raw::c_int,
+        event: *mut spdk_pci_event,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Register a signal handler to handle bus errors on the PCI bus"]
+    #[doc = ""]
+    #[doc = " \\param sighandler Signal bus handler of the PCI bus"]
+    #[doc = " \\param ctx The arg pass to the registered signal bus handler."]
+    #[doc = ""]
+    #[doc = " \\return negative errno on failure, otherwise it means successful"]
+    pub fn spdk_pci_register_error_handler(
+        sighandler: spdk_pci_error_handler,
+        ctx: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Register a signal handler to handle bus errors on the PCI bus"]
+    #[doc = ""]
+    #[doc = " \\param sighandler Signal bus handler of the PCI bus"]
+    pub fn spdk_pci_unregister_error_handler(sighandler: spdk_pci_error_handler);
+}
 pub type __builtin_va_list = *mut ::std::os::raw::c_char;
 pub type __uint128_t = u128;
 #[repr(C)]
@@ -32112,6 +34545,6 @@ pub struct io_device {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct spdk_pci_addr {
+pub struct spdk_pci_driver {
     pub _address: u8,
 }

@@ -9,10 +9,11 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread::JoinHandle;
 use lazy_static::lazy_static;
 use log::{error, info, warn};
-use std::thread;
+use std::{env, thread};
 use std::time::Duration;
-use crate::generated::bindings::{option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_log_level_SPDK_LOG_INFO, spdk_pci_addr};
-use crate::spdk_wrapper::spdk::spdk_clib::spdk_app_opts_init;
+use crate::generated::bindings::{__stdoutp, fflush, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_log_level_SPDK_LOG_INFO, spdk_log_level_SPDK_LOG_WARN, spdk_pci_addr};
+use crate::spdk_wrapper::accel_engine_api::AccelEngineApi;
+use crate::spdk_wrapper::spdk::spdk_clib::{spdk_app_opts_init, spdk_log_clear_flag, spdk_log_set_flag, spdk_log_set_level, spdk_log_set_print_level, spdk_memzone_dump};
 
 lazy_static!{
     static ref spdkInitialized : AtomicBool = AtomicBool::new(false);
@@ -58,8 +59,7 @@ impl Spdk {
                 std::process::exit(rc as i32);
             }
             /* Blocks until the application is exiting */
-            let _started_callback = Some(0 as *mut i32); // TODO: pass that into spdk_app_start
-            let rc = spdk_clib::spdk_app_start(&mut opts, None /*Spdk::_AppStartedCallback*/, 0 as *mut c_void);
+            let rc = spdk_clib::spdk_app_start(&mut opts, Some(Spdk::_AppStartedCallback), 0 as *mut c_void);
             info!("spdk_app_start result = {}", rc);
         }));
         while !spdkInitialized.load(Ordering::Relaxed) {
@@ -72,11 +72,35 @@ impl Spdk {
     pub fn Finalize() {
         // TODO
     }
+
+    extern "C" fn _AppStartedCallback(ctx: *mut ::std::os::raw::c_void) {
+        if let Ok(_v) = env::var("MEMZONE_DUMP") {
+            unsafe {
+                spdk_memzone_dump(__stdoutp);
+                fflush(__stdoutp);
+            }
+        }
+        spdk_log_set_level(spdk_log_level_SPDK_LOG_WARN);
+        spdk_log_set_print_level(spdk_log_level_SPDK_LOG_WARN);
+        spdk_log_set_flag(CString::new("all").unwrap().into_raw());
+        spdk_log_clear_flag(CString::new("reactor").unwrap().into_raw());
+        spdk_log_set_flag(CString::new("bdev").unwrap().into_raw());
+        spdk_log_set_flag(CString::new("bdev_nvme").unwrap().into_raw());
+        spdk_log_set_flag(CString::new("nvme").unwrap().into_raw());
+        spdk_log_set_flag(CString::new("bdev_malloc").unwrap().into_raw());
+        spdk_log_set_flag(CString::new("bdev_ibof").unwrap().into_raw());
+
+        AccelEngineApi.Initialize();
+
+        spdkInitialized.store(false, Ordering::Relaxed);
+
+        info!("poseidonos started");
+    }
 }
 
 // TODO: cfg로 linux profile vs. macos (windows) profile 만들어서 전자의 경우는 lib link, 후자의 경우는 stub
 pub mod spdk_clib {
-    use crate::generated::bindings::{option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_msg_fn};
+    use crate::generated::bindings::{FILE, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_log_level, spdk_msg_fn};
 
     pub(crate) fn spdk_app_opts_init(opts: &mut spdk_app_opts, opts_size: size_t) {
         // STUB
@@ -117,6 +141,28 @@ pub mod spdk_clib {
 
     pub fn spdk_app_fini() {
         // STUB
+    }
+
+    pub fn spdk_memzone_dump(f: *mut FILE) {
+        // STUB
+    }
+
+    pub fn spdk_log_set_level(level: spdk_log_level) {
+        // STUB
+    }
+
+    pub fn spdk_log_set_print_level(level: spdk_log_level) {
+        // STUB
+    }
+
+    pub fn spdk_log_set_flag(flag: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        // STUB
+        0
+    }
+
+    pub fn spdk_log_clear_flag(flag: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        // STUB
+        0
     }
 }
 
@@ -164,3 +210,7 @@ impl Default for option {
         }
     }
 }
+
+// extern "C" fn func1() -> ~str {
+// ~"hello"
+// }
