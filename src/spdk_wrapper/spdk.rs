@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-use std::borrow::Borrow;
+use std::borrow::{Borrow, BorrowMut};
 use std::ffi::{c_void, CStr, CString};
 use std::mem::size_of;
 use std::os::raw::{c_char, c_int};
@@ -13,7 +13,7 @@ use std::{env, thread};
 use std::time::Duration;
 use crate::generated::bindings::{__stdoutp, fflush, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_log_level_SPDK_LOG_INFO, spdk_log_level_SPDK_LOG_WARN, spdk_pci_addr};
 use crate::spdk_wrapper::accel_engine_api::AccelEngineApi;
-use crate::spdk_wrapper::spdk::spdk_clib::{spdk_app_opts_init, spdk_log_clear_flag, spdk_log_set_flag, spdk_log_set_level, spdk_log_set_print_level, spdk_memzone_dump};
+use crate::spdk_wrapper::spdk::spdk_clib::{spdk_app_fini, spdk_app_opts_init, spdk_app_stop, spdk_log_clear_flag, spdk_log_set_flag, spdk_log_set_level, spdk_log_set_print_level, spdk_memzone_dump};
 
 lazy_static!{
     static ref spdkInitialized : AtomicBool = AtomicBool::new(false);
@@ -36,44 +36,57 @@ impl Spdk {
             return true;
         }
         self.spdkThread = Some(thread::spawn(move || {
-            // _InitWorker
-            let mut opts : spdk_app_opts = spdk_app_opts::default();
-            spdk_app_opts_init(&mut opts, size_of::<spdk_app_opts>() as size_t);
-            {
-                opts.name = CString::new("ibof_nvmf").unwrap().into_raw();
-                opts.mem_channel = -1;
-                opts.print_level = spdk_log_level_SPDK_LOG_INFO;
-                opts.reactor_mask = CString::new("TODO").unwrap().into_raw();
-                opts.main_core = 0; // TODO
-            }
-            let mut empty_option : option = option::default();
-            let empty_args = 0 as *mut *mut ::std::os::raw::c_char;
-            let getopt_str = 0 as *const ::std::os::raw::c_char;
-            let rc = spdk_clib::spdk_app_parse_args(args.len() as i32, empty_args,
-                                                    &mut opts, getopt_str, &mut empty_option,
-                                                    None, None);
-
-            if rc != spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS
-            {
-                error!("failed to parse spdk args: {:?}, error: {:?}", args, rc);
-                std::process::exit(rc as i32);
-            }
-            /* Blocks until the application is exiting */
-            let rc = spdk_clib::spdk_app_start(&mut opts, Some(Spdk::_AppStartedCallback), 0 as *mut c_void);
-            info!("spdk_app_start result = {}", rc);
+            Self::_InitWorker(args);
         }));
         while !spdkInitialized.load(Ordering::Relaxed) {
-            thread::sleep(Duration::from_secs(1)); // 원래는 1 us 단위였는데, 1 s 도 괜찮다고 봄.
             info!("waiting for spdk initialization...");
+            thread::sleep(Duration::from_secs(1)); // 원래는 1 us 단위였는데, 1 s 도 괜찮다고 봄.
         }
         true
     }
 
-    pub fn Finalize() {
-        // TODO
+    pub fn Finalize(&mut self) {
+        spdk_app_stop(0);
+        if let Some(h) = &self.spdkThread {
+            info!("Joining SPDK thread...");
+            // TODO
+        }
+
+        info!("Finishing SPDK app...");
+        spdk_app_fini();
+
+        spdkInitialized.store(false, Ordering::Relaxed);
+        info!("SPDK app finalized");
     }
 
-    extern "C" fn _AppStartedCallback(ctx: *mut ::std::os::raw::c_void) {
+    fn _InitWorker(args: Vec<&str>) {
+        let mut opts : spdk_app_opts = spdk_app_opts::default();
+        spdk_app_opts_init(&mut opts, size_of::<spdk_app_opts>() as size_t);
+        {
+            opts.name = CString::new("ibof_nvmf").unwrap().into_raw();
+            opts.mem_channel = -1;
+            opts.print_level = spdk_log_level_SPDK_LOG_INFO;
+            opts.reactor_mask = CString::new("TODO").unwrap().into_raw();
+            opts.main_core = 0; // TODO
+        }
+        let mut empty_option : option = option::default();
+        let empty_args = 0 as *mut *mut ::std::os::raw::c_char;
+        let getopt_str = 0 as *const ::std::os::raw::c_char;
+        let rc = spdk_clib::spdk_app_parse_args(args.len() as i32, empty_args,
+                                                &mut opts, getopt_str, &mut empty_option,
+                                                None, None);
+
+        if rc != spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS
+        {
+            error!("failed to parse spdk args: {:?}, error: {:?}", args, rc);
+            std::process::exit(rc as i32);
+        }
+        /* Blocks until the application is exiting */
+        let rc = spdk_clib::spdk_app_start(&mut opts, Some(Spdk::_AppStartedCallback), 0 as *mut c_void);
+        info!("spdk_app_start result = {}", rc);
+    }
+
+    extern "C" fn _AppStartedCallback(_ctx: *mut ::std::os::raw::c_void) {
         if let Ok(_v) = env::var("MEMZONE_DUMP") {
             unsafe {
                 spdk_memzone_dump(__stdoutp);
@@ -92,7 +105,7 @@ impl Spdk {
 
         AccelEngineApi.Initialize();
 
-        spdkInitialized.store(false, Ordering::Relaxed);
+        spdkInitialized.store(true, Ordering::Relaxed);
 
         info!("poseidonos started");
     }
@@ -100,6 +113,9 @@ impl Spdk {
 
 // TODO: cfg로 linux profile vs. macos (windows) profile 만들어서 전자의 경우는 lib link, 후자의 경우는 stub
 pub mod spdk_clib {
+    use std::sync::{Arc, Mutex};
+    use std::thread;
+    use log::info;
     use crate::generated::bindings::{FILE, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_log_level, spdk_msg_fn};
 
     pub(crate) fn spdk_app_opts_init(opts: &mut spdk_app_opts, opts_size: size_t) {
@@ -131,6 +147,14 @@ pub mod spdk_clib {
         ctx: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int {
         // STUB
+        if let Some(f) = start_fn {
+            info!("Invoking start_fn in a new thread...");
+            unsafe {
+                f(ctx);
+            }
+        } else {
+            info!("start_fn was null. nothing happens...");
+        }
         return 0;
     }
 
@@ -210,7 +234,3 @@ impl Default for option {
         }
     }
 }
-
-// extern "C" fn func1() -> ~str {
-// ~"hello"
-// }
