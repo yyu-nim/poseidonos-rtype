@@ -15,9 +15,11 @@ Production에서의 사용을 권하지 않는다. PR 환영!
 ### 실행하는 법
 ```bash
 $ cargo run --bin poseidonos
-[2022-09-30T12:03:40Z INFO  poseidonos] Hello, PoseidonOS R-type!
-[2022-09-30T12:03:40Z INFO  poseidonos_rtype::spdk_wrapper::spdk] spdk_app_start result = 0
-[2022-09-30T12:03:41Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
-[2022-09-30T12:03:42Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
-[2022-09-30T12:03:43Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
+[2022-10-07T15:46:44Z INFO  poseidonos] Hello, PoseidonOS R-type!
+[2022-10-07T15:46:44Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
+[2022-10-07T15:46:44Z INFO  poseidonos_rtype::spdk_wrapper::spdk::spdk_clib] Invoking start_fn in a new thread...
+[2022-10-07T15:46:44Z INFO  poseidonos_rtype::spdk_wrapper::spdk] poseidonos started
+[2022-10-07T15:46:44Z INFO  poseidonos_rtype::spdk_wrapper::spdk] spdk_app_start result = 0
+[2022-10-07T15:46:45Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] SpdkRpcClient is about to create a transport TCP 64 4096 512
+[2022-10-07T15:46:45Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] TODO: send json message to domain socket on /var/tmp/spdk.sock
 ```

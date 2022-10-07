@@ -116,7 +116,7 @@ pub mod spdk_clib {
     use std::sync::{Arc, Mutex};
     use std::thread;
     use log::info;
-    use crate::generated::bindings::{FILE, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_log_level, spdk_msg_fn};
+    use crate::generated::bindings::{FILE, option, size_t, spdk_app_opts, spdk_app_parse_args_rvals_SPDK_APP_PARSE_ARGS_SUCCESS, spdk_app_parse_args_rvals_t, spdk_log_level, spdk_msg_fn, spdk_pci_device};
 
     pub(crate) fn spdk_app_opts_init(opts: &mut spdk_app_opts, opts_size: size_t) {
         // STUB
@@ -185,6 +185,46 @@ pub mod spdk_clib {
     }
 
     pub fn spdk_log_clear_flag(flag: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        // STUB
+        0
+    }
+
+    pub fn spdk_pci_device_get_socket_id(dev: *mut spdk_pci_device) -> ::std::os::raw::c_int {
+        // STUB
+        0
+    }
+
+    pub fn spdk_env_get_core_count() -> u32 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_get_ticks_hz() -> u64 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_get_ticks() -> u64 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_env_get_first_core() -> u32 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_env_get_last_core() -> u32 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_env_get_current_core() -> u32 {
+        // STUB
+        0
+    }
+
+    pub fn spdk_env_get_next_core(prev_core: u32) -> u32 {
         // STUB
         0
     }

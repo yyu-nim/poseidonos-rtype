@@ -2,6 +2,8 @@
 #![allow(non_snake_case)]
 
 use crate::include::pos_event_id::PosEventId;
+use crate::master_context::config_manager::ConfigManagerSingleton;
+use crate::network::transport_configuration::TransportConfiguration;
 use crate::spdk_wrapper;
 
 pub struct Poseidonos;
@@ -50,10 +52,8 @@ impl Poseidonos {
         let mut spdk = spdk_wrapper::spdk::Spdk::new();
         spdk.Init(Vec::new());
 
-        // TODO
-        /*
-        TransportConfiguration transportConfig;
-        transportConfig.CreateTransport();*/
+        let transportConfig = TransportConfiguration::new(&ConfigManagerSingleton);
+        transportConfig.CreateTransport();
     }
     fn _InitAffinity(&self, _conf: &PosConfiguration) {
         // TODO
