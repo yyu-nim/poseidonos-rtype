@@ -81,6 +81,36 @@ where
         }
     }
 }
+#[repr(C)]
+#[derive(Default)]
+pub struct __IncompleteArrayField<T>(::std::marker::PhantomData<T>, [T; 0]);
+impl<T> __IncompleteArrayField<T> {
+    #[inline]
+    pub const fn new() -> Self {
+        __IncompleteArrayField(::std::marker::PhantomData, [])
+    }
+    #[inline]
+    pub fn as_ptr(&self) -> *const T {
+        self as *const _ as *const T
+    }
+    #[inline]
+    pub fn as_mut_ptr(&mut self) -> *mut T {
+        self as *mut _ as *mut T
+    }
+    #[inline]
+    pub unsafe fn as_slice(&self, len: usize) -> &[T] {
+        ::std::slice::from_raw_parts(self.as_ptr(), len)
+    }
+    #[inline]
+    pub unsafe fn as_mut_slice(&mut self, len: usize) -> &mut [T] {
+        ::std::slice::from_raw_parts_mut(self.as_mut_ptr(), len)
+    }
+}
+impl<T> ::std::fmt::Debug for __IncompleteArrayField<T> {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        fmt.write_str("__IncompleteArrayField")
+    }
+}
 pub const __DARWIN_ONLY_64_BIT_INO_T: u32 = 1;
 pub const __DARWIN_ONLY_UNIX_CONFORMANCE: u32 = 1;
 pub const __DARWIN_ONLY_VERS_1050: u32 = 1;
@@ -3304,6 +3334,71 @@ pub const SPDK_MEMPOOL_DEFAULT_CACHE_SIZE: i32 = -1;
 pub const SPDK_VTOPHYS_ERROR: i32 = -1;
 pub const SPDK_PCI_DRIVER_NEED_MAPPING: u32 = 1;
 pub const SPDK_PCI_DRIVER_WC_ACTIVATE: u32 = 2;
+pub const SPDK_NVME_MAX_IO_QUEUES: u32 = 65535;
+pub const SPDK_NVME_ADMIN_QUEUE_MIN_ENTRIES: u32 = 2;
+pub const SPDK_NVME_ADMIN_QUEUE_MAX_ENTRIES: u32 = 4096;
+pub const SPDK_NVME_IO_QUEUE_MIN_ENTRIES: u32 = 2;
+pub const SPDK_NVME_IO_QUEUE_MAX_ENTRIES: u32 = 65536;
+pub const SPDK_NVME_DATASET_MANAGEMENT_MAX_RANGES: u32 = 256;
+pub const SPDK_NVME_DATASET_MANAGEMENT_RANGE_MAX_BLOCKS: u32 = 4294967295;
+pub const SPDK_NVME_NSSR_VALUE: u32 = 1314278757;
+pub const SPDK_NVME_CREATE_IO_SQ_QPRIO_MASK: u32 = 3;
+pub const SPDK_NVME_ARBITRATION_BURST_UNLIMITED: u32 = 7;
+pub const SPDK_NVME_MAX_OPC: u32 = 255;
+pub const SPDK_NVME_CTRLR_SN_LEN: u32 = 20;
+pub const SPDK_NVME_CTRLR_MN_LEN: u32 = 40;
+pub const SPDK_NVME_CTRLR_FR_LEN: u32 = 8;
+pub const SPDK_NVME_NQN_FIELD_SIZE: u32 = 256;
+pub const SPDK_NVME_REGISTRATION_PREEMPTED_MASK: u32 = 2;
+pub const SPDK_NVME_RESERVATION_RELEASED_MASK: u32 = 4;
+pub const SPDK_NVME_RESERVATION_PREEMPTED_MASK: u32 = 8;
+pub const SPDK_NVME_IO_FLAGS_STREAMS_DIRECTIVE: u32 = 1048576;
+pub const SPDK_NVME_IO_FLAGS_ZONE_APPEND_PIREMAP: u32 = 33554432;
+pub const SPDK_NVME_IO_FLAGS_PRCHK_REFTAG: u32 = 67108864;
+pub const SPDK_NVME_IO_FLAGS_PRCHK_APPTAG: u32 = 134217728;
+pub const SPDK_NVME_IO_FLAGS_PRCHK_GUARD: u32 = 268435456;
+pub const SPDK_NVME_IO_FLAGS_PRACT: u32 = 536870912;
+pub const SPDK_NVME_IO_FLAGS_FORCE_UNIT_ACCESS: u32 = 1073741824;
+pub const SPDK_NVME_IO_FLAGS_LIMITED_RETRY: u32 = 2147483648;
+pub const SPDK_NVME_IO_FLAGS_VALID_MASK: u32 = 4294901763;
+pub const SPDK_NVME_IO_FLAGS_CDW12_MASK: u32 = 4294901760;
+pub const SPDK_NVME_OPC_FABRIC: u32 = 127;
+pub const SPDK_NVMF_PROP_SIZE_4: u32 = 0;
+pub const SPDK_NVMF_PROP_SIZE_8: u32 = 1;
+pub const SPDK_NVMF_NQN_MIN_LEN: u32 = 11;
+pub const SPDK_NVMF_NQN_MAX_LEN: u32 = 223;
+pub const SPDK_NVMF_NQN_UUID_PRE_LEN: u32 = 32;
+pub const SPDK_NVMF_UUID_STRING_LEN: u32 = 36;
+pub const SPDK_NVMF_NQN_UUID_PRE: &[u8; 33usize] = b"nqn.2014-08.org.nvmexpress:uuid:\0";
+pub const SPDK_NVMF_DISCOVERY_NQN: &[u8; 37usize] = b"nqn.2014-08.org.nvmexpress.discovery\0";
+pub const SPDK_DOMAIN_LABEL_MAX_LEN: u32 = 63;
+pub const SPDK_NVMF_TRSTRING_MAX_LEN: u32 = 32;
+pub const SPDK_NVMF_TRADDR_MAX_LEN: u32 = 256;
+pub const SPDK_NVMF_TRSVCID_MAX_LEN: u32 = 32;
+pub const SPDK_NVMF_MIN_ADMIN_MAX_SQ_SIZE: u32 = 32;
+pub const SPDK_NVME_SGL_SUBTYPE_INVALIDATE_KEY: u32 = 15;
+pub const SPDK_NVME_TCP_CH_FLAGS_HDGSTF: u32 = 1;
+pub const SPDK_NVME_TCP_CH_FLAGS_DDGSTF: u32 = 2;
+pub const SPDK_NVME_TCP_CPDA_MAX: u32 = 31;
+pub const SPDK_NVME_TCP_PDU_PDO_MAX_OFFSET: u32 = 128;
+pub const SPDK_NVME_TCP_TERM_REQ_ERROR_DATA_MAX_SIZE: u32 = 128;
+pub const SPDK_NVME_TCP_H2C_DATA_FLAGS_LAST_PDU: u32 = 4;
+pub const SPDK_NVME_TCP_H2C_DATA_FLAGS_SUCCESS: u32 = 8;
+pub const SPDK_NVME_TCP_H2C_DATA_PDO_MULT: u32 = 8;
+pub const SPDK_NVME_TCP_C2H_DATA_FLAGS_SUCCESS: u32 = 8;
+pub const SPDK_NVME_TCP_C2H_DATA_FLAGS_LAST_PDU: u32 = 4;
+pub const SPDK_NVME_TCP_C2H_DATA_PDO_MULT: u32 = 8;
+pub const NR_MAX_NAMESPACE: u32 = 128;
+pub const NR_MAX_TRANSPORT: u32 = 4;
+pub const KB: u32 = 1024;
+pub const MB: u32 = 1048576;
+pub const GB: u32 = 1073741824;
+pub const SPDK_UUID_STRING_LEN: u32 = 37;
+pub const POS_IO_STATUS_SUCCESS: u32 = 0;
+pub const POS_IO_STATUS_FAIL: i32 = -1;
+pub const VOLUME_NAME_MAX_LEN: u32 = 255;
+pub const NR_MAX_VOLUME: u32 = 256;
+pub const ARRAY_NAME_MAX_LEN: u32 = 63;
 extern "C" {
     pub fn __assert_rtn(
         arg1: *const ::std::os::raw::c_char,
@@ -34520,6 +34615,24837 @@ extern "C" {
     #[doc = ""]
     #[doc = " \\param sighandler Signal bus handler of the PCI bus"]
     pub fn spdk_pci_unregister_error_handler(sighandler: spdk_pci_error_handler);
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cap_register {
+    pub raw: u64,
+    pub bits: spdk_nvme_cap_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cap_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 8usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cap_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cap_register__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cap_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cap_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cap_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cap_register__bindgen_ty_1 {
+    #[inline]
+    pub fn mqes(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mqes(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cqr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cqr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ams(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ams(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 5u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(19usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn to(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_to(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dstrd(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(32usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dstrd(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(32usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nssrs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(36usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nssrs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(36usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn css(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(37usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_css(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(37usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bps(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(45usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bps(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(45usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(46usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(46usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mpsmin(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(48usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mpsmin(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(48usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mpsmax(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(52usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mpsmax(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(52usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(56usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(56usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(57usize, 7u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(57usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        mqes: u32,
+        cqr: u32,
+        ams: u32,
+        reserved1: u32,
+        to: u32,
+        dstrd: u32,
+        nssrs: u32,
+        css: u32,
+        bps: u32,
+        reserved2: u32,
+        mpsmin: u32,
+        mpsmax: u32,
+        pmrs: u32,
+        reserved3: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 8usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 8usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let mqes: u32 = unsafe { ::std::mem::transmute(mqes) };
+            mqes as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let cqr: u32 = unsafe { ::std::mem::transmute(cqr) };
+            cqr as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 2u8, {
+            let ams: u32 = unsafe { ::std::mem::transmute(ams) };
+            ams as u64
+        });
+        __bindgen_bitfield_unit.set(19usize, 5u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let to: u32 = unsafe { ::std::mem::transmute(to) };
+            to as u64
+        });
+        __bindgen_bitfield_unit.set(32usize, 4u8, {
+            let dstrd: u32 = unsafe { ::std::mem::transmute(dstrd) };
+            dstrd as u64
+        });
+        __bindgen_bitfield_unit.set(36usize, 1u8, {
+            let nssrs: u32 = unsafe { ::std::mem::transmute(nssrs) };
+            nssrs as u64
+        });
+        __bindgen_bitfield_unit.set(37usize, 8u8, {
+            let css: u32 = unsafe { ::std::mem::transmute(css) };
+            css as u64
+        });
+        __bindgen_bitfield_unit.set(45usize, 1u8, {
+            let bps: u32 = unsafe { ::std::mem::transmute(bps) };
+            bps as u64
+        });
+        __bindgen_bitfield_unit.set(46usize, 2u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(48usize, 4u8, {
+            let mpsmin: u32 = unsafe { ::std::mem::transmute(mpsmin) };
+            mpsmin as u64
+        });
+        __bindgen_bitfield_unit.set(52usize, 4u8, {
+            let mpsmax: u32 = unsafe { ::std::mem::transmute(mpsmax) };
+            mpsmax as u64
+        });
+        __bindgen_bitfield_unit.set(56usize, 1u8, {
+            let pmrs: u32 = unsafe { ::std::mem::transmute(pmrs) };
+            pmrs as u64
+        });
+        __bindgen_bitfield_unit.set(57usize, 7u8, {
+            let reserved3: u32 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cap_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cap_register>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cap_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cap_register>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cap_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cap_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cap_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cap_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cap_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = "< NVM command set"]
+pub const spdk_nvme_cc_css_SPDK_NVME_CC_CSS_NVM: spdk_nvme_cc_css = 0;
+#[doc = "< One or more I/O command sets"]
+pub const spdk_nvme_cc_css_SPDK_NVME_CC_CSS_IOCS: spdk_nvme_cc_css = 6;
+#[doc = "< No I/O, only admin"]
+pub const spdk_nvme_cc_css_SPDK_NVME_CC_CSS_NOIO: spdk_nvme_cc_css = 7;
+#[doc = " I/O Command Set Selected"]
+#[doc = ""]
+#[doc = " Only a single command set is defined as of NVMe 1.3 (NVM). Later, it became"]
+#[doc = " possible to disable I/O Command Sets, that is, configuring it to only use the"]
+#[doc = " Admin Command Set. With 1.4c and Namespace Types, additional I/O Command Sets"]
+#[doc = " are available."]
+pub type spdk_nvme_cc_css = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cc_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_cc_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cc_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cc_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cc_register__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cc_register__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cc_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cc_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cc_register__bindgen_ty_1 {
+    #[inline]
+    pub fn en(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_en(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn css(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_css(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mps(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mps(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ams(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ams(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn shn(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_shn(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iosqes(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iosqes(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iocqes(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iocqes(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        en: u32,
+        reserved1: u32,
+        css: u32,
+        mps: u32,
+        ams: u32,
+        shn: u32,
+        iosqes: u32,
+        iocqes: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let en: u32 = unsafe { ::std::mem::transmute(en) };
+            en as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 3u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 3u8, {
+            let css: u32 = unsafe { ::std::mem::transmute(css) };
+            css as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 4u8, {
+            let mps: u32 = unsafe { ::std::mem::transmute(mps) };
+            mps as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 3u8, {
+            let ams: u32 = unsafe { ::std::mem::transmute(ams) };
+            ams as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 2u8, {
+            let shn: u32 = unsafe { ::std::mem::transmute(shn) };
+            shn as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 4u8, {
+            let iosqes: u32 = unsafe { ::std::mem::transmute(iosqes) };
+            iosqes as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 4u8, {
+            let iocqes: u32 = unsafe { ::std::mem::transmute(iocqes) };
+            iocqes as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cc_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cc_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cc_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cc_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cc_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cc_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cc_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+pub const spdk_nvme_shn_value_SPDK_NVME_SHN_NORMAL: spdk_nvme_shn_value = 1;
+pub const spdk_nvme_shn_value_SPDK_NVME_SHN_ABRUPT: spdk_nvme_shn_value = 2;
+pub type spdk_nvme_shn_value = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_csts_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_csts_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_csts_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_csts_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_csts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_csts_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_csts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_csts_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_csts_register__bindgen_ty_1 {
+    #[inline]
+    pub fn rdy(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rdy(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cfs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cfs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn shst(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_shst(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nssro(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nssro(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 26u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 26u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        rdy: u32,
+        cfs: u32,
+        shst: u32,
+        nssro: u32,
+        pp: u32,
+        reserved1: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let rdy: u32 = unsafe { ::std::mem::transmute(rdy) };
+            rdy as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let cfs: u32 = unsafe { ::std::mem::transmute(cfs) };
+            cfs as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 2u8, {
+            let shst: u32 = unsafe { ::std::mem::transmute(shst) };
+            shst as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let nssro: u32 = unsafe { ::std::mem::transmute(nssro) };
+            nssro as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let pp: u32 = unsafe { ::std::mem::transmute(pp) };
+            pp as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 26u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_csts_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_csts_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_csts_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_csts_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_csts_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_csts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_csts_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_csts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_csts_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+pub const spdk_nvme_shst_value_SPDK_NVME_SHST_NORMAL: spdk_nvme_shst_value = 0;
+pub const spdk_nvme_shst_value_SPDK_NVME_SHST_OCCURRING: spdk_nvme_shst_value = 1;
+pub const spdk_nvme_shst_value_SPDK_NVME_SHST_COMPLETE: spdk_nvme_shst_value = 2;
+pub type spdk_nvme_shst_value = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_aqa_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_aqa_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_aqa_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_aqa_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_aqa_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_aqa_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_aqa_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_aqa_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_aqa_register__bindgen_ty_1 {
+    #[inline]
+    pub fn asqs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 12u8) as u32) }
+    }
+    #[inline]
+    pub fn set_asqs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 12u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn acqs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 12u8) as u32) }
+    }
+    #[inline]
+    pub fn set_acqs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 12u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(28usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(28usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        asqs: u32,
+        reserved1: u32,
+        acqs: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 12u8, {
+            let asqs: u32 = unsafe { ::std::mem::transmute(asqs) };
+            asqs as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 4u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 12u8, {
+            let acqs: u32 = unsafe { ::std::mem::transmute(acqs) };
+            acqs as u64
+        });
+        __bindgen_bitfield_unit.set(28usize, 4u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_aqa_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_aqa_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_aqa_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_aqa_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_aqa_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_aqa_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_aqa_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_aqa_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_aqa_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_vs_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_vs_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_vs_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_vs_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_vs_register__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_vs_register__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_vs_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_vs_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_vs_register__bindgen_ty_1 {
+    #[inline]
+    pub fn ter(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ter(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mnr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mnr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mjr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mjr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ter: u32, mnr: u32, mjr: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let ter: u32 = unsafe { ::std::mem::transmute(ter) };
+            ter as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let mnr: u32 = unsafe { ::std::mem::transmute(mnr) };
+            mnr as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let mjr: u32 = unsafe { ::std::mem::transmute(mjr) };
+            mjr as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_vs_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_vs_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_vs_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_vs_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_vs_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_vs_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_vs_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_vs_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_vs_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmbloc_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_cmbloc_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmbloc_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbloc_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbloc_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cmbloc_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbloc_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmbloc_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmbloc_register__bindgen_ty_1 {
+    #[inline]
+    pub fn bir(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bir(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 9u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 9u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ofst(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ofst(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        bir: u32,
+        reserved1: u32,
+        ofst: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let bir: u32 = unsafe { ::std::mem::transmute(bir) };
+            bir as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 9u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 20u8, {
+            let ofst: u32 = unsafe { ::std::mem::transmute(ofst) };
+            ofst as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbloc_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbloc_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmbloc_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbloc_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmbloc_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbloc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbloc_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbloc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbloc_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmbsz_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_cmbsz_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmbsz_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbsz_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbsz_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cmbsz_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbsz_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmbsz_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmbsz_register__bindgen_ty_1 {
+    #[inline]
+    pub fn sqs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sqs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cqs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cqs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lists(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lists(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rds(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rds(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn wds(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_wds(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn szu(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_szu(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sz(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sz(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        sqs: u32,
+        cqs: u32,
+        lists: u32,
+        rds: u32,
+        wds: u32,
+        reserved1: u32,
+        szu: u32,
+        sz: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let sqs: u32 = unsafe { ::std::mem::transmute(sqs) };
+            sqs as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let cqs: u32 = unsafe { ::std::mem::transmute(cqs) };
+            cqs as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let lists: u32 = unsafe { ::std::mem::transmute(lists) };
+            lists as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let rds: u32 = unsafe { ::std::mem::transmute(rds) };
+            rds as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let wds: u32 = unsafe { ::std::mem::transmute(wds) };
+            wds as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 4u8, {
+            let szu: u32 = unsafe { ::std::mem::transmute(szu) };
+            szu as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 20u8, {
+            let sz: u32 = unsafe { ::std::mem::transmute(sz) };
+            sz as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbsz_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbsz_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmbsz_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbsz_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmbsz_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbsz_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbsz_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbsz_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbsz_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmbmsc_register {
+    pub raw: u64,
+    pub bits: spdk_nvme_cmbmsc_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(8))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmbmsc_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u64; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 8usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbmsc_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbmsc_register__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cmbmsc_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbmsc_register__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmbmsc_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmbmsc_register__bindgen_ty_1 {
+    #[inline]
+    pub fn cre(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u64) }
+    }
+    #[inline]
+    pub fn set_cre(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cmse(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u64) }
+    }
+    #[inline]
+    pub fn set_cmse(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 10u8) as u64) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 10u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cba(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 52u8) as u64) }
+    }
+    #[inline]
+    pub fn set_cba(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 52u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        cre: u64,
+        cmse: u64,
+        reserved: u64,
+        cba: u64,
+    ) -> __BindgenBitfieldUnit<[u8; 8usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 8usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let cre: u64 = unsafe { ::std::mem::transmute(cre) };
+            cre as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let cmse: u64 = unsafe { ::std::mem::transmute(cmse) };
+            cmse as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 10u8, {
+            let reserved: u64 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 52u8, {
+            let cba: u64 = unsafe { ::std::mem::transmute(cba) };
+            cba as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbmsc_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbmsc_register>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmbmsc_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbmsc_register>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmbmsc_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbmsc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbmsc_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbmsc_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbmsc_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmbsts_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_cmbsts_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmbsts_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbsts_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbsts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cmbsts_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbsts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmbsts_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmbsts_register__bindgen_ty_1 {
+    #[inline]
+    pub fn cbai(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cbai(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(cbai: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let cbai: u32 = unsafe { ::std::mem::transmute(cbai) };
+            cbai as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmbsts_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmbsts_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmbsts_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmbsts_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmbsts_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbsts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbsts_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmbsts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmbsts_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrcap_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrcap_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrcap_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrcap_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrcap_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrcap_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrcap_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrcap_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrcap_register__bindgen_ty_1 {
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rds(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rds(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn wds(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_wds(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bir(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bir(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrtu(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrtu(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrwbm(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrwbm(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrto(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrto(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cmss(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cmss(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(25usize, 7u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(25usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        reserved1: u32,
+        rds: u32,
+        wds: u32,
+        bir: u32,
+        pmrtu: u32,
+        pmrwbm: u32,
+        reserved2: u32,
+        pmrto: u32,
+        cmss: u32,
+        reserved3: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let rds: u32 = unsafe { ::std::mem::transmute(rds) };
+            rds as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let wds: u32 = unsafe { ::std::mem::transmute(wds) };
+            wds as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let bir: u32 = unsafe { ::std::mem::transmute(bir) };
+            bir as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 2u8, {
+            let pmrtu: u32 = unsafe { ::std::mem::transmute(pmrtu) };
+            pmrtu as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 4u8, {
+            let pmrwbm: u32 = unsafe { ::std::mem::transmute(pmrwbm) };
+            pmrwbm as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 2u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let pmrto: u32 = unsafe { ::std::mem::transmute(pmrto) };
+            pmrto as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 1u8, {
+            let cmss: u32 = unsafe { ::std::mem::transmute(cmss) };
+            cmss as u64
+        });
+        __bindgen_bitfield_unit.set(25usize, 7u8, {
+            let reserved3: u32 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrcap_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrcap_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrcap_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrcap_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrcap_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrcap_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrcap_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrcap_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrcap_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrctl_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrctl_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrctl_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrctl_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrctl_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrctl_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrctl_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrctl_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrctl_register__bindgen_ty_1 {
+    #[inline]
+    pub fn en(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_en(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(en: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let en: u32 = unsafe { ::std::mem::transmute(en) };
+            en as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrctl_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrctl_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrctl_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrctl_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrctl_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrctl_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrctl_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrctl_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrctl_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrsts_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrsts_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrsts_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrsts_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrsts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrsts_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrsts_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrsts_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrsts_register__bindgen_ty_1 {
+    #[inline]
+    pub fn err(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_err(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nrdy(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nrdy(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn hsts(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_hsts(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cbai(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cbai(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 19u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(13usize, 19u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        err: u32,
+        nrdy: u32,
+        hsts: u32,
+        cbai: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let err: u32 = unsafe { ::std::mem::transmute(err) };
+            err as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let nrdy: u32 = unsafe { ::std::mem::transmute(nrdy) };
+            nrdy as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 3u8, {
+            let hsts: u32 = unsafe { ::std::mem::transmute(hsts) };
+            hsts as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 1u8, {
+            let cbai: u32 = unsafe { ::std::mem::transmute(cbai) };
+            cbai as u64
+        });
+        __bindgen_bitfield_unit.set(13usize, 19u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrsts_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrsts_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrsts_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrsts_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrsts_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrsts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrsts_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrsts_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrsts_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrebs_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrebs_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrebs_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrebs_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrebs_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrebs_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrebs_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrebs_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrebs_register__bindgen_ty_1 {
+    #[inline]
+    pub fn pmrszu(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrszu(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rbb(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rbb(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrwbz(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 24u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrwbz(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pmrszu: u32,
+        rbb: u32,
+        reserved: u32,
+        pmrwbz: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let pmrszu: u32 = unsafe { ::std::mem::transmute(pmrszu) };
+            pmrszu as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let rbb: u32 = unsafe { ::std::mem::transmute(rbb) };
+            rbb as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 24u8, {
+            let pmrwbz: u32 = unsafe { ::std::mem::transmute(pmrwbz) };
+            pmrwbz as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrebs_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrebs_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrebs_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrebs_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrebs_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrebs_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrebs_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrebs_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrebs_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrswtp_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrswtp_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrswtp_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrswtp_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrswtp_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrswtp_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrswtp_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrswtp_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrswtp_register__bindgen_ty_1 {
+    #[inline]
+    pub fn pmrswtu(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrswtu(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pmrswtv(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 24u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pmrswtv(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pmrswtu: u32,
+        reserved: u32,
+        pmrswtv: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let pmrswtu: u32 = unsafe { ::std::mem::transmute(pmrswtu) };
+            pmrswtu as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 24u8, {
+            let pmrswtv: u32 = unsafe { ::std::mem::transmute(pmrswtv) };
+            pmrswtv as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrswtp_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrswtp_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrswtp_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrswtp_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrswtp_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrswtp_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrswtp_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrswtp_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrswtp_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_pmrmscl_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_pmrmscl_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_pmrmscl_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrmscl_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrmscl_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_pmrmscl_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrmscl_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_pmrmscl_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_pmrmscl_register__bindgen_ty_1 {
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cmse(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cmse(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 10u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 10u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cba(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cba(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        reserved1: u32,
+        cmse: u32,
+        reserved2: u32,
+        cba: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let cmse: u32 = unsafe { ::std::mem::transmute(cmse) };
+            cmse as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 10u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 20u8, {
+            let cba: u32 = unsafe { ::std::mem::transmute(cba) };
+            cba as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_pmrmscl_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_pmrmscl_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_pmrmscl_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_pmrmscl_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_pmrmscl_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrmscl_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrmscl_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_pmrmscl_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_pmrmscl_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Boot partition information"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_bpinfo_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_bpinfo_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_bpinfo_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_bpinfo_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_bpinfo_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_bpinfo_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_bpinfo_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_bpinfo_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_bpinfo_register__bindgen_ty_1 {
+    #[inline]
+    pub fn bpsz(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 15u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bpsz(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 9u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 9u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn brs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_brs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 5u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(26usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn abpid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(31usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_abpid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(31usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        bpsz: u32,
+        reserved1: u32,
+        brs: u32,
+        reserved2: u32,
+        abpid: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 15u8, {
+            let bpsz: u32 = unsafe { ::std::mem::transmute(bpsz) };
+            bpsz as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 9u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 2u8, {
+            let brs: u32 = unsafe { ::std::mem::transmute(brs) };
+            brs as u64
+        });
+        __bindgen_bitfield_unit.set(26usize, 5u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(31usize, 1u8, {
+            let abpid: u32 = unsafe { ::std::mem::transmute(abpid) };
+            abpid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_bpinfo_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_bpinfo_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_bpinfo_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_bpinfo_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_bpinfo_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_bpinfo_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_bpinfo_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_bpinfo_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_bpinfo_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Boot partition read select"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_bprsel_register {
+    pub raw: u32,
+    pub bits: spdk_nvme_bprsel_register__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_bprsel_register__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_bprsel_register__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_bprsel_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_bprsel_register__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_bprsel_register__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_bprsel_register__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_bprsel_register__bindgen_ty_1 {
+    #[inline]
+    pub fn bprsz(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 10u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bprsz(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 10u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bprof(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bprof(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(30usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(30usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bpid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(31usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bpid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(31usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        bprsz: u32,
+        bprof: u32,
+        reserved: u32,
+        bpid: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 10u8, {
+            let bprsz: u32 = unsafe { ::std::mem::transmute(bprsz) };
+            bprsz as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 20u8, {
+            let bprof: u32 = unsafe { ::std::mem::transmute(bprof) };
+            bprof as u64
+        });
+        __bindgen_bitfield_unit.set(30usize, 1u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(31usize, 1u8, {
+            let bpid: u32 = unsafe { ::std::mem::transmute(bpid) };
+            bpid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_bprsel_register() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_bprsel_register>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_bprsel_register))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_bprsel_register>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_bprsel_register))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_bprsel_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_bprsel_register),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_bprsel_register>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_bprsel_register),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_registers {
+    #[doc = " controller capabilities"]
+    pub cap: spdk_nvme_cap_register,
+    #[doc = " version of NVMe specification"]
+    pub vs: spdk_nvme_vs_register,
+    pub intms: u32,
+    pub intmc: u32,
+    #[doc = " controller configuration"]
+    pub cc: spdk_nvme_cc_register,
+    pub reserved1: u32,
+    pub csts: spdk_nvme_csts_register,
+    pub nssr: u32,
+    #[doc = " admin queue attributes"]
+    pub aqa: spdk_nvme_aqa_register,
+    pub asq: u64,
+    pub acq: u64,
+    #[doc = " controller memory buffer location"]
+    pub cmbloc: spdk_nvme_cmbloc_register,
+    #[doc = " controller memory buffer size"]
+    pub cmbsz: spdk_nvme_cmbsz_register,
+    #[doc = " boot partition information"]
+    pub bpinfo: spdk_nvme_bpinfo_register,
+    #[doc = " boot partition read select"]
+    pub bprsel: spdk_nvme_bprsel_register,
+    #[doc = " boot partition memory buffer location (must be 4KB aligned)"]
+    pub bpmbl: u64,
+    #[doc = " controller memory buffer memory space control"]
+    pub cmbmsc: spdk_nvme_cmbmsc_register,
+    #[doc = " controller memory buffer status"]
+    pub cmbsts: spdk_nvme_cmbsts_register,
+    pub reserved2: [u32; 873usize],
+    #[doc = " persistent memory region capabilities"]
+    pub pmrcap: spdk_nvme_pmrcap_register,
+    #[doc = " persistent memory region control"]
+    pub pmrctl: spdk_nvme_pmrctl_register,
+    #[doc = " persistent memory region status"]
+    pub pmrsts: spdk_nvme_pmrsts_register,
+    #[doc = " persistent memory region elasticity buffer size"]
+    pub pmrebs: spdk_nvme_pmrebs_register,
+    #[doc = " persistent memory region sustained write throughput"]
+    pub pmrswtp: spdk_nvme_pmrswtp_register,
+    #[doc = " persistent memory region memory space control lower"]
+    pub pmrmscl: spdk_nvme_pmrmscl_register,
+    pub pmrmscu: u32,
+    pub reserved3: [u32; 121usize],
+    pub doorbell: [spdk_nvme_registers__bindgen_ty_1; 1usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_registers__bindgen_ty_1 {
+    pub sq_tdbl: u32,
+    pub cq_hdbl: u32,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registers__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registers__bindgen_ty_1>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_registers__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registers__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_registers__bindgen_ty_1)
+        )
+    );
+    fn test_field_sq_tdbl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sq_tdbl) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers__bindgen_ty_1),
+                "::",
+                stringify!(sq_tdbl)
+            )
+        );
+    }
+    test_field_sq_tdbl();
+    fn test_field_cq_hdbl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cq_hdbl) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers__bindgen_ty_1),
+                "::",
+                stringify!(cq_hdbl)
+            )
+        );
+    }
+    test_field_cq_hdbl();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registers() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registers>(),
+        4104usize,
+        concat!("Size of: ", stringify!(spdk_nvme_registers))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registers>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_registers))
+    );
+    fn test_field_cap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cap) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cap)
+            )
+        );
+    }
+    test_field_cap();
+    fn test_field_vs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vs) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(vs)
+            )
+        );
+    }
+    test_field_vs();
+    fn test_field_intms() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).intms) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(intms)
+            )
+        );
+    }
+    test_field_intms();
+    fn test_field_intmc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).intmc) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(intmc)
+            )
+        );
+    }
+    test_field_intmc();
+    fn test_field_cc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cc) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cc)
+            )
+        );
+    }
+    test_field_cc();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_csts() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).csts) as usize - ptr as usize
+            },
+            28usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(csts)
+            )
+        );
+    }
+    test_field_csts();
+    fn test_field_nssr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nssr) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(nssr)
+            )
+        );
+    }
+    test_field_nssr();
+    fn test_field_aqa() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).aqa) as usize - ptr as usize
+            },
+            36usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(aqa)
+            )
+        );
+    }
+    test_field_aqa();
+    fn test_field_asq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).asq) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(asq)
+            )
+        );
+    }
+    test_field_asq();
+    fn test_field_acq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).acq) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(acq)
+            )
+        );
+    }
+    test_field_acq();
+    fn test_field_cmbloc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cmbloc) as usize - ptr as usize
+            },
+            56usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cmbloc)
+            )
+        );
+    }
+    test_field_cmbloc();
+    fn test_field_cmbsz() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cmbsz) as usize - ptr as usize
+            },
+            60usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cmbsz)
+            )
+        );
+    }
+    test_field_cmbsz();
+    fn test_field_bpinfo() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bpinfo) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(bpinfo)
+            )
+        );
+    }
+    test_field_bpinfo();
+    fn test_field_bprsel() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bprsel) as usize - ptr as usize
+            },
+            68usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(bprsel)
+            )
+        );
+    }
+    test_field_bprsel();
+    fn test_field_bpmbl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bpmbl) as usize - ptr as usize
+            },
+            72usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(bpmbl)
+            )
+        );
+    }
+    test_field_bpmbl();
+    fn test_field_cmbmsc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cmbmsc) as usize - ptr as usize
+            },
+            80usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cmbmsc)
+            )
+        );
+    }
+    test_field_cmbmsc();
+    fn test_field_cmbsts() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cmbsts) as usize - ptr as usize
+            },
+            88usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(cmbsts)
+            )
+        );
+    }
+    test_field_cmbsts();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            92usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_pmrcap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrcap) as usize - ptr as usize
+            },
+            3584usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrcap)
+            )
+        );
+    }
+    test_field_pmrcap();
+    fn test_field_pmrctl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrctl) as usize - ptr as usize
+            },
+            3588usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrctl)
+            )
+        );
+    }
+    test_field_pmrctl();
+    fn test_field_pmrsts() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrsts) as usize - ptr as usize
+            },
+            3592usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrsts)
+            )
+        );
+    }
+    test_field_pmrsts();
+    fn test_field_pmrebs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrebs) as usize - ptr as usize
+            },
+            3596usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrebs)
+            )
+        );
+    }
+    test_field_pmrebs();
+    fn test_field_pmrswtp() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrswtp) as usize - ptr as usize
+            },
+            3600usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrswtp)
+            )
+        );
+    }
+    test_field_pmrswtp();
+    fn test_field_pmrmscl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrmscl) as usize - ptr as usize
+            },
+            3604usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrmscl)
+            )
+        );
+    }
+    test_field_pmrmscl();
+    fn test_field_pmrmscu() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pmrmscu) as usize - ptr as usize
+            },
+            3608usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(pmrmscu)
+            )
+        );
+    }
+    test_field_pmrmscu();
+    fn test_field_reserved3() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize
+            },
+            3612usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(reserved3)
+            )
+        );
+    }
+    test_field_reserved3();
+    fn test_field_doorbell() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registers>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).doorbell) as usize - ptr as usize
+            },
+            4096usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registers),
+                "::",
+                stringify!(doorbell)
+            )
+        );
+    }
+    test_field_doorbell();
+}
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_DATA_BLOCK:
+    spdk_nvme_sgl_descriptor_type = 0;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_BIT_BUCKET:
+    spdk_nvme_sgl_descriptor_type = 1;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_SEGMENT: spdk_nvme_sgl_descriptor_type =
+    2;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_LAST_SEGMENT:
+    spdk_nvme_sgl_descriptor_type = 3;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_KEYED_DATA_BLOCK:
+    spdk_nvme_sgl_descriptor_type = 4;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_TRANSPORT_DATA_BLOCK:
+    spdk_nvme_sgl_descriptor_type = 5;
+pub const spdk_nvme_sgl_descriptor_type_SPDK_NVME_SGL_TYPE_VENDOR_SPECIFIC:
+    spdk_nvme_sgl_descriptor_type = 15;
+pub type spdk_nvme_sgl_descriptor_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_sgl_descriptor_subtype_SPDK_NVME_SGL_SUBTYPE_ADDRESS:
+    spdk_nvme_sgl_descriptor_subtype = 0;
+pub const spdk_nvme_sgl_descriptor_subtype_SPDK_NVME_SGL_SUBTYPE_OFFSET:
+    spdk_nvme_sgl_descriptor_subtype = 1;
+pub const spdk_nvme_sgl_descriptor_subtype_SPDK_NVME_SGL_SUBTYPE_TRANSPORT:
+    spdk_nvme_sgl_descriptor_subtype = 10;
+pub type spdk_nvme_sgl_descriptor_subtype = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_sgl_descriptor__bindgen_ty_1 {
+    pub generic: spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1,
+    pub unkeyed: spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2,
+    pub keyed: spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1 {
+    pub reserved: [u8; 7usize],
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+impl spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_1 {
+    #[inline]
+    pub fn subtype(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_subtype(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn type_(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_type(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(subtype: u8, type_: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let subtype: u8 = unsafe { ::std::mem::transmute(subtype) };
+            subtype as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let type_: u8 = unsafe { ::std::mem::transmute(type_) };
+            type_ as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2 {
+    pub length: u32,
+    pub reserved: [u8; 3usize],
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    fn test_field_length() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).length) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2),
+                "::",
+                stringify!(length)
+            )
+        );
+    }
+    test_field_length();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+impl spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_2 {
+    #[inline]
+    pub fn subtype(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_subtype(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn type_(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_type(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(subtype: u8, type_: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let subtype: u8 = unsafe { ::std::mem::transmute(subtype) };
+            subtype as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let type_: u8 = unsafe { ::std::mem::transmute(type_) };
+            type_ as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(8))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 8usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+}
+impl spdk_nvme_sgl_descriptor__bindgen_ty_1__bindgen_ty_3 {
+    #[inline]
+    pub fn length(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 24u8) as u64) }
+    }
+    #[inline]
+    pub fn set_length(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn key(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 32u8) as u64) }
+    }
+    #[inline]
+    pub fn set_key(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 32u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn subtype(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(56usize, 4u8) as u64) }
+    }
+    #[inline]
+    pub fn set_subtype(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(56usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn type_(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(60usize, 4u8) as u64) }
+    }
+    #[inline]
+    pub fn set_type(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(60usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        length: u64,
+        key: u64,
+        subtype: u64,
+        type_: u64,
+    ) -> __BindgenBitfieldUnit<[u8; 8usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 8usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 24u8, {
+            let length: u64 = unsafe { ::std::mem::transmute(length) };
+            length as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 32u8, {
+            let key: u64 = unsafe { ::std::mem::transmute(key) };
+            key as u64
+        });
+        __bindgen_bitfield_unit.set(56usize, 4u8, {
+            let subtype: u64 = unsafe { ::std::mem::transmute(subtype) };
+            subtype as u64
+        });
+        __bindgen_bitfield_unit.set(60usize, 4u8, {
+            let type_: u64 = unsafe { ::std::mem::transmute(type_) };
+            type_ as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sgl_descriptor__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sgl_descriptor__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1)
+        )
+    );
+    fn test_field_generic() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sgl_descriptor__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).generic) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1),
+                "::",
+                stringify!(generic)
+            )
+        );
+    }
+    test_field_generic();
+    fn test_field_unkeyed() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sgl_descriptor__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).unkeyed) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1),
+                "::",
+                stringify!(unkeyed)
+            )
+        );
+    }
+    test_field_unkeyed();
+    fn test_field_keyed() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sgl_descriptor__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).keyed) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sgl_descriptor__bindgen_ty_1),
+                "::",
+                stringify!(keyed)
+            )
+        );
+    }
+    test_field_keyed();
+}
+pub const spdk_nvme_psdt_value_SPDK_NVME_PSDT_PRP: spdk_nvme_psdt_value = 0;
+pub const spdk_nvme_psdt_value_SPDK_NVME_PSDT_SGL_MPTR_CONTIG: spdk_nvme_psdt_value = 1;
+pub const spdk_nvme_psdt_value_SPDK_NVME_PSDT_SGL_MPTR_SGL: spdk_nvme_psdt_value = 2;
+pub const spdk_nvme_psdt_value_SPDK_NVME_PSDT_RESERVED: spdk_nvme_psdt_value = 3;
+pub type spdk_nvme_psdt_value = ::std::os::raw::c_uint;
+pub const spdk_nvme_qprio_SPDK_NVME_QPRIO_URGENT: spdk_nvme_qprio = 0;
+pub const spdk_nvme_qprio_SPDK_NVME_QPRIO_HIGH: spdk_nvme_qprio = 1;
+pub const spdk_nvme_qprio_SPDK_NVME_QPRIO_MEDIUM: spdk_nvme_qprio = 2;
+pub const spdk_nvme_qprio_SPDK_NVME_QPRIO_LOW: spdk_nvme_qprio = 3;
+#[doc = " Submission queue priority values for Create I/O Submission Queue Command."]
+#[doc = ""]
+#[doc = " Only valid for weighted round robin arbitration method."]
+pub type spdk_nvme_qprio = ::std::os::raw::c_uint;
+#[doc = "< weighted round robin"]
+pub const spdk_nvme_cap_ams_SPDK_NVME_CAP_AMS_WRR: spdk_nvme_cap_ams = 1;
+#[doc = "< vendor specific"]
+pub const spdk_nvme_cap_ams_SPDK_NVME_CAP_AMS_VS: spdk_nvme_cap_ams = 2;
+#[doc = " Optional Arbitration Mechanism Supported by the controller."]
+#[doc = ""]
+#[doc = " Two bits for CAP.AMS (18:17) field are set to '1' when the controller supports."]
+#[doc = " There is no bit for AMS_RR where all controllers support and set to 0x0 by default."]
+pub type spdk_nvme_cap_ams = ::std::os::raw::c_uint;
+#[doc = "< default round robin"]
+pub const spdk_nvme_cc_ams_SPDK_NVME_CC_AMS_RR: spdk_nvme_cc_ams = 0;
+#[doc = "< weighted round robin"]
+pub const spdk_nvme_cc_ams_SPDK_NVME_CC_AMS_WRR: spdk_nvme_cc_ams = 1;
+#[doc = "< vendor specific"]
+pub const spdk_nvme_cc_ams_SPDK_NVME_CC_AMS_VS: spdk_nvme_cc_ams = 7;
+#[doc = " Arbitration Mechanism Selected to the controller."]
+#[doc = ""]
+#[doc = " Value 0x2 to 0x6 is reserved."]
+pub type spdk_nvme_cc_ams = ::std::os::raw::c_uint;
+#[doc = "< normal operation"]
+pub const spdk_nvme_cmd_fuse_SPDK_NVME_CMD_FUSE_NONE: spdk_nvme_cmd_fuse = 0;
+#[doc = "< fused operation, first command"]
+pub const spdk_nvme_cmd_fuse_SPDK_NVME_CMD_FUSE_FIRST: spdk_nvme_cmd_fuse = 1;
+#[doc = "< fused operation, second command"]
+pub const spdk_nvme_cmd_fuse_SPDK_NVME_CMD_FUSE_SECOND: spdk_nvme_cmd_fuse = 2;
+#[doc = "< fused operation flags mask"]
+pub const spdk_nvme_cmd_fuse_SPDK_NVME_CMD_FUSE_MASK: spdk_nvme_cmd_fuse = 3;
+#[doc = " Fused Operation"]
+pub type spdk_nvme_cmd_fuse = ::std::os::raw::c_uint;
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_ARBITRATION"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_arbitration {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_arbitration__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_arbitration__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_arbitration__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_arbitration__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_arbitration__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_arbitration__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_arbitration__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_arbitration__bindgen_ty_1 {
+    #[inline]
+    pub fn ab(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ab(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lpw(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lpw(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mpw(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mpw(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn hpw(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_hpw(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ab: u32,
+        reserved: u32,
+        lpw: u32,
+        mpw: u32,
+        hpw: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let ab: u32 = unsafe { ::std::mem::transmute(ab) };
+            ab as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let lpw: u32 = unsafe { ::std::mem::transmute(lpw) };
+            lpw as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let mpw: u32 = unsafe { ::std::mem::transmute(mpw) };
+            mpw as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let hpw: u32 = unsafe { ::std::mem::transmute(hpw) };
+            hpw as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_arbitration() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_arbitration>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_arbitration))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_arbitration>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_arbitration))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_arbitration>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_arbitration),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_arbitration>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_arbitration),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_POWER_MANAGEMENT"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_power_management {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_power_management__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_power_management__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_power_management__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_power_management__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_power_management__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_power_management__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_power_management__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_power_management__bindgen_ty_1 {
+    #[inline]
+    pub fn ps(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 5u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ps(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn wh(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_wh(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 24u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ps: u32, wh: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 5u8, {
+            let ps: u32 = unsafe { ::std::mem::transmute(ps) };
+            ps as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let wh: u32 = unsafe { ::std::mem::transmute(wh) };
+            wh as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 24u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_power_management() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_power_management>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_power_management))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_power_management>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_power_management))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_power_management>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_power_management),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_power_management>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_power_management),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_LBA_RANGE_TYPE"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_lba_range_type {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_lba_range_type__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_lba_range_type__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_lba_range_type__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_lba_range_type__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_lba_range_type__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_lba_range_type__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_lba_range_type__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_lba_range_type__bindgen_ty_1 {
+    #[inline]
+    pub fn num(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 6u8) as u32) }
+    }
+    #[inline]
+    pub fn set_num(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 26u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 26u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(num: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 6u8, {
+            let num: u32 = unsafe { ::std::mem::transmute(num) };
+            num as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 26u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_lba_range_type() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_lba_range_type>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_lba_range_type))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_lba_range_type>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_lba_range_type))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_lba_range_type>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_lba_range_type),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_lba_range_type>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_lba_range_type),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_TEMPERATURE_THRESHOLD"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_temperature_threshold {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_temperature_threshold__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_temperature_threshold__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_temperature_threshold__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_temperature_threshold__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_temperature_threshold__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_temperature_threshold__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_temperature_threshold__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_temperature_threshold__bindgen_ty_1 {
+    #[inline]
+    pub fn tmpth(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tmpth(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn tmpsel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tmpsel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn thsel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_thsel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 10u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(22usize, 10u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        tmpth: u32,
+        tmpsel: u32,
+        thsel: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let tmpth: u32 = unsafe { ::std::mem::transmute(tmpth) };
+            tmpth as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 4u8, {
+            let tmpsel: u32 = unsafe { ::std::mem::transmute(tmpsel) };
+            tmpsel as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 2u8, {
+            let thsel: u32 = unsafe { ::std::mem::transmute(thsel) };
+            thsel as u64
+        });
+        __bindgen_bitfield_unit.set(22usize, 10u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_temperature_threshold() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_temperature_threshold>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_temperature_threshold)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_temperature_threshold>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_temperature_threshold)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_temperature_threshold>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_temperature_threshold),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_temperature_threshold>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_temperature_threshold),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_ERROR_RECOVERY"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_error_recovery {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_error_recovery__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_error_recovery__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_error_recovery__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_error_recovery__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_error_recovery__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_error_recovery__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_error_recovery__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_error_recovery__bindgen_ty_1 {
+    #[inline]
+    pub fn tler(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tler(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dulbe(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dulbe(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 15u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        tler: u32,
+        dulbe: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let tler: u32 = unsafe { ::std::mem::transmute(tler) };
+            tler as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let dulbe: u32 = unsafe { ::std::mem::transmute(dulbe) };
+            dulbe as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 15u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_error_recovery() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_error_recovery>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_error_recovery))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_error_recovery>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_error_recovery))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_error_recovery>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_error_recovery),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_error_recovery>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_error_recovery),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_VOLATILE_WRITE_CACHE"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_volatile_write_cache {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_volatile_write_cache__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_volatile_write_cache__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_volatile_write_cache__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_volatile_write_cache__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_volatile_write_cache__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_volatile_write_cache__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_volatile_write_cache__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_volatile_write_cache__bindgen_ty_1 {
+    #[inline]
+    pub fn wce(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_wce(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(wce: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let wce: u32 = unsafe { ::std::mem::transmute(wce) };
+            wce as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_volatile_write_cache() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_volatile_write_cache>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_volatile_write_cache))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_volatile_write_cache>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_volatile_write_cache)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_volatile_write_cache>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_volatile_write_cache),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_volatile_write_cache>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_volatile_write_cache),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_NUMBER_OF_QUEUES"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_number_of_queues {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_number_of_queues__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_number_of_queues__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_number_of_queues__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_number_of_queues__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_number_of_queues__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_number_of_queues__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_number_of_queues__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_number_of_queues__bindgen_ty_1 {
+    #[inline]
+    pub fn nsqr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nsqr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ncqr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ncqr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(nsqr: u32, ncqr: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let nsqr: u32 = unsafe { ::std::mem::transmute(nsqr) };
+            nsqr as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let ncqr: u32 = unsafe { ::std::mem::transmute(ncqr) };
+            ncqr as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_number_of_queues() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_number_of_queues>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_number_of_queues))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_number_of_queues>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_number_of_queues))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_number_of_queues>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_number_of_queues),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_number_of_queues>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_number_of_queues),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_INTERRUPT_COALESCING"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_interrupt_coalescing {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_interrupt_coalescing__bindgen_ty_1 {
+    #[inline]
+    pub fn thr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_thr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn time(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_time(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        thr: u32,
+        time: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let thr: u32 = unsafe { ::std::mem::transmute(thr) };
+            thr as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let time: u32 = unsafe { ::std::mem::transmute(time) };
+            time as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_interrupt_coalescing() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_interrupt_coalescing>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_interrupt_coalescing))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_interrupt_coalescing>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_interrupt_coalescing)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_interrupt_coalescing>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_interrupt_coalescing),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_interrupt_coalescing>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_interrupt_coalescing),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_INTERRUPT_VECTOR_CONFIGURATION"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_interrupt_vector_configuration {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_interrupt_vector_configuration__bindgen_ty_1 {
+    #[inline]
+    pub fn iv(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iv(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cd(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cd(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 15u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(iv: u32, cd: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let iv: u32 = unsafe { ::std::mem::transmute(iv) };
+            iv as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let cd: u32 = unsafe { ::std::mem::transmute(cd) };
+            cd as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 15u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_interrupt_vector_configuration() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_interrupt_vector_configuration>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_interrupt_vector_configuration)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_interrupt_vector_configuration>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_interrupt_vector_configuration)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = :: std :: mem :: MaybeUninit :: < spdk_nvme_feat_interrupt_vector_configuration > :: uninit () ;
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_interrupt_vector_configuration),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = :: std :: mem :: MaybeUninit :: < spdk_nvme_feat_interrupt_vector_configuration > :: uninit () ;
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_interrupt_vector_configuration),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_WRITE_ATOMICITY"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_write_atomicity {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_write_atomicity__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_write_atomicity__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_write_atomicity__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_write_atomicity__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_write_atomicity__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_write_atomicity__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_write_atomicity__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_write_atomicity__bindgen_ty_1 {
+    #[inline]
+    pub fn dn(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dn(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(dn: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let dn: u32 = unsafe { ::std::mem::transmute(dn) };
+            dn as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_write_atomicity() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_write_atomicity>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_write_atomicity))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_write_atomicity>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_write_atomicity))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_write_atomicity>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_write_atomicity),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_write_atomicity>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_write_atomicity),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_critical_warning_state {
+    pub raw: u8,
+    pub bits: spdk_nvme_critical_warning_state__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_critical_warning_state__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_critical_warning_state__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_critical_warning_state__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_critical_warning_state__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_critical_warning_state__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_critical_warning_state__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_critical_warning_state__bindgen_ty_1 {
+    #[inline]
+    pub fn available_spare(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_available_spare(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn temperature(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_temperature(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn device_reliability(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_device_reliability(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn read_only(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_read_only(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn volatile_memory_backup(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_volatile_memory_backup(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        available_spare: u8,
+        temperature: u8,
+        device_reliability: u8,
+        read_only: u8,
+        volatile_memory_backup: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let available_spare: u8 = unsafe { ::std::mem::transmute(available_spare) };
+            available_spare as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let temperature: u8 = unsafe { ::std::mem::transmute(temperature) };
+            temperature as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let device_reliability: u8 = unsafe { ::std::mem::transmute(device_reliability) };
+            device_reliability as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let read_only: u8 = unsafe { ::std::mem::transmute(read_only) };
+            read_only as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let volatile_memory_backup: u8 =
+                unsafe { ::std::mem::transmute(volatile_memory_backup) };
+            volatile_memory_backup as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_critical_warning_state() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_critical_warning_state>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_critical_warning_state))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_critical_warning_state>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_critical_warning_state)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_critical_warning_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_critical_warning_state),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_critical_warning_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_critical_warning_state),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features / Get Features \\ref SPDK_NVME_FEAT_ASYNC_EVENT_CONFIGURATION"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_async_event_configuration {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_async_event_configuration__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_feat_async_event_configuration__bindgen_ty_1 {
+    pub crit_warn: spdk_nvme_critical_warning_state,
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_async_event_configuration__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_async_event_configuration__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_async_event_configuration__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_async_event_configuration__bindgen_ty_1>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_async_event_configuration__bindgen_ty_1)
+        )
+    );
+    fn test_field_crit_warn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_async_event_configuration__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crit_warn) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_async_event_configuration__bindgen_ty_1),
+                "::",
+                stringify!(crit_warn)
+            )
+        );
+    }
+    test_field_crit_warn();
+}
+impl spdk_nvme_feat_async_event_configuration__bindgen_ty_1 {
+    #[inline]
+    pub fn ns_attr_notice(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ns_attr_notice(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn fw_activation_notice(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_fw_activation_notice(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn telemetry_log_notice(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_telemetry_log_notice(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_change_notice(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_change_notice(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 15u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn discovery_log_change_notice(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(31usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_discovery_log_change_notice(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(31usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ns_attr_notice: u8,
+        fw_activation_notice: u8,
+        telemetry_log_notice: u8,
+        ana_change_notice: u8,
+        reserved1: u8,
+        reserved2: u16,
+        discovery_log_change_notice: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ns_attr_notice: u8 = unsafe { ::std::mem::transmute(ns_attr_notice) };
+            ns_attr_notice as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let fw_activation_notice: u8 = unsafe { ::std::mem::transmute(fw_activation_notice) };
+            fw_activation_notice as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let telemetry_log_notice: u8 = unsafe { ::std::mem::transmute(telemetry_log_notice) };
+            telemetry_log_notice as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let ana_change_notice: u8 = unsafe { ::std::mem::transmute(ana_change_notice) };
+            ana_change_notice as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 15u8, {
+            let reserved2: u16 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(31usize, 1u8, {
+            let discovery_log_change_notice: u16 =
+                unsafe { ::std::mem::transmute(discovery_log_change_notice) };
+            discovery_log_change_notice as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_async_event_configuration() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_async_event_configuration>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_async_event_configuration)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_async_event_configuration>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_async_event_configuration)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_async_event_configuration>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_async_event_configuration),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_async_event_configuration>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_async_event_configuration),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_AUTONOMOUS_POWER_STATE_TRANSITION"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_autonomous_power_state_transition {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_autonomous_power_state_transition__bindgen_ty_1 {
+    #[inline]
+    pub fn apste(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_apste(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(apste: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let apste: u32 = unsafe { ::std::mem::transmute(apste) };
+            apste as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_autonomous_power_state_transition() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_autonomous_power_state_transition>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_autonomous_power_state_transition)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_autonomous_power_state_transition>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_autonomous_power_state_transition)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_autonomous_power_state_transition,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_autonomous_power_state_transition),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_autonomous_power_state_transition,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_autonomous_power_state_transition),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_HOST_MEM_BUFFER"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_host_mem_buffer {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_host_mem_buffer__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_host_mem_buffer__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_mem_buffer__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_mem_buffer__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_host_mem_buffer__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_mem_buffer__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_host_mem_buffer__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_host_mem_buffer__bindgen_ty_1 {
+    #[inline]
+    pub fn ehm(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ehm(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ehm: u32, mr: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ehm: u32 = unsafe { ::std::mem::transmute(ehm) };
+            ehm as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let mr: u32 = unsafe { ::std::mem::transmute(mr) };
+            mr as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_mem_buffer() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_mem_buffer>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_host_mem_buffer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_mem_buffer>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_host_mem_buffer))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_host_mem_buffer>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_mem_buffer),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_host_mem_buffer>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_mem_buffer),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_KEEP_ALIVE_TIMER"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_keep_alive_timer {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_keep_alive_timer__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_keep_alive_timer__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_keep_alive_timer__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_keep_alive_timer__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_keep_alive_timer__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_keep_alive_timer__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_keep_alive_timer__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_keep_alive_timer__bindgen_ty_1 {
+    #[inline]
+    pub fn kato(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 32u8) as u32) }
+    }
+    #[inline]
+    pub fn set_kato(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 32u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(kato: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 32u8, {
+            let kato: u32 = unsafe { ::std::mem::transmute(kato) };
+            kato as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_keep_alive_timer() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_keep_alive_timer>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_keep_alive_timer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_keep_alive_timer>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_keep_alive_timer))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_keep_alive_timer>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_keep_alive_timer),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_keep_alive_timer>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_keep_alive_timer),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_HOST_CONTROLLED_THERMAL_MANAGEMENT"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_host_controlled_thermal_management {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_host_controlled_thermal_management__bindgen_ty_1 {
+    #[inline]
+    pub fn tmt2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tmt2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn tmt1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tmt1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(tmt2: u32, tmt1: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let tmt2: u32 = unsafe { ::std::mem::transmute(tmt2) };
+            tmt2 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let tmt1: u32 = unsafe { ::std::mem::transmute(tmt1) };
+            tmt1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_controlled_thermal_management() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_controlled_thermal_management>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_host_controlled_thermal_management)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_controlled_thermal_management>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_host_controlled_thermal_management)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_host_controlled_thermal_management,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_controlled_thermal_management),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_host_controlled_thermal_management,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_controlled_thermal_management),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_NON_OPERATIONAL_POWER_STATE_CONFIG"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_non_operational_power_state_config {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_non_operational_power_state_config__bindgen_ty_1 {
+    #[inline]
+    pub fn noppme(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_noppme(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(noppme: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let noppme: u32 = unsafe { ::std::mem::transmute(noppme) };
+            noppme as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_non_operational_power_state_config() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_non_operational_power_state_config>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_non_operational_power_state_config)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_non_operational_power_state_config>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_non_operational_power_state_config)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_non_operational_power_state_config,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_non_operational_power_state_config),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_feat_non_operational_power_state_config,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_non_operational_power_state_config),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_SOFTWARE_PROGRESS_MARKER"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_software_progress_marker {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_software_progress_marker__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_software_progress_marker__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_software_progress_marker__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_software_progress_marker__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_software_progress_marker__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_software_progress_marker__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_software_progress_marker__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_software_progress_marker__bindgen_ty_1 {
+    #[inline]
+    pub fn pbslc(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pbslc(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 24u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(pbslc: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let pbslc: u32 = unsafe { ::std::mem::transmute(pbslc) };
+            pbslc as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 24u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_software_progress_marker() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_software_progress_marker>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_software_progress_marker)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_software_progress_marker>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_software_progress_marker)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_software_progress_marker>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_software_progress_marker),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_software_progress_marker>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_software_progress_marker),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_HOST_IDENTIFIER"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_host_identifier {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_host_identifier__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_host_identifier__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_identifier__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_identifier__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_host_identifier__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_identifier__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_host_identifier__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_host_identifier__bindgen_ty_1 {
+    #[inline]
+    pub fn exhid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_exhid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(exhid: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let exhid: u32 = unsafe { ::std::mem::transmute(exhid) };
+            exhid as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_host_identifier() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_host_identifier>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_feat_host_identifier))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_host_identifier>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_feat_host_identifier))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_host_identifier>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_identifier),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_feat_host_identifier>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_host_identifier),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_HOST_RESERVE_MASK"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_reservation_notification_mask {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_reservation_notification_mask__bindgen_ty_1 {
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn regpre(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_regpre(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn resrel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_resrel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn respre(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_respre(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 28u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 28u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        reserved1: u32,
+        regpre: u32,
+        resrel: u32,
+        respre: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let regpre: u32 = unsafe { ::std::mem::transmute(regpre) };
+            regpre as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let resrel: u32 = unsafe { ::std::mem::transmute(resrel) };
+            resrel as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let respre: u32 = unsafe { ::std::mem::transmute(respre) };
+            respre as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 28u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_reservation_notification_mask() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_reservation_notification_mask>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_reservation_notification_mask)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_reservation_notification_mask>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_reservation_notification_mask)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_reservation_notification_mask>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_reservation_notification_mask),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_reservation_notification_mask>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_reservation_notification_mask),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Data used by Set Features/Get Features \\ref SPDK_NVME_FEAT_HOST_RESERVE_PERSIST"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_feat_reservation_persistence {
+    pub raw: u32,
+    pub bits: spdk_nvme_feat_reservation_persistence__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_feat_reservation_persistence__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_reservation_persistence__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_reservation_persistence__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_reservation_persistence__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_reservation_persistence__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_reservation_persistence__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_feat_reservation_persistence__bindgen_ty_1 {
+    #[inline]
+    pub fn ptpl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ptpl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ptpl: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ptpl: u32 = unsafe { ::std::mem::transmute(ptpl) };
+            ptpl as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_feat_reservation_persistence() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_feat_reservation_persistence>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_feat_reservation_persistence)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_feat_reservation_persistence>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_feat_reservation_persistence)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_reservation_persistence>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_reservation_persistence),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_feat_reservation_persistence>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_feat_reservation_persistence),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmd_cdw10 {
+    pub raw: u32,
+    pub identify: spdk_nvme_cmd_cdw10__bindgen_ty_1,
+    pub get_log_page: spdk_nvme_cmd_cdw10__bindgen_ty_2,
+    pub abort: spdk_nvme_cmd_cdw10__bindgen_ty_3,
+    pub sec_send_recv: spdk_nvme_cmd_cdw10__bindgen_ty_4,
+    pub create_io_q: spdk_nvme_cmd_cdw10__bindgen_ty_5,
+    pub delete_io_q: spdk_nvme_cmd_cdw10__bindgen_ty_6,
+    pub get_features: spdk_nvme_cmd_cdw10__bindgen_ty_7,
+    pub set_features: spdk_nvme_cmd_cdw10__bindgen_ty_8,
+    pub ns_attach: spdk_nvme_cmd_cdw10__bindgen_ty_9,
+    pub ns_manage: spdk_nvme_cmd_cdw10__bindgen_ty_10,
+    pub dsm: spdk_nvme_cmd_cdw10__bindgen_ty_11,
+    pub resv_register: spdk_nvme_cmd_cdw10__bindgen_ty_12,
+    pub resv_release: spdk_nvme_cmd_cdw10__bindgen_ty_13,
+    pub resv_acquire: spdk_nvme_cmd_cdw10__bindgen_ty_14,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_1 {
+    #[inline]
+    pub fn cns(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cns(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cntid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cntid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        cns: u32,
+        reserved: u32,
+        cntid: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let cns: u32 = unsafe { ::std::mem::transmute(cns) };
+            cns as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let cntid: u32 = unsafe { ::std::mem::transmute(cntid) };
+            cntid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_2 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_2>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_2)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_2 {
+    #[inline]
+    pub fn lid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lsp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lsp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rae(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rae(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn numdl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_numdl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        lid: u32,
+        lsp: u32,
+        reserved: u32,
+        rae: u32,
+        numdl: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let lid: u32 = unsafe { ::std::mem::transmute(lid) };
+            lid as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 4u8, {
+            let lsp: u32 = unsafe { ::std::mem::transmute(lsp) };
+            lsp as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 3u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 1u8, {
+            let rae: u32 = unsafe { ::std::mem::transmute(rae) };
+            rae as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let numdl: u32 = unsafe { ::std::mem::transmute(numdl) };
+            numdl as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_3 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_3>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_3>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_3)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_3 {
+    #[inline]
+    pub fn sqid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sqid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(sqid: u32, cid: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let sqid: u32 = unsafe { ::std::mem::transmute(sqid) };
+            sqid as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let cid: u32 = unsafe { ::std::mem::transmute(cid) };
+            cid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_4 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_4() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_4>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_4))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_4>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_4)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_4 {
+    #[inline]
+    pub fn nssf(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nssf(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn spsp0(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_spsp0(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn spsp1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_spsp1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn secp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_secp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        nssf: u32,
+        spsp0: u32,
+        spsp1: u32,
+        secp: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let nssf: u32 = unsafe { ::std::mem::transmute(nssf) };
+            nssf as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let spsp0: u32 = unsafe { ::std::mem::transmute(spsp0) };
+            spsp0 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let spsp1: u32 = unsafe { ::std::mem::transmute(spsp1) };
+            spsp1 as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let secp: u32 = unsafe { ::std::mem::transmute(secp) };
+            secp as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_5 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_5() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_5>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_5))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_5>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_5)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_5 {
+    #[inline]
+    pub fn qid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_qid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn qsize(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_qsize(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(qid: u32, qsize: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let qid: u32 = unsafe { ::std::mem::transmute(qid) };
+            qid as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let qsize: u32 = unsafe { ::std::mem::transmute(qsize) };
+            qsize as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_6 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_6() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_6>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_6))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_6>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_6)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_6 {
+    #[inline]
+    pub fn qid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_qid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(qid: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let qid: u32 = unsafe { ::std::mem::transmute(qid) };
+            qid as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_7 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_7() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_7>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_7))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_7>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_7)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_7 {
+    #[inline]
+    pub fn fid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 21u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 21u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        fid: u32,
+        sel: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let fid: u32 = unsafe { ::std::mem::transmute(fid) };
+            fid as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 3u8, {
+            let sel: u32 = unsafe { ::std::mem::transmute(sel) };
+            sel as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 21u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_8 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_8() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_8>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_8))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_8>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_8)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_8 {
+    #[inline]
+    pub fn fid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 23u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 23u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sv(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(31usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sv(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(31usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(fid: u32, reserved: u32, sv: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let fid: u32 = unsafe { ::std::mem::transmute(fid) };
+            fid as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 23u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(31usize, 1u8, {
+            let sv: u32 = unsafe { ::std::mem::transmute(sv) };
+            sv as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_9 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_9() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_9>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_9))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_9>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_9)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_9 {
+    #[inline]
+    pub fn sel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 28u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 28u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(sel: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let sel: u32 = unsafe { ::std::mem::transmute(sel) };
+            sel as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 28u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_10 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_10() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_10>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_10))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_10>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_10)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_10 {
+    #[inline]
+    pub fn sel(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sel(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 28u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 28u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(sel: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let sel: u32 = unsafe { ::std::mem::transmute(sel) };
+            sel as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 28u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_11 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_11() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_11>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_11))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_11>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_11)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_11 {
+    #[inline]
+    pub fn nr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 24u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 24u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(nr: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let nr: u32 = unsafe { ::std::mem::transmute(nr) };
+            nr as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 24u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_12 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_12() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_12>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_12))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_12>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_12)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_12 {
+    #[inline]
+    pub fn rrega(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rrega(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iekey(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iekey(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 26u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 26u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cptpl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(30usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cptpl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(30usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        rrega: u32,
+        iekey: u32,
+        reserved: u32,
+        cptpl: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let rrega: u32 = unsafe { ::std::mem::transmute(rrega) };
+            rrega as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let iekey: u32 = unsafe { ::std::mem::transmute(iekey) };
+            iekey as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 26u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(30usize, 2u8, {
+            let cptpl: u32 = unsafe { ::std::mem::transmute(cptpl) };
+            cptpl as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_13 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_13() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_13>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_13))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_13>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_13)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_13 {
+    #[inline]
+    pub fn rrela(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rrela(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iekey(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iekey(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rtype(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rtype(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        rrela: u32,
+        iekey: u32,
+        reserved1: u32,
+        rtype: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let rrela: u32 = unsafe { ::std::mem::transmute(rrela) };
+            rrela as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let iekey: u32 = unsafe { ::std::mem::transmute(iekey) };
+            iekey as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let rtype: u32 = unsafe { ::std::mem::transmute(rtype) };
+            rtype as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw10__bindgen_ty_14 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10__bindgen_ty_14() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10__bindgen_ty_14>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_14))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10__bindgen_ty_14>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw10__bindgen_ty_14)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw10__bindgen_ty_14 {
+    #[inline]
+    pub fn racqa(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_racqa(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iekey(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iekey(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rtype(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rtype(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        racqa: u32,
+        iekey: u32,
+        reserved1: u32,
+        rtype: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let racqa: u32 = unsafe { ::std::mem::transmute(racqa) };
+            racqa as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let iekey: u32 = unsafe { ::std::mem::transmute(iekey) };
+            iekey as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let rtype: u32 = unsafe { ::std::mem::transmute(rtype) };
+            rtype as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw10() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw10>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw10))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw10>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmd_cdw10))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_identify() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).identify) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(identify)
+            )
+        );
+    }
+    test_field_identify();
+    fn test_field_get_log_page() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).get_log_page) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(get_log_page)
+            )
+        );
+    }
+    test_field_get_log_page();
+    fn test_field_abort() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).abort) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(abort)
+            )
+        );
+    }
+    test_field_abort();
+    fn test_field_sec_send_recv() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sec_send_recv) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(sec_send_recv)
+            )
+        );
+    }
+    test_field_sec_send_recv();
+    fn test_field_create_io_q() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).create_io_q) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(create_io_q)
+            )
+        );
+    }
+    test_field_create_io_q();
+    fn test_field_delete_io_q() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).delete_io_q) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(delete_io_q)
+            )
+        );
+    }
+    test_field_delete_io_q();
+    fn test_field_get_features() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).get_features) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(get_features)
+            )
+        );
+    }
+    test_field_get_features();
+    fn test_field_set_features() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).set_features) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(set_features)
+            )
+        );
+    }
+    test_field_set_features();
+    fn test_field_ns_attach() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ns_attach) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(ns_attach)
+            )
+        );
+    }
+    test_field_ns_attach();
+    fn test_field_ns_manage() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ns_manage) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(ns_manage)
+            )
+        );
+    }
+    test_field_ns_manage();
+    fn test_field_dsm() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dsm) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(dsm)
+            )
+        );
+    }
+    test_field_dsm();
+    fn test_field_resv_register() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).resv_register) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(resv_register)
+            )
+        );
+    }
+    test_field_resv_register();
+    fn test_field_resv_release() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).resv_release) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(resv_release)
+            )
+        );
+    }
+    test_field_resv_release();
+    fn test_field_resv_acquire() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).resv_acquire) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw10),
+                "::",
+                stringify!(resv_acquire)
+            )
+        );
+    }
+    test_field_resv_acquire();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmd_cdw11 {
+    pub raw: u32,
+    pub identify: spdk_nvme_cmd_cdw11__bindgen_ty_1,
+    pub create_io_sq: spdk_nvme_cmd_cdw11__bindgen_ty_2,
+    pub create_io_cq: spdk_nvme_cmd_cdw11__bindgen_ty_3,
+    pub directive: spdk_nvme_cmd_cdw11__bindgen_ty_4,
+    pub get_log_page: spdk_nvme_cmd_cdw11__bindgen_ty_5,
+    pub resv_report: spdk_nvme_cmd_cdw11__bindgen_ty_6,
+    pub feat_arbitration: spdk_nvme_feat_arbitration,
+    pub feat_power_management: spdk_nvme_feat_power_management,
+    pub feat_lba_range_type: spdk_nvme_feat_lba_range_type,
+    pub feat_temp_threshold: spdk_nvme_feat_temperature_threshold,
+    pub feat_error_recovery: spdk_nvme_feat_error_recovery,
+    pub feat_volatile_write_cache: spdk_nvme_feat_volatile_write_cache,
+    pub feat_num_of_queues: spdk_nvme_feat_number_of_queues,
+    pub feat_interrupt_coalescing: spdk_nvme_feat_interrupt_coalescing,
+    pub feat_interrupt_vector_configuration: spdk_nvme_feat_interrupt_vector_configuration,
+    pub feat_write_atomicity: spdk_nvme_feat_write_atomicity,
+    pub feat_async_event_cfg: spdk_nvme_feat_async_event_configuration,
+    pub feat_keep_alive_timer: spdk_nvme_feat_keep_alive_timer,
+    pub feat_host_identifier: spdk_nvme_feat_host_identifier,
+    pub feat_rsv_notification_mask: spdk_nvme_feat_reservation_notification_mask,
+    pub feat_rsv_persistence: spdk_nvme_feat_reservation_persistence,
+    pub dsm: spdk_nvme_cmd_cdw11__bindgen_ty_7,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_1 {
+    #[inline]
+    pub fn nvmsetid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nvmsetid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn csi(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_csi(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        nvmsetid: u32,
+        reserved: u32,
+        csi: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let nvmsetid: u32 = unsafe { ::std::mem::transmute(nvmsetid) };
+            nvmsetid as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let csi: u32 = unsafe { ::std::mem::transmute(csi) };
+            csi as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_2 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_2>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_2)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_2 {
+    #[inline]
+    pub fn pc(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pc(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn qprio(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_qprio(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 13u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 13u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cqid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cqid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pc: u32,
+        qprio: u32,
+        reserved: u32,
+        cqid: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let pc: u32 = unsafe { ::std::mem::transmute(pc) };
+            pc as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 2u8, {
+            let qprio: u32 = unsafe { ::std::mem::transmute(qprio) };
+            qprio as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 13u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let cqid: u32 = unsafe { ::std::mem::transmute(cqid) };
+            cqid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_3 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_3>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_3>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_3)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_3 {
+    #[inline]
+    pub fn pc(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pc(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ien(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ien(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 14u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 14u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn iv(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_iv(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pc: u32,
+        ien: u32,
+        reserved: u32,
+        iv: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let pc: u32 = unsafe { ::std::mem::transmute(pc) };
+            pc as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ien: u32 = unsafe { ::std::mem::transmute(ien) };
+            ien as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 14u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let iv: u32 = unsafe { ::std::mem::transmute(iv) };
+            iv as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_4 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_4() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_4>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_4))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_4>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_4)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_4 {
+    #[inline]
+    pub fn doper(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_doper(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dtype(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dtype(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dspec(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dspec(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        doper: u32,
+        dtype: u32,
+        dspec: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let doper: u32 = unsafe { ::std::mem::transmute(doper) };
+            doper as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let dtype: u32 = unsafe { ::std::mem::transmute(dtype) };
+            dtype as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let dspec: u32 = unsafe { ::std::mem::transmute(dspec) };
+            dspec as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_5 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_5() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_5>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_5))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_5>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_5)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_5 {
+    #[inline]
+    pub fn numdu(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_numdu(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lsid(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lsid(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(numdu: u32, lsid: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let numdu: u32 = unsafe { ::std::mem::transmute(numdu) };
+            numdu as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 16u8, {
+            let lsid: u32 = unsafe { ::std::mem::transmute(lsid) };
+            lsid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_6 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_6() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_6>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_6))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_6>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_6)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_6 {
+    #[inline]
+    pub fn eds(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_eds(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(eds: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let eds: u32 = unsafe { ::std::mem::transmute(eds) };
+            eds as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd_cdw11__bindgen_ty_7 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11__bindgen_ty_7() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11__bindgen_ty_7>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_7))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11__bindgen_ty_7>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd_cdw11__bindgen_ty_7)
+        )
+    );
+}
+impl spdk_nvme_cmd_cdw11__bindgen_ty_7 {
+    #[inline]
+    pub fn idr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_idr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn idw(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_idw(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ad(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ad(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 29u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 29u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        idr: u32,
+        idw: u32,
+        ad: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let idr: u32 = unsafe { ::std::mem::transmute(idr) };
+            idr as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let idw: u32 = unsafe { ::std::mem::transmute(idw) };
+            idw as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let ad: u32 = unsafe { ::std::mem::transmute(ad) };
+            ad as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 29u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd_cdw11() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd_cdw11>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd_cdw11))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd_cdw11>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmd_cdw11))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_identify() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).identify) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(identify)
+            )
+        );
+    }
+    test_field_identify();
+    fn test_field_create_io_sq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).create_io_sq) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(create_io_sq)
+            )
+        );
+    }
+    test_field_create_io_sq();
+    fn test_field_create_io_cq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).create_io_cq) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(create_io_cq)
+            )
+        );
+    }
+    test_field_create_io_cq();
+    fn test_field_directive() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).directive) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(directive)
+            )
+        );
+    }
+    test_field_directive();
+    fn test_field_get_log_page() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).get_log_page) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(get_log_page)
+            )
+        );
+    }
+    test_field_get_log_page();
+    fn test_field_resv_report() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).resv_report) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(resv_report)
+            )
+        );
+    }
+    test_field_resv_report();
+    fn test_field_feat_arbitration() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_arbitration) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_arbitration)
+            )
+        );
+    }
+    test_field_feat_arbitration();
+    fn test_field_feat_power_management() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_power_management) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_power_management)
+            )
+        );
+    }
+    test_field_feat_power_management();
+    fn test_field_feat_lba_range_type() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_lba_range_type) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_lba_range_type)
+            )
+        );
+    }
+    test_field_feat_lba_range_type();
+    fn test_field_feat_temp_threshold() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_temp_threshold) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_temp_threshold)
+            )
+        );
+    }
+    test_field_feat_temp_threshold();
+    fn test_field_feat_error_recovery() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_error_recovery) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_error_recovery)
+            )
+        );
+    }
+    test_field_feat_error_recovery();
+    fn test_field_feat_volatile_write_cache() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_volatile_write_cache) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_volatile_write_cache)
+            )
+        );
+    }
+    test_field_feat_volatile_write_cache();
+    fn test_field_feat_num_of_queues() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_num_of_queues) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_num_of_queues)
+            )
+        );
+    }
+    test_field_feat_num_of_queues();
+    fn test_field_feat_interrupt_coalescing() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_interrupt_coalescing) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_interrupt_coalescing)
+            )
+        );
+    }
+    test_field_feat_interrupt_coalescing();
+    fn test_field_feat_interrupt_vector_configuration() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_interrupt_vector_configuration) as usize
+                    - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_interrupt_vector_configuration)
+            )
+        );
+    }
+    test_field_feat_interrupt_vector_configuration();
+    fn test_field_feat_write_atomicity() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_write_atomicity) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_write_atomicity)
+            )
+        );
+    }
+    test_field_feat_write_atomicity();
+    fn test_field_feat_async_event_cfg() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_async_event_cfg) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_async_event_cfg)
+            )
+        );
+    }
+    test_field_feat_async_event_cfg();
+    fn test_field_feat_keep_alive_timer() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_keep_alive_timer) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_keep_alive_timer)
+            )
+        );
+    }
+    test_field_feat_keep_alive_timer();
+    fn test_field_feat_host_identifier() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_host_identifier) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_host_identifier)
+            )
+        );
+    }
+    test_field_feat_host_identifier();
+    fn test_field_feat_rsv_notification_mask() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_rsv_notification_mask) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_rsv_notification_mask)
+            )
+        );
+    }
+    test_field_feat_rsv_notification_mask();
+    fn test_field_feat_rsv_persistence() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).feat_rsv_persistence) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(feat_rsv_persistence)
+            )
+        );
+    }
+    test_field_feat_rsv_persistence();
+    fn test_field_dsm() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd_cdw11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dsm) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd_cdw11),
+                "::",
+                stringify!(dsm)
+            )
+        );
+    }
+    test_field_dsm();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1 {
+    pub prp1: u64,
+    pub prp2: u64,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1>(),
+        16usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    fn test_field_prp1() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).prp1) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(prp1)
+            )
+        );
+    }
+    test_field_prp1();
+    fn test_field_prp2() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).prp2) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(prp2)
+            )
+        );
+    }
+    test_field_prp2();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmd__bindgen_ty_2 {
+    pub cdw10: u32,
+    pub cdw10_bits: spdk_nvme_cmd_cdw10,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd__bindgen_ty_2>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd__bindgen_ty_2>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmd__bindgen_ty_2))
+    );
+    fn test_field_cdw10() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_2>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw10) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_2),
+                "::",
+                stringify!(cdw10)
+            )
+        );
+    }
+    test_field_cdw10();
+    fn test_field_cdw10_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_2>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw10_bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_2),
+                "::",
+                stringify!(cdw10_bits)
+            )
+        );
+    }
+    test_field_cdw10_bits();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cmd__bindgen_ty_3 {
+    pub cdw11: u32,
+    pub cdw11_bits: spdk_nvme_cmd_cdw11,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmd__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmd__bindgen_ty_3>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmd__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmd__bindgen_ty_3>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmd__bindgen_ty_3))
+    );
+    fn test_field_cdw11() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_3>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw11) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_3),
+                "::",
+                stringify!(cdw11)
+            )
+        );
+    }
+    test_field_cdw11();
+    fn test_field_cdw11_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cmd__bindgen_ty_3>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw11_bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmd__bindgen_ty_3),
+                "::",
+                stringify!(cdw11_bits)
+            )
+        );
+    }
+    test_field_cdw11_bits();
+}
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_status {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_status() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_status>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_status))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_status>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_status))
+    );
+}
+impl spdk_nvme_status {
+    #[inline]
+    pub fn p(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_p(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sc(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 8u8) as u16) }
+    }
+    #[inline]
+    pub fn set_sc(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sct(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 3u8) as u16) }
+    }
+    #[inline]
+    pub fn set_sct(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn crd(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 2u8) as u16) }
+    }
+    #[inline]
+    pub fn set_crd(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn m(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_m(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dnr(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_dnr(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        p: u16,
+        sc: u16,
+        sct: u16,
+        crd: u16,
+        m: u16,
+        dnr: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let p: u16 = unsafe { ::std::mem::transmute(p) };
+            p as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 8u8, {
+            let sc: u16 = unsafe { ::std::mem::transmute(sc) };
+            sc as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 3u8, {
+            let sct: u16 = unsafe { ::std::mem::transmute(sct) };
+            sct as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 2u8, {
+            let crd: u16 = unsafe { ::std::mem::transmute(crd) };
+            crd as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 1u8, {
+            let m: u16 = unsafe { ::std::mem::transmute(m) };
+            m as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 1u8, {
+            let dnr: u16 = unsafe { ::std::mem::transmute(dnr) };
+            dnr as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " Completion queue entry"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_cpl {
+    pub cdw0: u32,
+    pub cdw1: u32,
+    pub sqhd: u16,
+    pub sqid: u16,
+    pub cid: u16,
+    pub __bindgen_anon_1: spdk_nvme_cpl__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_cpl__bindgen_ty_1 {
+    pub status_raw: u16,
+    pub status: spdk_nvme_status,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cpl__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cpl__bindgen_ty_1>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cpl__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cpl__bindgen_ty_1>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cpl__bindgen_ty_1))
+    );
+    fn test_field_status_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).status_raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl__bindgen_ty_1),
+                "::",
+                stringify!(status_raw)
+            )
+        );
+    }
+    test_field_status_raw();
+    fn test_field_status() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).status) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl__bindgen_ty_1),
+                "::",
+                stringify!(status)
+            )
+        );
+    }
+    test_field_status();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cpl() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cpl>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cpl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cpl>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cpl))
+    );
+    fn test_field_cdw0() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw0) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl),
+                "::",
+                stringify!(cdw0)
+            )
+        );
+    }
+    test_field_cdw0();
+    fn test_field_cdw1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cdw1) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl),
+                "::",
+                stringify!(cdw1)
+            )
+        );
+    }
+    test_field_cdw1();
+    fn test_field_sqhd() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sqhd) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl),
+                "::",
+                stringify!(sqhd)
+            )
+        );
+    }
+    test_field_sqhd();
+    fn test_field_sqid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sqid) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl),
+                "::",
+                stringify!(sqid)
+            )
+        );
+    }
+    test_field_sqid();
+    fn test_field_cid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cpl>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cid) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cpl),
+                "::",
+                stringify!(cid)
+            )
+        );
+    }
+    test_field_cid();
+}
+#[doc = " Dataset Management range"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_dsm_range {
+    pub attributes: spdk_nvme_dsm_range__bindgen_ty_1,
+    pub length: u32,
+    pub starting_lba: u64,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_dsm_range__bindgen_ty_1 {
+    pub bits: spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1,
+    pub raw: u32,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_dsm_range__bindgen_ty_1__bindgen_ty_1 {
+    #[inline]
+    pub fn af(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_af(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn al(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_al(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved0(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved0(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sr(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sr(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sw(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sw(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn wp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_wp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 13u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 13u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn access_size(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_access_size(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        af: u32,
+        al: u32,
+        reserved0: u32,
+        sr: u32,
+        sw: u32,
+        wp: u32,
+        reserved1: u32,
+        access_size: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let af: u32 = unsafe { ::std::mem::transmute(af) };
+            af as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 2u8, {
+            let al: u32 = unsafe { ::std::mem::transmute(al) };
+            al as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 2u8, {
+            let reserved0: u32 = unsafe { ::std::mem::transmute(reserved0) };
+            reserved0 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let sr: u32 = unsafe { ::std::mem::transmute(sr) };
+            sr as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let sw: u32 = unsafe { ::std::mem::transmute(sw) };
+            sw as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let wp: u32 = unsafe { ::std::mem::transmute(wp) };
+            wp as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 13u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let access_size: u32 = unsafe { ::std::mem::transmute(access_size) };
+            access_size as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_dsm_range__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_dsm_range__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_dsm_range__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_dsm_range__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_dsm_range__bindgen_ty_1)
+        )
+    );
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_dsm_range__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_dsm_range__bindgen_ty_1),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_dsm_range__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_dsm_range__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_dsm_range() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_dsm_range>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_dsm_range))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_dsm_range>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_dsm_range))
+    );
+    fn test_field_attributes() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_dsm_range>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).attributes) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_dsm_range),
+                "::",
+                stringify!(attributes)
+            )
+        );
+    }
+    test_field_attributes();
+    fn test_field_length() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_dsm_range>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).length) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_dsm_range),
+                "::",
+                stringify!(length)
+            )
+        );
+    }
+    test_field_length();
+    fn test_field_starting_lba() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_dsm_range>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).starting_lba) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_dsm_range),
+                "::",
+                stringify!(starting_lba)
+            )
+        );
+    }
+    test_field_starting_lba();
+}
+pub const spdk_nvme_status_code_type_SPDK_NVME_SCT_GENERIC: spdk_nvme_status_code_type = 0;
+pub const spdk_nvme_status_code_type_SPDK_NVME_SCT_COMMAND_SPECIFIC: spdk_nvme_status_code_type = 1;
+pub const spdk_nvme_status_code_type_SPDK_NVME_SCT_MEDIA_ERROR: spdk_nvme_status_code_type = 2;
+pub const spdk_nvme_status_code_type_SPDK_NVME_SCT_PATH: spdk_nvme_status_code_type = 3;
+pub const spdk_nvme_status_code_type_SPDK_NVME_SCT_VENDOR_SPECIFIC: spdk_nvme_status_code_type = 7;
+#[doc = " Status code types"]
+pub type spdk_nvme_status_code_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_SUCCESS:
+    spdk_nvme_generic_command_status_code = 0;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_OPCODE:
+    spdk_nvme_generic_command_status_code = 1;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_FIELD:
+    spdk_nvme_generic_command_status_code = 2;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_COMMAND_ID_CONFLICT:
+    spdk_nvme_generic_command_status_code = 3;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_DATA_TRANSFER_ERROR:
+    spdk_nvme_generic_command_status_code = 4;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_POWER_LOSS:
+    spdk_nvme_generic_command_status_code = 5;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INTERNAL_DEVICE_ERROR:
+    spdk_nvme_generic_command_status_code = 6;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_BY_REQUEST:
+    spdk_nvme_generic_command_status_code = 7;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_SQ_DELETION:
+    spdk_nvme_generic_command_status_code = 8;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_FAILED_FUSED:
+    spdk_nvme_generic_command_status_code = 9;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_MISSING_FUSED:
+    spdk_nvme_generic_command_status_code = 10;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_NAMESPACE_OR_FORMAT:
+    spdk_nvme_generic_command_status_code = 11;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_COMMAND_SEQUENCE_ERROR:
+    spdk_nvme_generic_command_status_code = 12;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_SGL_SEG_DESCRIPTOR:
+    spdk_nvme_generic_command_status_code = 13;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_NUM_SGL_DESCIRPTORS:
+    spdk_nvme_generic_command_status_code = 14;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_DATA_SGL_LENGTH_INVALID:
+    spdk_nvme_generic_command_status_code = 15;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_METADATA_SGL_LENGTH_INVALID:
+    spdk_nvme_generic_command_status_code = 16;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_SGL_DESCRIPTOR_TYPE_INVALID:
+    spdk_nvme_generic_command_status_code = 17;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_CONTROLLER_MEM_BUF:
+    spdk_nvme_generic_command_status_code = 18;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_PRP_OFFSET:
+    spdk_nvme_generic_command_status_code = 19;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ATOMIC_WRITE_UNIT_EXCEEDED:
+    spdk_nvme_generic_command_status_code = 20;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_OPERATION_DENIED:
+    spdk_nvme_generic_command_status_code = 21;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_INVALID_SGL_OFFSET:
+    spdk_nvme_generic_command_status_code = 22;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_HOSTID_INCONSISTENT_FORMAT:
+    spdk_nvme_generic_command_status_code = 24;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_KEEP_ALIVE_EXPIRED:
+    spdk_nvme_generic_command_status_code = 25;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_KEEP_ALIVE_INVALID:
+    spdk_nvme_generic_command_status_code = 26;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_ABORTED_PREEMPT:
+    spdk_nvme_generic_command_status_code = 27;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_SANITIZE_FAILED:
+    spdk_nvme_generic_command_status_code = 28;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_SANITIZE_IN_PROGRESS:
+    spdk_nvme_generic_command_status_code = 29;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_SGL_DATA_BLOCK_GRANULARITY_INVALID:
+    spdk_nvme_generic_command_status_code = 30;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_COMMAND_INVALID_IN_CMB:
+    spdk_nvme_generic_command_status_code = 31;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_LBA_OUT_OF_RANGE:
+    spdk_nvme_generic_command_status_code = 128;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_CAPACITY_EXCEEDED:
+    spdk_nvme_generic_command_status_code = 129;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_NAMESPACE_NOT_READY:
+    spdk_nvme_generic_command_status_code = 130;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_RESERVATION_CONFLICT:
+    spdk_nvme_generic_command_status_code = 131;
+pub const spdk_nvme_generic_command_status_code_SPDK_NVME_SC_FORMAT_IN_PROGRESS:
+    spdk_nvme_generic_command_status_code = 132;
+#[doc = " Generic command status codes"]
+pub type spdk_nvme_generic_command_status_code = ::std::os::raw::c_uint;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_COMPLETION_QUEUE_INVALID:
+    spdk_nvme_command_specific_status_code = 0;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_QUEUE_IDENTIFIER:
+    spdk_nvme_command_specific_status_code = 1;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_QUEUE_SIZE:
+    spdk_nvme_command_specific_status_code = 2;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_ABORT_COMMAND_LIMIT_EXCEEDED:
+    spdk_nvme_command_specific_status_code = 3;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_ASYNC_EVENT_REQUEST_LIMIT_EXCEEDED:
+    spdk_nvme_command_specific_status_code = 5;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_FIRMWARE_SLOT:
+    spdk_nvme_command_specific_status_code = 6;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_FIRMWARE_IMAGE:
+    spdk_nvme_command_specific_status_code = 7;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_INTERRUPT_VECTOR:
+    spdk_nvme_command_specific_status_code = 8;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_LOG_PAGE:
+    spdk_nvme_command_specific_status_code = 9;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_FORMAT:
+    spdk_nvme_command_specific_status_code = 10;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FIRMWARE_REQ_CONVENTIONAL_RESET:
+    spdk_nvme_command_specific_status_code = 11;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_QUEUE_DELETION:
+    spdk_nvme_command_specific_status_code = 12;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FEATURE_ID_NOT_SAVEABLE:
+    spdk_nvme_command_specific_status_code = 13;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FEATURE_NOT_CHANGEABLE:
+    spdk_nvme_command_specific_status_code = 14;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FEATURE_NOT_NAMESPACE_SPECIFIC:
+    spdk_nvme_command_specific_status_code = 15;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FIRMWARE_REQ_NVM_RESET:
+    spdk_nvme_command_specific_status_code = 16;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FIRMWARE_REQ_RESET:
+    spdk_nvme_command_specific_status_code = 17;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FIRMWARE_REQ_MAX_TIME_VIOLATION:
+    spdk_nvme_command_specific_status_code = 18;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_FIRMWARE_ACTIVATION_PROHIBITED:
+    spdk_nvme_command_specific_status_code = 19;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_OVERLAPPING_RANGE:
+    spdk_nvme_command_specific_status_code = 20;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_NAMESPACE_INSUFFICIENT_CAPACITY:
+    spdk_nvme_command_specific_status_code = 21;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_NAMESPACE_ID_UNAVAILABLE:
+    spdk_nvme_command_specific_status_code = 22;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_NAMESPACE_ALREADY_ATTACHED:
+    spdk_nvme_command_specific_status_code = 24;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_NAMESPACE_IS_PRIVATE:
+    spdk_nvme_command_specific_status_code = 25;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_NAMESPACE_NOT_ATTACHED:
+    spdk_nvme_command_specific_status_code = 26;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_THINPROVISIONING_NOT_SUPPORTED:
+    spdk_nvme_command_specific_status_code = 27;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_CONTROLLER_LIST_INVALID:
+    spdk_nvme_command_specific_status_code = 28;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_DEVICE_SELF_TEST_IN_PROGRESS:
+    spdk_nvme_command_specific_status_code = 29;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_BOOT_PARTITION_WRITE_PROHIBITED:
+    spdk_nvme_command_specific_status_code = 30;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_CTRLR_ID:
+    spdk_nvme_command_specific_status_code = 31;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_SECONDARY_CTRLR_STATE:
+    spdk_nvme_command_specific_status_code = 32;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_NUM_CTRLR_RESOURCES:
+    spdk_nvme_command_specific_status_code = 33;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_RESOURCE_ID:
+    spdk_nvme_command_specific_status_code = 34;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_IOCS_NOT_SUPPORTED:
+    spdk_nvme_command_specific_status_code = 41;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_IOCS_NOT_ENABLED:
+    spdk_nvme_command_specific_status_code = 42;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_IOCS_COMBINATION_REJECTED:
+    spdk_nvme_command_specific_status_code = 43;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_IOCS:
+    spdk_nvme_command_specific_status_code = 44;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_STREAM_RESOURCE_ALLOCATION_FAILED:
+    spdk_nvme_command_specific_status_code = 127;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_CONFLICTING_ATTRIBUTES:
+    spdk_nvme_command_specific_status_code = 128;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_INVALID_PROTECTION_INFO:
+    spdk_nvme_command_specific_status_code = 129;
+pub const spdk_nvme_command_specific_status_code_SPDK_NVME_SC_ATTEMPTED_WRITE_TO_RO_RANGE:
+    spdk_nvme_command_specific_status_code = 130;
+#[doc = " Command specific status codes"]
+pub type spdk_nvme_command_specific_status_code = ::std::os::raw::c_uint;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_WRITE_FAULTS:
+    spdk_nvme_media_error_status_code = 128;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_UNRECOVERED_READ_ERROR:
+    spdk_nvme_media_error_status_code = 129;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_GUARD_CHECK_ERROR:
+    spdk_nvme_media_error_status_code = 130;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_APPLICATION_TAG_CHECK_ERROR:
+    spdk_nvme_media_error_status_code = 131;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_REFERENCE_TAG_CHECK_ERROR:
+    spdk_nvme_media_error_status_code = 132;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_COMPARE_FAILURE:
+    spdk_nvme_media_error_status_code = 133;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_ACCESS_DENIED:
+    spdk_nvme_media_error_status_code = 134;
+pub const spdk_nvme_media_error_status_code_SPDK_NVME_SC_DEALLOCATED_OR_UNWRITTEN_BLOCK:
+    spdk_nvme_media_error_status_code = 135;
+#[doc = " Media error status codes"]
+pub type spdk_nvme_media_error_status_code = ::std::os::raw::c_uint;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_INTERNAL_PATH_ERROR: spdk_nvme_path_status_code =
+    0;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_ASYMMETRIC_ACCESS_PERSISTENT_LOSS:
+    spdk_nvme_path_status_code = 1;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_ASYMMETRIC_ACCESS_INACCESSIBLE:
+    spdk_nvme_path_status_code = 2;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_ASYMMETRIC_ACCESS_TRANSITION:
+    spdk_nvme_path_status_code = 3;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_CONTROLLER_PATH_ERROR:
+    spdk_nvme_path_status_code = 96;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_HOST_PATH_ERROR: spdk_nvme_path_status_code = 112;
+pub const spdk_nvme_path_status_code_SPDK_NVME_SC_ABORTED_BY_HOST: spdk_nvme_path_status_code = 113;
+#[doc = " Path related status codes"]
+pub type spdk_nvme_path_status_code = ::std::os::raw::c_uint;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DELETE_IO_SQ: spdk_nvme_admin_opcode = 0;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_CREATE_IO_SQ: spdk_nvme_admin_opcode = 1;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_GET_LOG_PAGE: spdk_nvme_admin_opcode = 2;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DELETE_IO_CQ: spdk_nvme_admin_opcode = 4;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_CREATE_IO_CQ: spdk_nvme_admin_opcode = 5;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_IDENTIFY: spdk_nvme_admin_opcode = 6;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_ABORT: spdk_nvme_admin_opcode = 8;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_SET_FEATURES: spdk_nvme_admin_opcode = 9;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_GET_FEATURES: spdk_nvme_admin_opcode = 10;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_ASYNC_EVENT_REQUEST: spdk_nvme_admin_opcode = 12;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_NS_MANAGEMENT: spdk_nvme_admin_opcode = 13;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_FIRMWARE_COMMIT: spdk_nvme_admin_opcode = 16;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_FIRMWARE_IMAGE_DOWNLOAD: spdk_nvme_admin_opcode = 17;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DEVICE_SELF_TEST: spdk_nvme_admin_opcode = 20;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_NS_ATTACHMENT: spdk_nvme_admin_opcode = 21;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_KEEP_ALIVE: spdk_nvme_admin_opcode = 24;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DIRECTIVE_SEND: spdk_nvme_admin_opcode = 25;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DIRECTIVE_RECEIVE: spdk_nvme_admin_opcode = 26;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_VIRTUALIZATION_MANAGEMENT: spdk_nvme_admin_opcode =
+    28;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_NVME_MI_SEND: spdk_nvme_admin_opcode = 29;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_NVME_MI_RECEIVE: spdk_nvme_admin_opcode = 30;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_DOORBELL_BUFFER_CONFIG: spdk_nvme_admin_opcode = 124;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_FORMAT_NVM: spdk_nvme_admin_opcode = 128;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_SECURITY_SEND: spdk_nvme_admin_opcode = 129;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_SECURITY_RECEIVE: spdk_nvme_admin_opcode = 130;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_SANITIZE: spdk_nvme_admin_opcode = 132;
+pub const spdk_nvme_admin_opcode_SPDK_NVME_OPC_GET_LBA_STATUS: spdk_nvme_admin_opcode = 134;
+#[doc = " Admin opcodes"]
+pub type spdk_nvme_admin_opcode = ::std::os::raw::c_uint;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_FLUSH: spdk_nvme_nvm_opcode = 0;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_WRITE: spdk_nvme_nvm_opcode = 1;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_READ: spdk_nvme_nvm_opcode = 2;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_WRITE_UNCORRECTABLE: spdk_nvme_nvm_opcode = 4;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_COMPARE: spdk_nvme_nvm_opcode = 5;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_WRITE_ZEROES: spdk_nvme_nvm_opcode = 8;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_DATASET_MANAGEMENT: spdk_nvme_nvm_opcode = 9;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_RESERVATION_REGISTER: spdk_nvme_nvm_opcode = 13;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_RESERVATION_REPORT: spdk_nvme_nvm_opcode = 14;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_RESERVATION_ACQUIRE: spdk_nvme_nvm_opcode = 17;
+pub const spdk_nvme_nvm_opcode_SPDK_NVME_OPC_RESERVATION_RELEASE: spdk_nvme_nvm_opcode = 21;
+#[doc = " NVM command set opcodes"]
+pub type spdk_nvme_nvm_opcode = ::std::os::raw::c_uint;
+pub const spdk_nvme_zns_opcode_SPDK_NVME_OPC_ZONE_MGMT_SEND: spdk_nvme_zns_opcode = 121;
+pub const spdk_nvme_zns_opcode_SPDK_NVME_OPC_ZONE_MGMT_RECV: spdk_nvme_zns_opcode = 122;
+pub const spdk_nvme_zns_opcode_SPDK_NVME_OPC_ZONE_APPEND: spdk_nvme_zns_opcode = 125;
+#[doc = " Zoned Namespace command set opcodes"]
+#[doc = ""]
+#[doc = " In addition to the opcodes of the NVM command set, the Zoned Namespace"]
+#[doc = " command set supports the following opcodes."]
+pub type spdk_nvme_zns_opcode = ::std::os::raw::c_uint;
+#[doc = " Opcode does not transfer data"]
+pub const spdk_nvme_data_transfer_SPDK_NVME_DATA_NONE: spdk_nvme_data_transfer = 0;
+#[doc = " Opcode transfers data from host to controller (e.g. Write)"]
+pub const spdk_nvme_data_transfer_SPDK_NVME_DATA_HOST_TO_CONTROLLER: spdk_nvme_data_transfer = 1;
+#[doc = " Opcode transfers data from controller to host (e.g. Read)"]
+pub const spdk_nvme_data_transfer_SPDK_NVME_DATA_CONTROLLER_TO_HOST: spdk_nvme_data_transfer = 2;
+#[doc = " Opcode transfers data both directions"]
+pub const spdk_nvme_data_transfer_SPDK_NVME_DATA_BIDIRECTIONAL: spdk_nvme_data_transfer = 3;
+#[doc = " Data transfer (bits 1:0) of an NVMe opcode."]
+#[doc = ""]
+#[doc = " \\sa spdk_nvme_opc_get_data_transfer"]
+pub type spdk_nvme_data_transfer = ::std::os::raw::c_uint;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_host_behavior {
+    pub acre: u8,
+    pub reserved: [u8; 511usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_host_behavior() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_host_behavior>(),
+        512usize,
+        concat!("Size of: ", stringify!(spdk_nvme_host_behavior))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_host_behavior>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_host_behavior))
+    );
+    fn test_field_acre() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_host_behavior>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).acre) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_host_behavior),
+                "::",
+                stringify!(acre)
+            )
+        );
+    }
+    test_field_acre();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_host_behavior>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_host_behavior),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_arbitration"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_ARBITRATION: spdk_nvme_feat = 1;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_power_management"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_POWER_MANAGEMENT: spdk_nvme_feat = 2;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_lba_range_type"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_LBA_RANGE_TYPE: spdk_nvme_feat = 3;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_temperature_threshold"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_TEMPERATURE_THRESHOLD: spdk_nvme_feat = 4;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_error_recovery"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_ERROR_RECOVERY: spdk_nvme_feat = 5;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_volatile_write_cache"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_VOLATILE_WRITE_CACHE: spdk_nvme_feat = 6;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_number_of_queues"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_NUMBER_OF_QUEUES: spdk_nvme_feat = 7;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_interrupt_coalescing"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_INTERRUPT_COALESCING: spdk_nvme_feat = 8;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_interrupt_vector_configuration"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_INTERRUPT_VECTOR_CONFIGURATION: spdk_nvme_feat = 9;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_write_atomicity"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_WRITE_ATOMICITY: spdk_nvme_feat = 10;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_async_event_configuration"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_ASYNC_EVENT_CONFIGURATION: spdk_nvme_feat = 11;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_autonomous_power_state_transition"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_AUTONOMOUS_POWER_STATE_TRANSITION: spdk_nvme_feat = 12;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_host_mem_buffer"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_MEM_BUFFER: spdk_nvme_feat = 13;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_host_mem_buffer"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_TIMESTAMP: spdk_nvme_feat = 14;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_keep_alive_timer"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_KEEP_ALIVE_TIMER: spdk_nvme_feat = 15;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_host_controlled_thermal_management"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_CONTROLLED_THERMAL_MANAGEMENT: spdk_nvme_feat = 16;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_non_operational_power_state_config"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_NON_OPERATIONAL_POWER_STATE_CONFIG: spdk_nvme_feat = 17;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_non_operational_power_state_config"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_READ_RECOVERY_LEVEL_CONFIG: spdk_nvme_feat = 18;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_non_operational_power_state_config"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_PREDICTABLE_LATENCY_MODE_CONFIG: spdk_nvme_feat = 19;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_non_operational_power_state_config"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_PREDICTABLE_LATENCY_MODE_WINDOW: spdk_nvme_feat = 20;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_non_operational_power_state_config"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_LBA_STATUS_INFORMATION_ATTRIBUTES: spdk_nvme_feat = 21;
+#[doc = " data buffer layout  defined by \\ref spdk_nvme_host_behavior"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_BEHAVIOR_SUPPORT: spdk_nvme_feat = 22;
+#[doc = " data buffer layout  defined by \\ref spdk_nvme_host_behavior"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_SANITIZE_CONFIG: spdk_nvme_feat = 23;
+#[doc = " data buffer layout  defined by \\ref spdk_nvme_host_behavior"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_ENDURANCE_GROUP_EVENT: spdk_nvme_feat = 24;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_software_progress_marker"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_SOFTWARE_PROGRESS_MARKER: spdk_nvme_feat = 128;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_host_identifier"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_IDENTIFIER: spdk_nvme_feat = 129;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_reservation_notification_mask"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_RESERVE_MASK: spdk_nvme_feat = 130;
+#[doc = " cdw11 layout defined by \\ref spdk_nvme_feat_reservation_persistence"]
+pub const spdk_nvme_feat_SPDK_NVME_FEAT_HOST_RESERVE_PERSIST: spdk_nvme_feat = 131;
+pub type spdk_nvme_feat = ::std::os::raw::c_uint;
+pub const spdk_nvme_dsm_attribute_SPDK_NVME_DSM_ATTR_INTEGRAL_READ: spdk_nvme_dsm_attribute = 1;
+pub const spdk_nvme_dsm_attribute_SPDK_NVME_DSM_ATTR_INTEGRAL_WRITE: spdk_nvme_dsm_attribute = 2;
+pub const spdk_nvme_dsm_attribute_SPDK_NVME_DSM_ATTR_DEALLOCATE: spdk_nvme_dsm_attribute = 4;
+#[doc = " Bit set of attributes for DATASET MANAGEMENT commands."]
+pub type spdk_nvme_dsm_attribute = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_power_state {
+    pub mp: u16,
+    pub reserved1: u8,
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub enlat: u32,
+    pub exlat: u32,
+    pub _bitfield_align_2: [u8; 0],
+    pub _bitfield_2: __BindgenBitfieldUnit<[u8; 4usize]>,
+    pub reserved7: [u8; 16usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_power_state() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_power_state>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvme_power_state))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_power_state>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_power_state))
+    );
+    fn test_field_mp() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_power_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mp) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_power_state),
+                "::",
+                stringify!(mp)
+            )
+        );
+    }
+    test_field_mp();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_power_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_power_state),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_enlat() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_power_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).enlat) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_power_state),
+                "::",
+                stringify!(enlat)
+            )
+        );
+    }
+    test_field_enlat();
+    fn test_field_exlat() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_power_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).exlat) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_power_state),
+                "::",
+                stringify!(exlat)
+            )
+        );
+    }
+    test_field_exlat();
+    fn test_field_reserved7() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_power_state>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved7) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_power_state),
+                "::",
+                stringify!(reserved7)
+            )
+        );
+    }
+    test_field_reserved7();
+}
+impl spdk_nvme_power_state {
+    #[inline]
+    pub fn mps(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_mps(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nops(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_nops(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(mps: u8, nops: u8, reserved2: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let mps: u8 = unsafe { ::std::mem::transmute(mps) };
+            mps as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let nops: u8 = unsafe { ::std::mem::transmute(nops) };
+            nops as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved2: u8 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+    #[inline]
+    pub fn rrt(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(0usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rrt(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(0usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rrl(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(8usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rrl(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(8usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved4(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(13usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved4(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(13usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rwt(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(16usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rwt(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(16usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved5(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(21usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved5(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(21usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rwl(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(24usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rwl(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(24usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved6(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_2.get(29usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved6(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_2.set(29usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_2(
+        rrt: u8,
+        reserved3: u8,
+        rrl: u8,
+        reserved4: u8,
+        rwt: u8,
+        reserved5: u8,
+        rwl: u8,
+        reserved6: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 5u8, {
+            let rrt: u8 = unsafe { ::std::mem::transmute(rrt) };
+            rrt as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved3: u8 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 5u8, {
+            let rrl: u8 = unsafe { ::std::mem::transmute(rrl) };
+            rrl as u64
+        });
+        __bindgen_bitfield_unit.set(13usize, 3u8, {
+            let reserved4: u8 = unsafe { ::std::mem::transmute(reserved4) };
+            reserved4 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 5u8, {
+            let rwt: u8 = unsafe { ::std::mem::transmute(rwt) };
+            rwt as u64
+        });
+        __bindgen_bitfield_unit.set(21usize, 3u8, {
+            let reserved5: u8 = unsafe { ::std::mem::transmute(reserved5) };
+            reserved5 as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 5u8, {
+            let rwl: u8 = unsafe { ::std::mem::transmute(rwl) };
+            rwl as u64
+        });
+        __bindgen_bitfield_unit.set(29usize, 3u8, {
+            let reserved6: u8 = unsafe { ::std::mem::transmute(reserved6) };
+            reserved6 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " Identify namespace indicated in CDW1.NSID"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS: spdk_nvme_identify_cns = 0;
+#[doc = " Identify controller"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_CTRLR: spdk_nvme_identify_cns = 1;
+#[doc = " List active NSIDs greater than CDW1.NSID"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_ACTIVE_NS_LIST: spdk_nvme_identify_cns = 2;
+#[doc = " List namespace identification descriptors"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS_ID_DESCRIPTOR_LIST: spdk_nvme_identify_cns =
+    3;
+#[doc = " Identify namespace indicated in CDW1.NSID, specific to CWD11.CSI"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS_IOCS: spdk_nvme_identify_cns = 5;
+#[doc = " Identify controller, specific to CWD11.CSI"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_CTRLR_IOCS: spdk_nvme_identify_cns = 6;
+#[doc = " List active NSIDs greater than CDW1.NSID, specific to CWD11.CSI"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_ACTIVE_NS_LIST_IOCS: spdk_nvme_identify_cns = 7;
+#[doc = " List allocated NSIDs greater than CDW1.NSID"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_ALLOCATED_NS_LIST: spdk_nvme_identify_cns = 16;
+#[doc = " Identify namespace if CDW1.NSID is allocated"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS_ALLOCATED: spdk_nvme_identify_cns = 17;
+#[doc = " Get list of controllers starting at CDW10.CNTID that are attached to CDW1.NSID"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS_ATTACHED_CTRLR_LIST: spdk_nvme_identify_cns =
+    18;
+#[doc = " Get list of controllers starting at CDW10.CNTID"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_CTRLR_LIST: spdk_nvme_identify_cns = 19;
+#[doc = " Get primary controller capabilities structure"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_PRIMARY_CTRLR_CAP: spdk_nvme_identify_cns = 20;
+#[doc = " Get secondary controller list"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_SECONDARY_CTRLR_LIST: spdk_nvme_identify_cns =
+    21;
+#[doc = " List allocated NSIDs greater than CDW1.NSID, specific to CWD11.CSI"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_ALLOCATED_NS_LIST_IOCS: spdk_nvme_identify_cns =
+    26;
+#[doc = " Identify namespace if CDW1.NSID is allocated, specific to CDWD11.CSI"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_NS_ALLOCATED_IOCS: spdk_nvme_identify_cns = 27;
+#[doc = " Identify I/O Command Sets"]
+pub const spdk_nvme_identify_cns_SPDK_NVME_IDENTIFY_IOCS: spdk_nvme_identify_cns = 28;
+#[doc = " Identify command CNS value"]
+pub type spdk_nvme_identify_cns = ::std::os::raw::c_uint;
+#[doc = " NVM subsystem uses dynamic controller model"]
+pub const spdk_nvmf_ctrlr_model_SPDK_NVMF_CTRLR_MODEL_DYNAMIC: spdk_nvmf_ctrlr_model = 0;
+#[doc = " NVM subsystem uses static controller model"]
+pub const spdk_nvmf_ctrlr_model_SPDK_NVMF_CTRLR_MODEL_STATIC: spdk_nvmf_ctrlr_model = 1;
+#[doc = " NVMe over Fabrics controller model"]
+pub type spdk_nvmf_ctrlr_model = ::std::os::raw::c_uint;
+#[doc = " SGLs are not supported"]
+pub const spdk_nvme_sgls_supported_SPDK_NVME_SGLS_NOT_SUPPORTED: spdk_nvme_sgls_supported = 0;
+#[doc = " SGLs are supported with no alignment or granularity requirement."]
+pub const spdk_nvme_sgls_supported_SPDK_NVME_SGLS_SUPPORTED: spdk_nvme_sgls_supported = 1;
+#[doc = " SGLs are supported with a DWORD alignment and granularity requirement."]
+pub const spdk_nvme_sgls_supported_SPDK_NVME_SGLS_SUPPORTED_DWORD_ALIGNED:
+    spdk_nvme_sgls_supported = 2;
+#[doc = " Identify Controller data sgls.supported values"]
+pub type spdk_nvme_sgls_supported = ::std::os::raw::c_uint;
+#[doc = " Support for NSID=FFFFFFFFh with Flush is not indicated."]
+pub const spdk_nvme_flush_broadcast_SPDK_NVME_FLUSH_BROADCAST_NOT_INDICATED:
+    spdk_nvme_flush_broadcast = 0;
+#[doc = " Flush does not support NSID set to FFFFFFFFh."]
+pub const spdk_nvme_flush_broadcast_SPDK_NVME_FLUSH_BROADCAST_NOT_SUPPORTED:
+    spdk_nvme_flush_broadcast = 2;
+#[doc = " Flush supports NSID set to FFFFFFFFh."]
+pub const spdk_nvme_flush_broadcast_SPDK_NVME_FLUSH_BROADCAST_SUPPORTED: spdk_nvme_flush_broadcast =
+    3;
+#[doc = " Identify Controller data vwc.flush_broadcast values"]
+pub type spdk_nvme_flush_broadcast = ::std::os::raw::c_uint;
+#[doc = " Identify Controller data NVMe over Fabrics-specific fields"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cdata_nvmf_specific {
+    #[doc = " I/O queue command capsule supported size (16-byte units)"]
+    pub ioccsz: u32,
+    #[doc = " I/O queue response capsule supported size (16-byte units)"]
+    pub iorcsz: u32,
+    #[doc = " In-capsule data offset (16-byte units)"]
+    pub icdoff: u16,
+    pub ctrattr: spdk_nvme_cdata_nvmf_specific__bindgen_ty_1,
+    #[doc = " Maximum SGL block descriptors (0 = no limit)"]
+    pub msdbd: u8,
+    pub reserved: [u8; 244usize],
+}
+#[doc = " Controller attributes"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cdata_nvmf_specific__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cdata_nvmf_specific__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cdata_nvmf_specific__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_cdata_nvmf_specific__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cdata_nvmf_specific__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cdata_nvmf_specific__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_cdata_nvmf_specific__bindgen_ty_1 {
+    #[inline]
+    pub fn ctrlr_model(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ctrlr_model(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ctrlr_model: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ctrlr_model: u8 = unsafe { ::std::mem::transmute(ctrlr_model) };
+            ctrlr_model as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cdata_nvmf_specific() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cdata_nvmf_specific>(),
+        256usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cdata_nvmf_specific))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cdata_nvmf_specific>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cdata_nvmf_specific))
+    );
+    fn test_field_ioccsz() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ioccsz) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(ioccsz)
+            )
+        );
+    }
+    test_field_ioccsz();
+    fn test_field_iorcsz() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iorcsz) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(iorcsz)
+            )
+        );
+    }
+    test_field_iorcsz();
+    fn test_field_icdoff() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).icdoff) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(icdoff)
+            )
+        );
+    }
+    test_field_icdoff();
+    fn test_field_ctrattr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ctrattr) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(ctrattr)
+            )
+        );
+    }
+    test_field_ctrattr();
+    fn test_field_msdbd() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).msdbd) as usize - ptr as usize
+            },
+            11usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(msdbd)
+            )
+        );
+    }
+    test_field_msdbd();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_cdata_nvmf_specific>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cdata_nvmf_specific),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[doc = " Identify Controller data SGL support"]
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cdata_sgls {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cdata_sgls() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cdata_sgls>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cdata_sgls))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cdata_sgls>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cdata_sgls))
+    );
+}
+impl spdk_nvme_cdata_sgls {
+    #[inline]
+    pub fn supported(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_supported(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn keyed_sgl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_keyed_sgl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 13u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 13u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bit_bucket_descriptor(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bit_bucket_descriptor(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn metadata_pointer(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_metadata_pointer(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn oversized_sgl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(18usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_oversized_sgl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(18usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn metadata_address(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_metadata_address(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(19usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sgl_offset(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sgl_offset(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn transport_sgl(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(21usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_transport_sgl(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(21usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 10u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(22usize, 10u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        supported: u32,
+        keyed_sgl: u32,
+        reserved1: u32,
+        bit_bucket_descriptor: u32,
+        metadata_pointer: u32,
+        oversized_sgl: u32,
+        metadata_address: u32,
+        sgl_offset: u32,
+        transport_sgl: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 2u8, {
+            let supported: u32 = unsafe { ::std::mem::transmute(supported) };
+            supported as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let keyed_sgl: u32 = unsafe { ::std::mem::transmute(keyed_sgl) };
+            keyed_sgl as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 13u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let bit_bucket_descriptor: u32 =
+                unsafe { ::std::mem::transmute(bit_bucket_descriptor) };
+            bit_bucket_descriptor as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 1u8, {
+            let metadata_pointer: u32 = unsafe { ::std::mem::transmute(metadata_pointer) };
+            metadata_pointer as u64
+        });
+        __bindgen_bitfield_unit.set(18usize, 1u8, {
+            let oversized_sgl: u32 = unsafe { ::std::mem::transmute(oversized_sgl) };
+            oversized_sgl as u64
+        });
+        __bindgen_bitfield_unit.set(19usize, 1u8, {
+            let metadata_address: u32 = unsafe { ::std::mem::transmute(metadata_address) };
+            metadata_address as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 1u8, {
+            let sgl_offset: u32 = unsafe { ::std::mem::transmute(sgl_offset) };
+            sgl_offset as u64
+        });
+        __bindgen_bitfield_unit.set(21usize, 1u8, {
+            let transport_sgl: u32 = unsafe { ::std::mem::transmute(transport_sgl) };
+            transport_sgl as u64
+        });
+        __bindgen_bitfield_unit.set(22usize, 10u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " controller multi-path I/O and namespace sharing capabilities"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_1>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_1 {
+    #[inline]
+    pub fn multi_port(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_multi_port(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn multi_host(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_multi_host(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sr_iov(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_sr_iov(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_reporting(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_reporting(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        multi_port: u8,
+        multi_host: u8,
+        sr_iov: u8,
+        ana_reporting: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let multi_port: u8 = unsafe { ::std::mem::transmute(multi_port) };
+            multi_port as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let multi_host: u8 = unsafe { ::std::mem::transmute(multi_host) };
+            multi_host as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let sr_iov: u8 = unsafe { ::std::mem::transmute(sr_iov) };
+            sr_iov as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let ana_reporting: u8 = unsafe { ::std::mem::transmute(ana_reporting) };
+            ana_reporting as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " optional asynchronous events supported"]
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_2 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_2>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_2)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_2 {
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ns_attribute_notices(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ns_attribute_notices(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn fw_activation_notices(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fw_activation_notices(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_change_notices(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ana_change_notices(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 19u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 19u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn discovery_log_change_notices(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(31usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_discovery_log_change_notices(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(31usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        reserved1: u32,
+        ns_attribute_notices: u32,
+        fw_activation_notices: u32,
+        reserved2: u32,
+        ana_change_notices: u32,
+        reserved3: u32,
+        discovery_log_change_notices: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let ns_attribute_notices: u32 = unsafe { ::std::mem::transmute(ns_attribute_notices) };
+            ns_attribute_notices as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let fw_activation_notices: u32 =
+                unsafe { ::std::mem::transmute(fw_activation_notices) };
+            fw_activation_notices as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 1u8, {
+            let ana_change_notices: u32 = unsafe { ::std::mem::transmute(ana_change_notices) };
+            ana_change_notices as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 19u8, {
+            let reserved3: u32 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit.set(31usize, 1u8, {
+            let discovery_log_change_notices: u32 =
+                unsafe { ::std::mem::transmute(discovery_log_change_notices) };
+            discovery_log_change_notices as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " controller attributes"]
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_3 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_3>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_3>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_3)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_3 {
+    #[inline]
+    pub fn host_id_exhid_supported(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_host_id_exhid_supported(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn non_operational_power_state_permissive_mode(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_non_operational_power_state_permissive_mode(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        host_id_exhid_supported: u32,
+        non_operational_power_state_permissive_mode: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let host_id_exhid_supported: u32 =
+                unsafe { ::std::mem::transmute(host_id_exhid_supported) };
+            host_id_exhid_supported as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let non_operational_power_state_permissive_mode: u32 =
+                unsafe { ::std::mem::transmute(non_operational_power_state_permissive_mode) };
+            non_operational_power_state_permissive_mode as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " optional admin command support"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_4 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_4() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_4>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_4))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_4>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_4)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_4 {
+    #[inline]
+    pub fn security(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_security(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn format(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_format(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn firmware(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_firmware(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ns_manage(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_ns_manage(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn device_self_test(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_device_self_test(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn directives(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_directives(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nvme_mi(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_nvme_mi(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn virtualization_management(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_virtualization_management(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn doorbell_buffer_config(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_doorbell_buffer_config(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn get_lba_status(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_get_lba_status(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn oacs_rsvd(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 6u8) as u16) }
+    }
+    #[inline]
+    pub fn set_oacs_rsvd(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        security: u16,
+        format: u16,
+        firmware: u16,
+        ns_manage: u16,
+        device_self_test: u16,
+        directives: u16,
+        nvme_mi: u16,
+        virtualization_management: u16,
+        doorbell_buffer_config: u16,
+        get_lba_status: u16,
+        oacs_rsvd: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let security: u16 = unsafe { ::std::mem::transmute(security) };
+            security as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let format: u16 = unsafe { ::std::mem::transmute(format) };
+            format as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let firmware: u16 = unsafe { ::std::mem::transmute(firmware) };
+            firmware as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let ns_manage: u16 = unsafe { ::std::mem::transmute(ns_manage) };
+            ns_manage as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let device_self_test: u16 = unsafe { ::std::mem::transmute(device_self_test) };
+            device_self_test as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let directives: u16 = unsafe { ::std::mem::transmute(directives) };
+            directives as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let nvme_mi: u16 = unsafe { ::std::mem::transmute(nvme_mi) };
+            nvme_mi as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let virtualization_management: u16 =
+                unsafe { ::std::mem::transmute(virtualization_management) };
+            virtualization_management as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let doorbell_buffer_config: u16 =
+                unsafe { ::std::mem::transmute(doorbell_buffer_config) };
+            doorbell_buffer_config as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let get_lba_status: u16 = unsafe { ::std::mem::transmute(get_lba_status) };
+            get_lba_status as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 6u8, {
+            let oacs_rsvd: u16 = unsafe { ::std::mem::transmute(oacs_rsvd) };
+            oacs_rsvd as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " firmware updates"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_5 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_5() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_5>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_5))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_5>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_5)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_5 {
+    #[inline]
+    pub fn slot1_ro(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_slot1_ro(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn num_slots(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_num_slots(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn activation_without_reset(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_activation_without_reset(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn frmw_rsvd(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_frmw_rsvd(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        slot1_ro: u8,
+        num_slots: u8,
+        activation_without_reset: u8,
+        frmw_rsvd: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let slot1_ro: u8 = unsafe { ::std::mem::transmute(slot1_ro) };
+            slot1_ro as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 3u8, {
+            let num_slots: u8 = unsafe { ::std::mem::transmute(num_slots) };
+            num_slots as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let activation_without_reset: u8 =
+                unsafe { ::std::mem::transmute(activation_without_reset) };
+            activation_without_reset as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let frmw_rsvd: u8 = unsafe { ::std::mem::transmute(frmw_rsvd) };
+            frmw_rsvd as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " log page attributes"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_6 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_6() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_6>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_6))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_6>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_6)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_6 {
+    #[inline]
+    pub fn ns_smart(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ns_smart(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn celp(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_celp(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn edlp(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_edlp(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn telemetry(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_telemetry(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lpa_rsvd(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_lpa_rsvd(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ns_smart: u8,
+        celp: u8,
+        edlp: u8,
+        telemetry: u8,
+        lpa_rsvd: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ns_smart: u8 = unsafe { ::std::mem::transmute(ns_smart) };
+            ns_smart as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let celp: u8 = unsafe { ::std::mem::transmute(celp) };
+            celp as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let edlp: u8 = unsafe { ::std::mem::transmute(edlp) };
+            edlp as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let telemetry: u8 = unsafe { ::std::mem::transmute(telemetry) };
+            telemetry as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let lpa_rsvd: u8 = unsafe { ::std::mem::transmute(lpa_rsvd) };
+            lpa_rsvd as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " admin vendor specific command configuration"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_7 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_7() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_7>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_7))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_7>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_7)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_7 {
+    #[inline]
+    pub fn spec_format(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_spec_format(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn avscc_rsvd(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_avscc_rsvd(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(spec_format: u8, avscc_rsvd: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let spec_format: u8 = unsafe { ::std::mem::transmute(spec_format) };
+            spec_format as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let avscc_rsvd: u8 = unsafe { ::std::mem::transmute(avscc_rsvd) };
+            avscc_rsvd as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " autonomous power state transition attributes"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_8 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_8() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_8>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_8))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_8>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_8)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_8 {
+    #[inline]
+    pub fn supported(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_supported(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn apsta_rsvd(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_apsta_rsvd(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(supported: u8, apsta_rsvd: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let supported: u8 = unsafe { ::std::mem::transmute(supported) };
+            supported as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let apsta_rsvd: u8 = unsafe { ::std::mem::transmute(apsta_rsvd) };
+            apsta_rsvd as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " replay protected memory block support"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_9 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub reserved2: u8,
+    pub total_size: u8,
+    pub access_size: u8,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_9() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_9>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_9))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_9>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_9)
+        )
+    );
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_9>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_9),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_total_size() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_9>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).total_size) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_9),
+                "::",
+                stringify!(total_size)
+            )
+        );
+    }
+    test_field_total_size();
+    fn test_field_access_size() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_9>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).access_size) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_9),
+                "::",
+                stringify!(access_size)
+            )
+        );
+    }
+    test_field_access_size();
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_9 {
+    #[inline]
+    pub fn num_rpmb_units(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_num_rpmb_units(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn auth_method(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_auth_method(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 2u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        num_rpmb_units: u8,
+        auth_method: u8,
+        reserved1: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let num_rpmb_units: u8 = unsafe { ::std::mem::transmute(num_rpmb_units) };
+            num_rpmb_units as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 3u8, {
+            let auth_method: u8 = unsafe { ::std::mem::transmute(auth_method) };
+            auth_method as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 2u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " device self-test options"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_ctrlr_data__bindgen_ty_10 {
+    pub raw: u8,
+    pub bits: spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_10__bindgen_ty_1 {
+    #[inline]
+    pub fn one_only(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_one_only(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(one_only: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let one_only: u8 = unsafe { ::std::mem::transmute(one_only) };
+            one_only as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_10() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_10>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_10>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_10>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_10),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Host controlled thermal management attributes"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_ctrlr_data__bindgen_ty_11 {
+    pub raw: u16,
+    pub bits: spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1>(),
+        2usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_11__bindgen_ty_1 {
+    #[inline]
+    pub fn supported(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_supported(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 15u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(supported: u16, reserved: u16) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let supported: u16 = unsafe { ::std::mem::transmute(supported) };
+            supported as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 15u8, {
+            let reserved: u16 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_11() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_11>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_11>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_11>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_11),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Sanitize capabilities"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_ctrlr_data__bindgen_ty_12 {
+    pub raw: u32,
+    pub bits: spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1 {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_12__bindgen_ty_1 {
+    #[inline]
+    pub fn crypto_erase(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_crypto_erase(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn block_erase(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_block_erase(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn overwrite(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_overwrite(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 29u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 29u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        crypto_erase: u32,
+        block_erase: u32,
+        overwrite: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let crypto_erase: u32 = unsafe { ::std::mem::transmute(crypto_erase) };
+            crypto_erase as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let block_erase: u32 = unsafe { ::std::mem::transmute(block_erase) };
+            block_erase as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let overwrite: u32 = unsafe { ::std::mem::transmute(overwrite) };
+            overwrite as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 29u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_12() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_12>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_12>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_12>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_data__bindgen_ty_12>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_data__bindgen_ty_12),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_13 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_13() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_13>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_13))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_13>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_13)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_13 {
+    #[inline]
+    pub fn ana_optimized_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_optimized_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_non_optimized_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_non_optimized_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_inaccessible_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_inaccessible_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_persistent_loss_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_persistent_loss_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ana_change_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_change_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn no_change_anagrpid(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_no_change_anagrpid(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn non_zero_anagrpid(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_non_zero_anagrpid(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ana_optimized_state: u8,
+        ana_non_optimized_state: u8,
+        ana_inaccessible_state: u8,
+        ana_persistent_loss_state: u8,
+        ana_change_state: u8,
+        reserved: u8,
+        no_change_anagrpid: u8,
+        non_zero_anagrpid: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ana_optimized_state: u8 = unsafe { ::std::mem::transmute(ana_optimized_state) };
+            ana_optimized_state as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ana_non_optimized_state: u8 =
+                unsafe { ::std::mem::transmute(ana_non_optimized_state) };
+            ana_non_optimized_state as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let ana_inaccessible_state: u8 =
+                unsafe { ::std::mem::transmute(ana_inaccessible_state) };
+            ana_inaccessible_state as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let ana_persistent_loss_state: u8 =
+                unsafe { ::std::mem::transmute(ana_persistent_loss_state) };
+            ana_persistent_loss_state as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let ana_change_state: u8 = unsafe { ::std::mem::transmute(ana_change_state) };
+            ana_change_state as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let no_change_anagrpid: u8 = unsafe { ::std::mem::transmute(no_change_anagrpid) };
+            no_change_anagrpid as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let non_zero_anagrpid: u8 = unsafe { ::std::mem::transmute(non_zero_anagrpid) };
+            non_zero_anagrpid as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " submission queue entry size"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_14 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_14() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_14>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_14))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_14>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_14)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_14 {
+    #[inline]
+    pub fn min(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_min(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn max(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_max(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(min: u8, max: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let min: u8 = unsafe { ::std::mem::transmute(min) };
+            min as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let max: u8 = unsafe { ::std::mem::transmute(max) };
+            max as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " completion queue entry size"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_15 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_15() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_15>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_15))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_15>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_15)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_15 {
+    #[inline]
+    pub fn min(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_min(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn max(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_max(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(min: u8, max: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let min: u8 = unsafe { ::std::mem::transmute(min) };
+            min as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let max: u8 = unsafe { ::std::mem::transmute(max) };
+            max as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " optional nvm command support"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_16 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_16() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_16>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_16))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_16>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_16)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_16 {
+    #[inline]
+    pub fn compare(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_compare(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_unc(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_write_unc(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dsm(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_dsm(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_zeroes(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_write_zeroes(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn set_features_save(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_set_features_save(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reservations(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reservations(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn timestamp(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_timestamp(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 9u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 9u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        compare: u16,
+        write_unc: u16,
+        dsm: u16,
+        write_zeroes: u16,
+        set_features_save: u16,
+        reservations: u16,
+        timestamp: u16,
+        reserved: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let compare: u16 = unsafe { ::std::mem::transmute(compare) };
+            compare as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let write_unc: u16 = unsafe { ::std::mem::transmute(write_unc) };
+            write_unc as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let dsm: u16 = unsafe { ::std::mem::transmute(dsm) };
+            dsm as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let write_zeroes: u16 = unsafe { ::std::mem::transmute(write_zeroes) };
+            write_zeroes as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let set_features_save: u16 = unsafe { ::std::mem::transmute(set_features_save) };
+            set_features_save as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let reservations: u16 = unsafe { ::std::mem::transmute(reservations) };
+            reservations as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let timestamp: u16 = unsafe { ::std::mem::transmute(timestamp) };
+            timestamp as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 9u8, {
+            let reserved: u16 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " fused operation support"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_17 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_17() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_17>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_17))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_17>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_17)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_17 {
+    #[inline]
+    pub fn compare_and_write(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_compare_and_write(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 15u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        compare_and_write: u16,
+        reserved: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let compare_and_write: u16 = unsafe { ::std::mem::transmute(compare_and_write) };
+            compare_and_write as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 15u8, {
+            let reserved: u16 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " format nvm attributes"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_18 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_18() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_18>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_18))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_18>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_18)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_18 {
+    #[inline]
+    pub fn format_all_ns(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_format_all_ns(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn erase_all_ns(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_erase_all_ns(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn crypto_erase_supported(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_crypto_erase_supported(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        format_all_ns: u8,
+        erase_all_ns: u8,
+        crypto_erase_supported: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let format_all_ns: u8 = unsafe { ::std::mem::transmute(format_all_ns) };
+            format_all_ns as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let erase_all_ns: u8 = unsafe { ::std::mem::transmute(erase_all_ns) };
+            erase_all_ns as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let crypto_erase_supported: u8 =
+                unsafe { ::std::mem::transmute(crypto_erase_supported) };
+            crypto_erase_supported as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " volatile write cache"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_data__bindgen_ty_19 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_data__bindgen_ty_19() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_data__bindgen_ty_19>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_data__bindgen_ty_19))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_data__bindgen_ty_19>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ctrlr_data__bindgen_ty_19)
+        )
+    );
+}
+impl spdk_nvme_ctrlr_data__bindgen_ty_19 {
+    #[inline]
+    pub fn present(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_present(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn flush_broadcast(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 2u8) as u8) }
+    }
+    #[inline]
+    pub fn set_flush_broadcast(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        present: u8,
+        flush_broadcast: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let present: u8 = unsafe { ::std::mem::transmute(present) };
+            present as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 2u8, {
+            let flush_broadcast: u8 = unsafe { ::std::mem::transmute(flush_broadcast) };
+            flush_broadcast as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_ctrlr_data {
+    #[doc = " zone append size limit"]
+    pub zasl: u8,
+    pub reserved1: [u8; 4095usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_ctrlr_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_ctrlr_data>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_ctrlr_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_ctrlr_data>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_zns_ctrlr_data))
+    );
+    fn test_field_zasl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).zasl) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ctrlr_data),
+                "::",
+                stringify!(zasl)
+            )
+        );
+    }
+    test_field_zasl();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ctrlr_data),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_primary_ctrl_capabilities {
+    #[doc = "  controller id"]
+    pub cntlid: u16,
+    #[doc = "  port identifier"]
+    pub portid: u16,
+    pub crt: spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1,
+    pub reserved: [u8; 27usize],
+    #[doc = " total number of VQ flexible resources"]
+    pub vqfrt: u32,
+    #[doc = " total number of VQ flexible resources assigned to secondary controllers"]
+    pub vqrfa: u32,
+    #[doc = " total number of VQ flexible resources allocated to primary controller"]
+    pub vqrfap: u16,
+    #[doc = " total number of VQ Private resources for the primary controller"]
+    pub vqprt: u16,
+    #[doc = " max number of VQ flexible Resources that may be assigned to a secondary controller"]
+    pub vqfrsm: u16,
+    #[doc = " preferred granularity of assigning and removing VQ Flexible Resources"]
+    pub vqgran: u16,
+    pub reserved1: [u8; 16usize],
+    #[doc = " total number of VI flexible resources for the primary and its secondary controllers"]
+    pub vifrt: u32,
+    #[doc = " total number of VI flexible resources assigned to the secondary controllers"]
+    pub virfa: u32,
+    #[doc = " total number of VI flexible resources currently allocated to the primary controller"]
+    pub virfap: u16,
+    #[doc = " total number of VI private resources for the primary controller"]
+    pub viprt: u16,
+    #[doc = " max number of VI flexible resources that may be assigned to a secondary controller"]
+    pub vifrsm: u16,
+    #[doc = " preferred granularity of assigning and removing VI flexible resources"]
+    pub vigran: u16,
+    pub reserved2: [u8; 4016usize],
+}
+#[doc = "  controller resource types"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_primary_ctrl_capabilities__bindgen_ty_1 {
+    #[inline]
+    pub fn vq_supported(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_vq_supported(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vi_supported(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_vi_supported(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        vq_supported: u8,
+        vi_supported: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let vq_supported: u8 = unsafe { ::std::mem::transmute(vq_supported) };
+            vq_supported as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let vi_supported: u8 = unsafe { ::std::mem::transmute(vi_supported) };
+            vi_supported as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_primary_ctrl_capabilities() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_primary_ctrl_capabilities>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_primary_ctrl_capabilities))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_primary_ctrl_capabilities>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_primary_ctrl_capabilities)
+        )
+    );
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_portid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).portid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(portid)
+            )
+        );
+    }
+    test_field_portid();
+    fn test_field_crt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crt) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(crt)
+            )
+        );
+    }
+    test_field_crt();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_vqfrt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqfrt) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqfrt)
+            )
+        );
+    }
+    test_field_vqfrt();
+    fn test_field_vqrfa() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqrfa) as usize - ptr as usize
+            },
+            36usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqrfa)
+            )
+        );
+    }
+    test_field_vqrfa();
+    fn test_field_vqrfap() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqrfap) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqrfap)
+            )
+        );
+    }
+    test_field_vqrfap();
+    fn test_field_vqprt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqprt) as usize - ptr as usize
+            },
+            42usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqprt)
+            )
+        );
+    }
+    test_field_vqprt();
+    fn test_field_vqfrsm() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqfrsm) as usize - ptr as usize
+            },
+            44usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqfrsm)
+            )
+        );
+    }
+    test_field_vqfrsm();
+    fn test_field_vqgran() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vqgran) as usize - ptr as usize
+            },
+            46usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vqgran)
+            )
+        );
+    }
+    test_field_vqgran();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_vifrt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vifrt) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vifrt)
+            )
+        );
+    }
+    test_field_vifrt();
+    fn test_field_virfa() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).virfa) as usize - ptr as usize
+            },
+            68usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(virfa)
+            )
+        );
+    }
+    test_field_virfa();
+    fn test_field_virfap() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).virfap) as usize - ptr as usize
+            },
+            72usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(virfap)
+            )
+        );
+    }
+    test_field_virfap();
+    fn test_field_viprt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).viprt) as usize - ptr as usize
+            },
+            74usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(viprt)
+            )
+        );
+    }
+    test_field_viprt();
+    fn test_field_vifrsm() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vifrsm) as usize - ptr as usize
+            },
+            76usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vifrsm)
+            )
+        );
+    }
+    test_field_vifrsm();
+    fn test_field_vigran() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vigran) as usize - ptr as usize
+            },
+            78usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(vigran)
+            )
+        );
+    }
+    test_field_vigran();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_primary_ctrl_capabilities>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            80usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_primary_ctrl_capabilities),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_secondary_ctrl_entry {
+    #[doc = " controller identifier of the secondary controller"]
+    pub scid: u16,
+    #[doc = " controller identifier of the associated primary controller"]
+    pub pcid: u16,
+    pub scs: spdk_nvme_secondary_ctrl_entry__bindgen_ty_1,
+    pub reserved: [u8; 3usize],
+    #[doc = " VF number if the secondary controller is an SR-IOV VF"]
+    pub vfn: u16,
+    #[doc = " number of VQ flexible resources assigned to the indicated secondary controller"]
+    pub nvq: u16,
+    #[doc = " number of VI flexible resources assigned to the indicated secondary controller"]
+    pub nvi: u16,
+    pub reserved1: [u8; 18usize],
+}
+#[doc = " indicates the state of the secondary controller"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_secondary_ctrl_entry__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_secondary_ctrl_entry__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_secondary_ctrl_entry__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_secondary_ctrl_entry__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_secondary_ctrl_entry__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_secondary_ctrl_entry__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_secondary_ctrl_entry__bindgen_ty_1 {
+    #[inline]
+    pub fn is_online(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_is_online(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(is_online: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let is_online: u8 = unsafe { ::std::mem::transmute(is_online) };
+            is_online as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_secondary_ctrl_entry() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_secondary_ctrl_entry>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvme_secondary_ctrl_entry))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_secondary_ctrl_entry>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_secondary_ctrl_entry))
+    );
+    fn test_field_scid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).scid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(scid)
+            )
+        );
+    }
+    test_field_scid();
+    fn test_field_pcid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pcid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(pcid)
+            )
+        );
+    }
+    test_field_pcid();
+    fn test_field_scs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).scs) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(scs)
+            )
+        );
+    }
+    test_field_scs();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_vfn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vfn) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(vfn)
+            )
+        );
+    }
+    test_field_vfn();
+    fn test_field_nvq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nvq) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(nvq)
+            )
+        );
+    }
+    test_field_nvq();
+    fn test_field_nvi() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nvi) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(nvi)
+            )
+        );
+    }
+    test_field_nvi();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            14usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_entry),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_secondary_ctrl_list {
+    #[doc = " number of Secondary controller entries in the list"]
+    pub number: u8,
+    pub reserved: [u8; 31usize],
+    pub entries: [spdk_nvme_secondary_ctrl_entry; 127usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_secondary_ctrl_list() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_secondary_ctrl_list>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_secondary_ctrl_list))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_secondary_ctrl_list>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_secondary_ctrl_list))
+    );
+    fn test_field_number() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).number) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_list),
+                "::",
+                stringify!(number)
+            )
+        );
+    }
+    test_field_number();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_list),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_entries() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_secondary_ctrl_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).entries) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_secondary_ctrl_list),
+                "::",
+                stringify!(entries)
+            )
+        );
+    }
+    test_field_entries();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_ns_data {
+    #[doc = " namespace size"]
+    pub nsze: u64,
+    #[doc = " namespace capacity"]
+    pub ncap: u64,
+    #[doc = " namespace utilization"]
+    pub nuse: u64,
+    pub nsfeat: spdk_nvme_ns_data__bindgen_ty_1,
+    #[doc = " number of lba formats"]
+    pub nlbaf: u8,
+    pub flbas: spdk_nvme_ns_data__bindgen_ty_2,
+    pub mc: spdk_nvme_ns_data__bindgen_ty_3,
+    pub dpc: spdk_nvme_ns_data__bindgen_ty_4,
+    pub dps: spdk_nvme_ns_data__bindgen_ty_5,
+    pub nmic: spdk_nvme_ns_data__bindgen_ty_6,
+    pub nsrescap: spdk_nvme_ns_data__bindgen_ty_7,
+    pub fpi: spdk_nvme_ns_data__bindgen_ty_8,
+    pub dlfeat: spdk_nvme_ns_data__bindgen_ty_9,
+    #[doc = " namespace atomic write unit normal"]
+    pub nawun: u16,
+    #[doc = " namespace atomic write unit power fail"]
+    pub nawupf: u16,
+    #[doc = " namespace atomic compare & write unit"]
+    pub nacwu: u16,
+    #[doc = " namespace atomic boundary size normal"]
+    pub nabsn: u16,
+    #[doc = " namespace atomic boundary offset"]
+    pub nabo: u16,
+    #[doc = " namespace atomic boundary size power fail"]
+    pub nabspf: u16,
+    #[doc = " namespace optimal I/O boundary in logical blocks"]
+    pub noiob: u16,
+    #[doc = " NVM capacity"]
+    pub nvmcap: [u64; 2usize],
+    #[doc = " Namespace Preferred Write Granularity"]
+    pub npwg: u16,
+    #[doc = " Namespace Preferred Write Alignment"]
+    pub npwa: u16,
+    #[doc = " Namespace Preferred Deallocate Granularity"]
+    pub npdg: u16,
+    #[doc = " Namespace Preferred Deallocate Alignment"]
+    pub npda: u16,
+    #[doc = " Namespace Optimal Write Size"]
+    pub nows: u16,
+    pub reserved64: [u8; 18usize],
+    #[doc = " ANA group identifier"]
+    pub anagrpid: u32,
+    pub reserved96: [u8; 8usize],
+    #[doc = " namespace globally unique identifier"]
+    pub nguid: [u8; 16usize],
+    #[doc = " IEEE extended unique identifier"]
+    pub eui64: u64,
+    pub lbaf: [spdk_nvme_ns_data__bindgen_ty_10; 16usize],
+    pub reserved6: [u8; 192usize],
+    pub vendor_specific: [u8; 3712usize],
+}
+#[doc = " namespace features"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_1>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_1>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_1))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_1 {
+    #[inline]
+    pub fn thin_prov(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_thin_prov(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ns_atomic_write_unit(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ns_atomic_write_unit(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dealloc_or_unwritten_error(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_dealloc_or_unwritten_error(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn guid_never_reused(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_guid_never_reused(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn optperf(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_optperf(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        thin_prov: u8,
+        ns_atomic_write_unit: u8,
+        dealloc_or_unwritten_error: u8,
+        guid_never_reused: u8,
+        optperf: u8,
+        reserved1: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let thin_prov: u8 = unsafe { ::std::mem::transmute(thin_prov) };
+            thin_prov as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ns_atomic_write_unit: u8 = unsafe { ::std::mem::transmute(ns_atomic_write_unit) };
+            ns_atomic_write_unit as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let dealloc_or_unwritten_error: u8 =
+                unsafe { ::std::mem::transmute(dealloc_or_unwritten_error) };
+            dealloc_or_unwritten_error as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let guid_never_reused: u8 = unsafe { ::std::mem::transmute(guid_never_reused) };
+            guid_never_reused as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let optperf: u8 = unsafe { ::std::mem::transmute(optperf) };
+            optperf as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " formatted lba size"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_2 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_2>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_2>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_2))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_2 {
+    #[inline]
+    pub fn format(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_format(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn extended(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_extended(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        format: u8,
+        extended: u8,
+        reserved2: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let format: u8 = unsafe { ::std::mem::transmute(format) };
+            format as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let extended: u8 = unsafe { ::std::mem::transmute(extended) };
+            extended as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved2: u8 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " metadata capabilities"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_3 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_3>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_3>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_3))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_3 {
+    #[inline]
+    pub fn extended(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_extended(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pointer(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_pointer(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        extended: u8,
+        pointer: u8,
+        reserved3: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let extended: u8 = unsafe { ::std::mem::transmute(extended) };
+            extended as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let pointer: u8 = unsafe { ::std::mem::transmute(pointer) };
+            pointer as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved3: u8 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " end-to-end data protection capabilities"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_4 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_4() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_4>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_4))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_4>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_4))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_4 {
+    #[inline]
+    pub fn pit1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_pit1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pit2(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_pit2(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pit3(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_pit3(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn md_start(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_md_start(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn md_end(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_md_end(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pit1: u8,
+        pit2: u8,
+        pit3: u8,
+        md_start: u8,
+        md_end: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let pit1: u8 = unsafe { ::std::mem::transmute(pit1) };
+            pit1 as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let pit2: u8 = unsafe { ::std::mem::transmute(pit2) };
+            pit2 as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let pit3: u8 = unsafe { ::std::mem::transmute(pit3) };
+            pit3 as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let md_start: u8 = unsafe { ::std::mem::transmute(md_start) };
+            md_start as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let md_end: u8 = unsafe { ::std::mem::transmute(md_end) };
+            md_end as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " end-to-end data protection type settings"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_5 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_5() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_5>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_5))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_5>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_5))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_5 {
+    #[inline]
+    pub fn pit(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_pit(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn md_start(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_md_start(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved4(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved4(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        pit: u8,
+        md_start: u8,
+        reserved4: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let pit: u8 = unsafe { ::std::mem::transmute(pit) };
+            pit as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let md_start: u8 = unsafe { ::std::mem::transmute(md_start) };
+            md_start as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved4: u8 = unsafe { ::std::mem::transmute(reserved4) };
+            reserved4 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " namespace multi-path I/O and namespace sharing capabilities"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_6 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_6() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_6>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_6))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_6>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_6))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_6 {
+    #[inline]
+    pub fn can_share(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_can_share(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(can_share: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let can_share: u8 = unsafe { ::std::mem::transmute(can_share) };
+            can_share as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " reservation capabilities"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_ns_data__bindgen_ty_7 {
+    pub rescap: spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1,
+    pub raw: u8,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_7__bindgen_ty_1 {
+    #[inline]
+    pub fn persist(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_persist(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_exclusive(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_write_exclusive(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn exclusive_access(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_exclusive_access(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_exclusive_reg_only(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_write_exclusive_reg_only(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn exclusive_access_reg_only(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_exclusive_access_reg_only(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_exclusive_all_reg(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_write_exclusive_all_reg(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn exclusive_access_all_reg(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_exclusive_access_all_reg(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ignore_existing_key(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ignore_existing_key(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        persist: u8,
+        write_exclusive: u8,
+        exclusive_access: u8,
+        write_exclusive_reg_only: u8,
+        exclusive_access_reg_only: u8,
+        write_exclusive_all_reg: u8,
+        exclusive_access_all_reg: u8,
+        ignore_existing_key: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let persist: u8 = unsafe { ::std::mem::transmute(persist) };
+            persist as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let write_exclusive: u8 = unsafe { ::std::mem::transmute(write_exclusive) };
+            write_exclusive as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let exclusive_access: u8 = unsafe { ::std::mem::transmute(exclusive_access) };
+            exclusive_access as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let write_exclusive_reg_only: u8 =
+                unsafe { ::std::mem::transmute(write_exclusive_reg_only) };
+            write_exclusive_reg_only as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let exclusive_access_reg_only: u8 =
+                unsafe { ::std::mem::transmute(exclusive_access_reg_only) };
+            exclusive_access_reg_only as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let write_exclusive_all_reg: u8 =
+                unsafe { ::std::mem::transmute(write_exclusive_all_reg) };
+            write_exclusive_all_reg as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let exclusive_access_all_reg: u8 =
+                unsafe { ::std::mem::transmute(exclusive_access_all_reg) };
+            exclusive_access_all_reg as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let ignore_existing_key: u8 = unsafe { ::std::mem::transmute(ignore_existing_key) };
+            ignore_existing_key as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_7() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_7>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_7))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_7>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_7))
+    );
+    fn test_field_rescap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data__bindgen_ty_7>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rescap) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data__bindgen_ty_7),
+                "::",
+                stringify!(rescap)
+            )
+        );
+    }
+    test_field_rescap();
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data__bindgen_ty_7>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data__bindgen_ty_7),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+}
+#[doc = " format progress indicator"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_8 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_8() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_8>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_8))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_8>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_8))
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_8 {
+    #[inline]
+    pub fn percentage_remaining(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_percentage_remaining(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn fpi_supported(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_fpi_supported(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        percentage_remaining: u8,
+        fpi_supported: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 7u8, {
+            let percentage_remaining: u8 = unsafe { ::std::mem::transmute(percentage_remaining) };
+            percentage_remaining as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let fpi_supported: u8 = unsafe { ::std::mem::transmute(fpi_supported) };
+            fpi_supported as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " deallocate logical features"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_ns_data__bindgen_ty_9 {
+    pub raw: u8,
+    pub bits: spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_9__bindgen_ty_1 {
+    #[inline]
+    pub fn read_value(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_read_value(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn write_zero_deallocate(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_write_zero_deallocate(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn guard_value(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_guard_value(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        read_value: u8,
+        write_zero_deallocate: u8,
+        guard_value: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let read_value: u8 = unsafe { ::std::mem::transmute(read_value) };
+            read_value as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let write_zero_deallocate: u8 = unsafe { ::std::mem::transmute(write_zero_deallocate) };
+            write_zero_deallocate as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let guard_value: u8 = unsafe { ::std::mem::transmute(guard_value) };
+            guard_value as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_9() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_9>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_9))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_9>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data__bindgen_ty_9))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data__bindgen_ty_9>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data__bindgen_ty_9),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data__bindgen_ty_9>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data__bindgen_ty_9),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " lba format support"]
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_data__bindgen_ty_10 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data__bindgen_ty_10() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data__bindgen_ty_10>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data__bindgen_ty_10))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data__bindgen_ty_10>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_data__bindgen_ty_10)
+        )
+    );
+}
+impl spdk_nvme_ns_data__bindgen_ty_10 {
+    #[inline]
+    pub fn ms(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 16u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ms(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 16u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lbads(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lbads(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 2u8) as u32) }
+    }
+    #[inline]
+    pub fn set_rp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved6(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 6u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved6(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(26usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ms: u32,
+        lbads: u32,
+        rp: u32,
+        reserved6: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 16u8, {
+            let ms: u32 = unsafe { ::std::mem::transmute(ms) };
+            ms as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let lbads: u32 = unsafe { ::std::mem::transmute(lbads) };
+            lbads as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 2u8, {
+            let rp: u32 = unsafe { ::std::mem::transmute(rp) };
+            rp as u64
+        });
+        __bindgen_bitfield_unit.set(26usize, 6u8, {
+            let reserved6: u32 = unsafe { ::std::mem::transmute(reserved6) };
+            reserved6 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_data>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_data>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_data))
+    );
+    fn test_field_nsze() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsze) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nsze)
+            )
+        );
+    }
+    test_field_nsze();
+    fn test_field_ncap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ncap) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(ncap)
+            )
+        );
+    }
+    test_field_ncap();
+    fn test_field_nuse() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nuse) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nuse)
+            )
+        );
+    }
+    test_field_nuse();
+    fn test_field_nsfeat() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsfeat) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nsfeat)
+            )
+        );
+    }
+    test_field_nsfeat();
+    fn test_field_nlbaf() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nlbaf) as usize - ptr as usize
+            },
+            25usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nlbaf)
+            )
+        );
+    }
+    test_field_nlbaf();
+    fn test_field_flbas() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).flbas) as usize - ptr as usize
+            },
+            26usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(flbas)
+            )
+        );
+    }
+    test_field_flbas();
+    fn test_field_mc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mc) as usize - ptr as usize
+            },
+            27usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(mc)
+            )
+        );
+    }
+    test_field_mc();
+    fn test_field_dpc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dpc) as usize - ptr as usize
+            },
+            28usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(dpc)
+            )
+        );
+    }
+    test_field_dpc();
+    fn test_field_dps() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dps) as usize - ptr as usize
+            },
+            29usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(dps)
+            )
+        );
+    }
+    test_field_dps();
+    fn test_field_nmic() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nmic) as usize - ptr as usize
+            },
+            30usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nmic)
+            )
+        );
+    }
+    test_field_nmic();
+    fn test_field_nsrescap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsrescap) as usize - ptr as usize
+            },
+            31usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nsrescap)
+            )
+        );
+    }
+    test_field_nsrescap();
+    fn test_field_fpi() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fpi) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(fpi)
+            )
+        );
+    }
+    test_field_fpi();
+    fn test_field_dlfeat() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dlfeat) as usize - ptr as usize
+            },
+            33usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(dlfeat)
+            )
+        );
+    }
+    test_field_dlfeat();
+    fn test_field_nawun() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nawun) as usize - ptr as usize
+            },
+            34usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nawun)
+            )
+        );
+    }
+    test_field_nawun();
+    fn test_field_nawupf() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nawupf) as usize - ptr as usize
+            },
+            36usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nawupf)
+            )
+        );
+    }
+    test_field_nawupf();
+    fn test_field_nacwu() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nacwu) as usize - ptr as usize
+            },
+            38usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nacwu)
+            )
+        );
+    }
+    test_field_nacwu();
+    fn test_field_nabsn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nabsn) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nabsn)
+            )
+        );
+    }
+    test_field_nabsn();
+    fn test_field_nabo() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nabo) as usize - ptr as usize
+            },
+            42usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nabo)
+            )
+        );
+    }
+    test_field_nabo();
+    fn test_field_nabspf() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nabspf) as usize - ptr as usize
+            },
+            44usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nabspf)
+            )
+        );
+    }
+    test_field_nabspf();
+    fn test_field_noiob() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).noiob) as usize - ptr as usize
+            },
+            46usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(noiob)
+            )
+        );
+    }
+    test_field_noiob();
+    fn test_field_nvmcap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nvmcap) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nvmcap)
+            )
+        );
+    }
+    test_field_nvmcap();
+    fn test_field_npwg() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).npwg) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(npwg)
+            )
+        );
+    }
+    test_field_npwg();
+    fn test_field_npwa() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).npwa) as usize - ptr as usize
+            },
+            66usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(npwa)
+            )
+        );
+    }
+    test_field_npwa();
+    fn test_field_npdg() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).npdg) as usize - ptr as usize
+            },
+            68usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(npdg)
+            )
+        );
+    }
+    test_field_npdg();
+    fn test_field_npda() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).npda) as usize - ptr as usize
+            },
+            70usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(npda)
+            )
+        );
+    }
+    test_field_npda();
+    fn test_field_nows() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nows) as usize - ptr as usize
+            },
+            72usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nows)
+            )
+        );
+    }
+    test_field_nows();
+    fn test_field_reserved64() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved64) as usize - ptr as usize
+            },
+            74usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(reserved64)
+            )
+        );
+    }
+    test_field_reserved64();
+    fn test_field_anagrpid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).anagrpid) as usize - ptr as usize
+            },
+            92usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(anagrpid)
+            )
+        );
+    }
+    test_field_anagrpid();
+    fn test_field_reserved96() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved96) as usize - ptr as usize
+            },
+            96usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(reserved96)
+            )
+        );
+    }
+    test_field_reserved96();
+    fn test_field_nguid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nguid) as usize - ptr as usize
+            },
+            104usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(nguid)
+            )
+        );
+    }
+    test_field_nguid();
+    fn test_field_eui64() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).eui64) as usize - ptr as usize
+            },
+            120usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(eui64)
+            )
+        );
+    }
+    test_field_eui64();
+    fn test_field_lbaf() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).lbaf) as usize - ptr as usize
+            },
+            128usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(lbaf)
+            )
+        );
+    }
+    test_field_lbaf();
+    fn test_field_reserved6() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved6) as usize - ptr as usize
+            },
+            192usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(reserved6)
+            )
+        );
+    }
+    test_field_reserved6();
+    fn test_field_vendor_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vendor_specific) as usize - ptr as usize
+            },
+            384usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_data),
+                "::",
+                stringify!(vendor_specific)
+            )
+        );
+    }
+    test_field_vendor_specific();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_ns_data {
+    pub zoc: spdk_nvme_zns_ns_data__bindgen_ty_1,
+    pub ozcs: spdk_nvme_zns_ns_data__bindgen_ty_2,
+    #[doc = " maximum active resources"]
+    pub mar: u32,
+    #[doc = " maximum open resources"]
+    pub mor: u32,
+    #[doc = " reset recommended limit"]
+    pub rrl: u32,
+    #[doc = " finish recommended limit"]
+    pub frl: u32,
+    pub reserved20: [u8; 2796usize],
+    pub lbafe: [spdk_nvme_zns_ns_data__bindgen_ty_3; 16usize],
+    pub reserved3072: [u8; 768usize],
+    pub vendor_specific: [u8; 256usize],
+}
+#[doc = " zone operation characteristics"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_ns_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_ns_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_ns_data__bindgen_ty_1>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_ns_data__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_ns_data__bindgen_ty_1>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_zns_ns_data__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_zns_ns_data__bindgen_ty_1 {
+    #[inline]
+    pub fn variable_zone_capacity(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_variable_zone_capacity(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn zone_active_excursions(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_zone_active_excursions(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved0(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 14u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved0(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 14u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        variable_zone_capacity: u16,
+        zone_active_excursions: u16,
+        reserved0: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let variable_zone_capacity: u16 =
+                unsafe { ::std::mem::transmute(variable_zone_capacity) };
+            variable_zone_capacity as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let zone_active_excursions: u16 =
+                unsafe { ::std::mem::transmute(zone_active_excursions) };
+            zone_active_excursions as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 14u8, {
+            let reserved0: u16 = unsafe { ::std::mem::transmute(reserved0) };
+            reserved0 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " optional zoned command support"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_ns_data__bindgen_ty_2 {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_ns_data__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_ns_data__bindgen_ty_2>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_ns_data__bindgen_ty_2))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_ns_data__bindgen_ty_2>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_zns_ns_data__bindgen_ty_2)
+        )
+    );
+}
+impl spdk_nvme_zns_ns_data__bindgen_ty_2 {
+    #[inline]
+    pub fn read_across_zone_boundaries(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_read_across_zone_boundaries(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved0(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 15u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved0(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 15u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        read_across_zone_boundaries: u16,
+        reserved0: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let read_across_zone_boundaries: u16 =
+                unsafe { ::std::mem::transmute(read_across_zone_boundaries) };
+            read_across_zone_boundaries as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 15u8, {
+            let reserved0: u16 = unsafe { ::std::mem::transmute(reserved0) };
+            reserved0 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " zns lba format extension support"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_ns_data__bindgen_ty_3 {
+    #[doc = " zone size"]
+    pub zsze: u64,
+    pub _bitfield_align_1: [u64; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 8usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_ns_data__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_ns_data__bindgen_ty_3>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_ns_data__bindgen_ty_3))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_ns_data__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_zns_ns_data__bindgen_ty_3)
+        )
+    );
+    fn test_field_zsze() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data__bindgen_ty_3>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).zsze) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data__bindgen_ty_3),
+                "::",
+                stringify!(zsze)
+            )
+        );
+    }
+    test_field_zsze();
+}
+impl spdk_nvme_zns_ns_data__bindgen_ty_3 {
+    #[inline]
+    pub fn zdes(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 8u8) as u64) }
+    }
+    #[inline]
+    pub fn set_zdes(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved15(&self) -> u64 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 56u8) as u64) }
+    }
+    #[inline]
+    pub fn set_reserved15(&mut self, val: u64) {
+        unsafe {
+            let val: u64 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 56u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(zdes: u64, reserved15: u64) -> __BindgenBitfieldUnit<[u8; 8usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 8usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 8u8, {
+            let zdes: u64 = unsafe { ::std::mem::transmute(zdes) };
+            zdes as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 56u8, {
+            let reserved15: u64 = unsafe { ::std::mem::transmute(reserved15) };
+            reserved15 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_ns_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_ns_data>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_ns_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_ns_data>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_zns_ns_data))
+    );
+    fn test_field_zoc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).zoc) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(zoc)
+            )
+        );
+    }
+    test_field_zoc();
+    fn test_field_ozcs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ozcs) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(ozcs)
+            )
+        );
+    }
+    test_field_ozcs();
+    fn test_field_mar() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mar) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(mar)
+            )
+        );
+    }
+    test_field_mar();
+    fn test_field_mor() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).mor) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(mor)
+            )
+        );
+    }
+    test_field_mor();
+    fn test_field_rrl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rrl) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(rrl)
+            )
+        );
+    }
+    test_field_rrl();
+    fn test_field_frl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).frl) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(frl)
+            )
+        );
+    }
+    test_field_frl();
+    fn test_field_reserved20() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved20) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(reserved20)
+            )
+        );
+    }
+    test_field_reserved20();
+    fn test_field_lbafe() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).lbafe) as usize - ptr as usize
+            },
+            2816usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(lbafe)
+            )
+        );
+    }
+    test_field_lbafe();
+    fn test_field_reserved3072() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved3072) as usize - ptr as usize
+            },
+            3072usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(reserved3072)
+            )
+        );
+    }
+    test_field_reserved3072();
+    fn test_field_vendor_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_ns_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vendor_specific) as usize - ptr as usize
+            },
+            3840usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_ns_data),
+                "::",
+                stringify!(vendor_specific)
+            )
+        );
+    }
+    test_field_vendor_specific();
+}
+#[doc = " Not reported"]
+pub const spdk_nvme_dealloc_logical_block_read_value_SPDK_NVME_DEALLOC_NOT_REPORTED:
+    spdk_nvme_dealloc_logical_block_read_value = 0;
+#[doc = " Deallocated blocks read 0x00"]
+pub const spdk_nvme_dealloc_logical_block_read_value_SPDK_NVME_DEALLOC_READ_00:
+    spdk_nvme_dealloc_logical_block_read_value = 1;
+#[doc = " Deallocated blocks read 0xFF"]
+pub const spdk_nvme_dealloc_logical_block_read_value_SPDK_NVME_DEALLOC_READ_FF:
+    spdk_nvme_dealloc_logical_block_read_value = 2;
+#[doc = " Deallocated logical block features - read value"]
+pub type spdk_nvme_dealloc_logical_block_read_value = ::std::os::raw::c_uint;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_WRITE_EXCLUSIVE: spdk_nvme_reservation_type =
+    1;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_EXCLUSIVE_ACCESS:
+    spdk_nvme_reservation_type = 2;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_WRITE_EXCLUSIVE_REG_ONLY:
+    spdk_nvme_reservation_type = 3;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_EXCLUSIVE_ACCESS_REG_ONLY:
+    spdk_nvme_reservation_type = 4;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_WRITE_EXCLUSIVE_ALL_REGS:
+    spdk_nvme_reservation_type = 5;
+pub const spdk_nvme_reservation_type_SPDK_NVME_RESERVE_EXCLUSIVE_ACCESS_ALL_REGS:
+    spdk_nvme_reservation_type = 6;
+#[doc = " Reservation Type Encoding"]
+pub type spdk_nvme_reservation_type = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_acquire_data {
+    #[doc = " current reservation key"]
+    pub crkey: u64,
+    #[doc = " preempt reservation key"]
+    pub prkey: u64,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_acquire_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_acquire_data>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_reservation_acquire_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_acquire_data>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_reservation_acquire_data)
+        )
+    );
+    fn test_field_crkey() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_acquire_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crkey) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_acquire_data),
+                "::",
+                stringify!(crkey)
+            )
+        );
+    }
+    test_field_crkey();
+    fn test_field_prkey() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_acquire_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).prkey) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_acquire_data),
+                "::",
+                stringify!(prkey)
+            )
+        );
+    }
+    test_field_prkey();
+}
+pub const spdk_nvme_reservation_acquire_action_SPDK_NVME_RESERVE_ACQUIRE:
+    spdk_nvme_reservation_acquire_action = 0;
+pub const spdk_nvme_reservation_acquire_action_SPDK_NVME_RESERVE_PREEMPT:
+    spdk_nvme_reservation_acquire_action = 1;
+pub const spdk_nvme_reservation_acquire_action_SPDK_NVME_RESERVE_PREEMPT_ABORT:
+    spdk_nvme_reservation_acquire_action = 2;
+#[doc = " Reservation Acquire action"]
+pub type spdk_nvme_reservation_acquire_action = ::std::os::raw::c_uint;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_status_data {
+    #[doc = " reservation action generation counter"]
+    pub gen: u32,
+    #[doc = " reservation type"]
+    pub rtype: u8,
+    #[doc = " number of registered controllers"]
+    pub regctl: u16,
+    pub reserved1: u16,
+    #[doc = " persist through power loss state"]
+    pub ptpls: u8,
+    pub reserved: [u8; 14usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_status_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_status_data>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_reservation_status_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_status_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_reservation_status_data)
+        )
+    );
+    fn test_field_gen() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).gen) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(gen)
+            )
+        );
+    }
+    test_field_gen();
+    fn test_field_rtype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rtype) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(rtype)
+            )
+        );
+    }
+    test_field_rtype();
+    fn test_field_regctl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).regctl) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(regctl)
+            )
+        );
+    }
+    test_field_regctl();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            7usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_ptpls() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ptpls) as usize - ptr as usize
+            },
+            9usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(ptpls)
+            )
+        );
+    }
+    test_field_ptpls();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_data),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_status_extended_data {
+    pub data: spdk_nvme_reservation_status_data,
+    pub reserved: [u8; 40usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_status_extended_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_status_extended_data>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_reservation_status_extended_data)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_status_extended_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_reservation_status_extended_data)
+        )
+    );
+    fn test_field_data() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).data) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_extended_data),
+                "::",
+                stringify!(data)
+            )
+        );
+    }
+    test_field_data();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_status_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_status_extended_data),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_registered_ctrlr_data {
+    #[doc = " controller id"]
+    pub cntlid: u16,
+    pub rcsts: spdk_nvme_registered_ctrlr_data__bindgen_ty_1,
+    pub reserved2: [u8; 5usize],
+    #[doc = " 64-bit host identifier"]
+    pub hostid: u64,
+    #[doc = " reservation key"]
+    pub rkey: u64,
+}
+#[doc = " reservation status"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_registered_ctrlr_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registered_ctrlr_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registered_ctrlr_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_registered_ctrlr_data__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registered_ctrlr_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_registered_ctrlr_data__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_registered_ctrlr_data__bindgen_ty_1 {
+    #[inline]
+    pub fn status(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_status(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(status: u8, reserved1: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let status: u8 = unsafe { ::std::mem::transmute(status) };
+            status as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registered_ctrlr_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registered_ctrlr_data>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_registered_ctrlr_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registered_ctrlr_data>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_registered_ctrlr_data))
+    );
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_data),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_rcsts() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rcsts) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_data),
+                "::",
+                stringify!(rcsts)
+            )
+        );
+    }
+    test_field_rcsts();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_data),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_hostid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hostid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_data),
+                "::",
+                stringify!(hostid)
+            )
+        );
+    }
+    test_field_hostid();
+    fn test_field_rkey() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rkey) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_data),
+                "::",
+                stringify!(rkey)
+            )
+        );
+    }
+    test_field_rkey();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_registered_ctrlr_extended_data {
+    #[doc = " controller id"]
+    pub cntlid: u16,
+    pub rcsts: spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1,
+    pub reserved2: [u8; 5usize],
+    #[doc = " reservation key"]
+    pub rkey: u64,
+    #[doc = " 128-bit host identifier"]
+    pub hostid: [u8; 16usize],
+    pub reserved3: [u8; 32usize],
+}
+#[doc = " reservation status"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_registered_ctrlr_extended_data__bindgen_ty_1 {
+    #[inline]
+    pub fn status(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_status(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(status: u8, reserved1: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let status: u8 = unsafe { ::std::mem::transmute(status) };
+            status as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_registered_ctrlr_extended_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_registered_ctrlr_extended_data>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_registered_ctrlr_extended_data)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_registered_ctrlr_extended_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_registered_ctrlr_extended_data)
+        )
+    );
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_rcsts() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rcsts) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(rcsts)
+            )
+        );
+    }
+    test_field_rcsts();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_rkey() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rkey) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(rkey)
+            )
+        );
+    }
+    test_field_rkey();
+    fn test_field_hostid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hostid) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(hostid)
+            )
+        );
+    }
+    test_field_hostid();
+    fn test_field_reserved3() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_registered_ctrlr_extended_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_registered_ctrlr_extended_data),
+                "::",
+                stringify!(reserved3)
+            )
+        );
+    }
+    test_field_reserved3();
+}
+pub const spdk_nvme_reservation_register_cptpl_SPDK_NVME_RESERVE_PTPL_NO_CHANGES:
+    spdk_nvme_reservation_register_cptpl = 0;
+pub const spdk_nvme_reservation_register_cptpl_SPDK_NVME_RESERVE_PTPL_CLEAR_POWER_ON:
+    spdk_nvme_reservation_register_cptpl = 2;
+pub const spdk_nvme_reservation_register_cptpl_SPDK_NVME_RESERVE_PTPL_PERSIST_POWER_LOSS:
+    spdk_nvme_reservation_register_cptpl = 3;
+#[doc = " Change persist through power loss state for"]
+#[doc = "  Reservation Register command"]
+pub type spdk_nvme_reservation_register_cptpl = ::std::os::raw::c_uint;
+pub const spdk_nvme_reservation_register_action_SPDK_NVME_RESERVE_REGISTER_KEY:
+    spdk_nvme_reservation_register_action = 0;
+pub const spdk_nvme_reservation_register_action_SPDK_NVME_RESERVE_UNREGISTER_KEY:
+    spdk_nvme_reservation_register_action = 1;
+pub const spdk_nvme_reservation_register_action_SPDK_NVME_RESERVE_REPLACE_KEY:
+    spdk_nvme_reservation_register_action = 2;
+#[doc = " Registration action for Reservation Register command"]
+pub type spdk_nvme_reservation_register_action = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_register_data {
+    #[doc = " current reservation key"]
+    pub crkey: u64,
+    #[doc = " new reservation key"]
+    pub nrkey: u64,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_register_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_register_data>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_reservation_register_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_register_data>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_reservation_register_data)
+        )
+    );
+    fn test_field_crkey() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_register_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crkey) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_register_data),
+                "::",
+                stringify!(crkey)
+            )
+        );
+    }
+    test_field_crkey();
+    fn test_field_nrkey() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_register_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nrkey) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_register_data),
+                "::",
+                stringify!(nrkey)
+            )
+        );
+    }
+    test_field_nrkey();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_key_data {
+    #[doc = " current reservation key"]
+    pub crkey: u64,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_key_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_key_data>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_reservation_key_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_key_data>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_reservation_key_data))
+    );
+    fn test_field_crkey() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_reservation_key_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crkey) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_key_data),
+                "::",
+                stringify!(crkey)
+            )
+        );
+    }
+    test_field_crkey();
+}
+pub const spdk_nvme_reservation_release_action_SPDK_NVME_RESERVE_RELEASE:
+    spdk_nvme_reservation_release_action = 0;
+pub const spdk_nvme_reservation_release_action_SPDK_NVME_RESERVE_CLEAR:
+    spdk_nvme_reservation_release_action = 1;
+#[doc = " Reservation Release action"]
+pub type spdk_nvme_reservation_release_action = ::std::os::raw::c_uint;
+pub const spdk_nvme_reservation_notification_log_page_type_SPDK_NVME_RESERVATION_LOG_PAGE_EMPTY:
+    spdk_nvme_reservation_notification_log_page_type = 0;
+pub const spdk_nvme_reservation_notification_log_page_type_SPDK_NVME_REGISTRATION_PREEMPTED:
+    spdk_nvme_reservation_notification_log_page_type = 1;
+pub const spdk_nvme_reservation_notification_log_page_type_SPDK_NVME_RESERVATION_RELEASED:
+    spdk_nvme_reservation_notification_log_page_type = 2;
+pub const spdk_nvme_reservation_notification_log_page_type_SPDK_NVME_RESERVATION_PREEMPTED:
+    spdk_nvme_reservation_notification_log_page_type = 3;
+#[doc = " Reservation notification log page type"]
+pub type spdk_nvme_reservation_notification_log_page_type = ::std::os::raw::c_uint;
+#[doc = " Reservation notification log"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_reservation_notification_log {
+    #[doc = " 64-bit incrementing reservation notification log page count"]
+    pub log_page_count: u64,
+    #[doc = " Reservation notification log page type"]
+    pub type_: u8,
+    #[doc = " Number of additional available reservation notification log pages"]
+    pub num_avail_log_pages: u8,
+    pub reserved: [u8; 2usize],
+    pub nsid: u32,
+    pub reserved1: [u8; 48usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_reservation_notification_log() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_reservation_notification_log>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_reservation_notification_log)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_reservation_notification_log>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_reservation_notification_log)
+        )
+    );
+    fn test_field_log_page_count() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).log_page_count) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(log_page_count)
+            )
+        );
+    }
+    test_field_log_page_count();
+    fn test_field_type() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(type_)
+            )
+        );
+    }
+    test_field_type();
+    fn test_field_num_avail_log_pages() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).num_avail_log_pages) as usize - ptr as usize
+            },
+            9usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(num_avail_log_pages)
+            )
+        );
+    }
+    test_field_num_avail_log_pages();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_nsid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsid) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(nsid)
+            )
+        );
+    }
+    test_field_nsid();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_reservation_notification_log>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_reservation_notification_log),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+}
+#[doc = " Error information (mandatory) - \\ref spdk_nvme_error_information_entry"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_ERROR: spdk_nvme_log_page = 1;
+#[doc = " SMART / health information (mandatory) - \\ref spdk_nvme_health_information_page"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_HEALTH_INFORMATION: spdk_nvme_log_page = 2;
+#[doc = " Firmware slot information (mandatory) - \\ref spdk_nvme_firmware_page"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_FIRMWARE_SLOT: spdk_nvme_log_page = 3;
+#[doc = " Changed namespace list (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_CHANGED_NS_LIST: spdk_nvme_log_page = 4;
+#[doc = " Command effects log (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_COMMAND_EFFECTS_LOG: spdk_nvme_log_page = 5;
+#[doc = " Device self test (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_DEVICE_SELF_TEST: spdk_nvme_log_page = 6;
+#[doc = " Host initiated telemetry log (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_TELEMETRY_HOST_INITIATED: spdk_nvme_log_page = 7;
+#[doc = " Controller initiated telemetry log (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_TELEMETRY_CTRLR_INITIATED: spdk_nvme_log_page = 8;
+#[doc = " Asymmetric namespace access log (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_ASYMMETRIC_NAMESPACE_ACCESS: spdk_nvme_log_page = 12;
+#[doc = " Discovery(refer to the NVMe over Fabrics specification)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_DISCOVERY: spdk_nvme_log_page = 112;
+#[doc = " Reservation notification (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_RESERVATION_NOTIFICATION: spdk_nvme_log_page = 128;
+#[doc = " Sanitize status (optional)"]
+pub const spdk_nvme_log_page_SPDK_NVME_LOG_SANITIZE_STATUS: spdk_nvme_log_page = 129;
+#[doc = " Log page identifiers for SPDK_NVME_OPC_GET_LOG_PAGE"]
+pub type spdk_nvme_log_page = ::std::os::raw::c_uint;
+#[doc = " Error information log page (\\ref SPDK_NVME_LOG_ERROR)"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_error_information_entry {
+    pub error_count: u64,
+    pub sqid: u16,
+    pub cid: u16,
+    pub status: spdk_nvme_status,
+    pub error_location: u16,
+    pub lba: u64,
+    pub nsid: u32,
+    pub vendor_specific: u8,
+    pub trtype: u8,
+    pub reserved30: [u8; 2usize],
+    pub command_specific: u64,
+    pub trtype_specific: u16,
+    pub reserved42: [u8; 22usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_error_information_entry() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_error_information_entry>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvme_error_information_entry))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_error_information_entry>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_error_information_entry)
+        )
+    );
+    fn test_field_error_count() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).error_count) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(error_count)
+            )
+        );
+    }
+    test_field_error_count();
+    fn test_field_sqid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sqid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(sqid)
+            )
+        );
+    }
+    test_field_sqid();
+    fn test_field_cid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cid) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(cid)
+            )
+        );
+    }
+    test_field_cid();
+    fn test_field_status() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).status) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(status)
+            )
+        );
+    }
+    test_field_status();
+    fn test_field_error_location() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).error_location) as usize - ptr as usize
+            },
+            14usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(error_location)
+            )
+        );
+    }
+    test_field_error_location();
+    fn test_field_lba() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).lba) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(lba)
+            )
+        );
+    }
+    test_field_lba();
+    fn test_field_nsid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsid) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(nsid)
+            )
+        );
+    }
+    test_field_nsid();
+    fn test_field_vendor_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).vendor_specific) as usize - ptr as usize
+            },
+            28usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(vendor_specific)
+            )
+        );
+    }
+    test_field_vendor_specific();
+    fn test_field_trtype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).trtype) as usize - ptr as usize
+            },
+            29usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(trtype)
+            )
+        );
+    }
+    test_field_trtype();
+    fn test_field_reserved30() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved30) as usize - ptr as usize
+            },
+            30usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(reserved30)
+            )
+        );
+    }
+    test_field_reserved30();
+    fn test_field_command_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).command_specific) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(command_specific)
+            )
+        );
+    }
+    test_field_command_specific();
+    fn test_field_trtype_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).trtype_specific) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(trtype_specific)
+            )
+        );
+    }
+    test_field_trtype_specific();
+    fn test_field_reserved42() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_error_information_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved42) as usize - ptr as usize
+            },
+            42usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_error_information_entry),
+                "::",
+                stringify!(reserved42)
+            )
+        );
+    }
+    test_field_reserved42();
+}
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmds_and_effect_entry {
+    pub _bitfield_align_1: [u16; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmds_and_effect_entry() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmds_and_effect_entry>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmds_and_effect_entry))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmds_and_effect_entry>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_cmds_and_effect_entry))
+    );
+}
+impl spdk_nvme_cmds_and_effect_entry {
+    #[inline]
+    pub fn csupp(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_csupp(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lbcc(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_lbcc(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ncc(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_ncc(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn nic(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_nic(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ccc(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_ccc(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 11u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 11u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cse(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 3u8) as u16) }
+    }
+    #[inline]
+    pub fn set_cse(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 13u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(19usize, 13u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        csupp: u16,
+        lbcc: u16,
+        ncc: u16,
+        nic: u16,
+        ccc: u16,
+        reserved1: u16,
+        cse: u16,
+        reserved2: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let csupp: u16 = unsafe { ::std::mem::transmute(csupp) };
+            csupp as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let lbcc: u16 = unsafe { ::std::mem::transmute(lbcc) };
+            lbcc as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let ncc: u16 = unsafe { ::std::mem::transmute(ncc) };
+            ncc as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let nic: u16 = unsafe { ::std::mem::transmute(nic) };
+            nic as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let ccc: u16 = unsafe { ::std::mem::transmute(ccc) };
+            ccc as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 11u8, {
+            let reserved1: u16 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 3u8, {
+            let cse: u16 = unsafe { ::std::mem::transmute(cse) };
+            cse as u64
+        });
+        __bindgen_bitfield_unit.set(19usize, 13u8, {
+            let reserved2: u16 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_cmds_and_effect_log_page {
+    #[doc = " Commands Supported and Effects Data Structure for the Admin Commands"]
+    pub admin_cmds_supported: [spdk_nvme_cmds_and_effect_entry; 256usize],
+    #[doc = " Commands Supported and Effects Data Structure for the IO Commands"]
+    pub io_cmds_supported: [spdk_nvme_cmds_and_effect_entry; 256usize],
+    pub reserved0: [u8; 2048usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_cmds_and_effect_log_page() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_cmds_and_effect_log_page>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_cmds_and_effect_log_page))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_cmds_and_effect_log_page>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_cmds_and_effect_log_page)
+        )
+    );
+    fn test_field_admin_cmds_supported() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_cmds_and_effect_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).admin_cmds_supported) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmds_and_effect_log_page),
+                "::",
+                stringify!(admin_cmds_supported)
+            )
+        );
+    }
+    test_field_admin_cmds_supported();
+    fn test_field_io_cmds_supported() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_cmds_and_effect_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).io_cmds_supported) as usize - ptr as usize
+            },
+            1024usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmds_and_effect_log_page),
+                "::",
+                stringify!(io_cmds_supported)
+            )
+        );
+    }
+    test_field_io_cmds_supported();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_cmds_and_effect_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            2048usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_cmds_and_effect_log_page),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+}
+#[repr(C)]
+#[derive(Debug)]
+pub struct spdk_nvme_telemetry_log_page_hdr {
+    pub lpi: u8,
+    pub rsvd: [u8; 4usize],
+    pub ieee_oui: [u8; 3usize],
+    pub dalb1: u16,
+    pub dalb2: u16,
+    pub dalb3: u16,
+    pub rsvd1: [u8; 368usize],
+    pub ctrlr_avail: u8,
+    pub ctrlr_gen: u8,
+    pub rsnident: [u8; 128usize],
+    pub telemetry_datablock: __IncompleteArrayField<u8>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_telemetry_log_page_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_telemetry_log_page_hdr>(),
+        512usize,
+        concat!("Size of: ", stringify!(spdk_nvme_telemetry_log_page_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_telemetry_log_page_hdr>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_telemetry_log_page_hdr)
+        )
+    );
+    fn test_field_lpi() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).lpi) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(lpi)
+            )
+        );
+    }
+    test_field_lpi();
+    fn test_field_rsvd() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rsvd) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(rsvd)
+            )
+        );
+    }
+    test_field_rsvd();
+    fn test_field_ieee_oui() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ieee_oui) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(ieee_oui)
+            )
+        );
+    }
+    test_field_ieee_oui();
+    fn test_field_dalb1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dalb1) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(dalb1)
+            )
+        );
+    }
+    test_field_dalb1();
+    fn test_field_dalb2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dalb2) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(dalb2)
+            )
+        );
+    }
+    test_field_dalb2();
+    fn test_field_dalb3() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dalb3) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(dalb3)
+            )
+        );
+    }
+    test_field_dalb3();
+    fn test_field_rsvd1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rsvd1) as usize - ptr as usize
+            },
+            14usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(rsvd1)
+            )
+        );
+    }
+    test_field_rsvd1();
+    fn test_field_ctrlr_avail() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ctrlr_avail) as usize - ptr as usize
+            },
+            382usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(ctrlr_avail)
+            )
+        );
+    }
+    test_field_ctrlr_avail();
+    fn test_field_ctrlr_gen() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ctrlr_gen) as usize - ptr as usize
+            },
+            383usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(ctrlr_gen)
+            )
+        );
+    }
+    test_field_ctrlr_gen();
+    fn test_field_rsnident() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rsnident) as usize - ptr as usize
+            },
+            384usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(rsnident)
+            )
+        );
+    }
+    test_field_rsnident();
+    fn test_field_telemetry_datablock() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_telemetry_log_page_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).telemetry_datablock) as usize - ptr as usize
+            },
+            512usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_telemetry_log_page_hdr),
+                "::",
+                stringify!(telemetry_datablock)
+            )
+        );
+    }
+    test_field_telemetry_datablock();
+}
+pub const spdk_nvme_sanitize_status_type_SPDK_NVME_NEVER_BEEN_SANITIZED:
+    spdk_nvme_sanitize_status_type = 0;
+pub const spdk_nvme_sanitize_status_type_SPDK_NVME_RECENT_SANITIZE_SUCCESSFUL:
+    spdk_nvme_sanitize_status_type = 1;
+pub const spdk_nvme_sanitize_status_type_SPDK_NVME_SANITIZE_IN_PROGRESS:
+    spdk_nvme_sanitize_status_type = 2;
+pub const spdk_nvme_sanitize_status_type_SPDK_NVME_SANITIZE_FAILED: spdk_nvme_sanitize_status_type =
+    3;
+#[doc = " Sanitize Status Type"]
+pub type spdk_nvme_sanitize_status_type = ::std::os::raw::c_uint;
+#[doc = " Sanitize status sstat field"]
+#[repr(C)]
+#[repr(align(2))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sanitize_status_sstat {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sanitize_status_sstat() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sanitize_status_sstat>(),
+        2usize,
+        concat!("Size of: ", stringify!(spdk_nvme_sanitize_status_sstat))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sanitize_status_sstat>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_sanitize_status_sstat))
+    );
+}
+impl spdk_nvme_sanitize_status_sstat {
+    #[inline]
+    pub fn status(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u16) }
+    }
+    #[inline]
+    pub fn set_status(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn complete_pass(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u16) }
+    }
+    #[inline]
+    pub fn set_complete_pass(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn global_data_erase(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u16) }
+    }
+    #[inline]
+    pub fn set_global_data_erase(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u16 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 7u8) as u16) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u16) {
+        unsafe {
+            let val: u16 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        status: u16,
+        complete_pass: u16,
+        global_data_erase: u16,
+        reserved: u16,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let status: u16 = unsafe { ::std::mem::transmute(status) };
+            status as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let complete_pass: u16 = unsafe { ::std::mem::transmute(complete_pass) };
+            complete_pass as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let global_data_erase: u16 = unsafe { ::std::mem::transmute(global_data_erase) };
+            global_data_erase as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 7u8, {
+            let reserved: u16 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[doc = " Sanitize log page"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sanitize_status_log_page {
+    pub sprog: u16,
+    pub sstat: spdk_nvme_sanitize_status_sstat,
+    pub scdw10: u32,
+    pub et_overwrite: u32,
+    pub et_block_erase: u32,
+    pub et_crypto_erase: u32,
+    pub reserved: [u8; 492usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sanitize_status_log_page() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sanitize_status_log_page>(),
+        512usize,
+        concat!("Size of: ", stringify!(spdk_nvme_sanitize_status_log_page))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sanitize_status_log_page>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_sanitize_status_log_page)
+        )
+    );
+    fn test_field_sprog() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sprog) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(sprog)
+            )
+        );
+    }
+    test_field_sprog();
+    fn test_field_sstat() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sstat) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(sstat)
+            )
+        );
+    }
+    test_field_sstat();
+    fn test_field_scdw10() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).scdw10) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(scdw10)
+            )
+        );
+    }
+    test_field_scdw10();
+    fn test_field_et_overwrite() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).et_overwrite) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(et_overwrite)
+            )
+        );
+    }
+    test_field_et_overwrite();
+    fn test_field_et_block_erase() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).et_block_erase) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(et_block_erase)
+            )
+        );
+    }
+    test_field_et_block_erase();
+    fn test_field_et_crypto_erase() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).et_crypto_erase) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(et_crypto_erase)
+            )
+        );
+    }
+    test_field_et_crypto_erase();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_sanitize_status_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_sanitize_status_log_page),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+pub const spdk_nvme_async_event_type_SPDK_NVME_ASYNC_EVENT_TYPE_ERROR: spdk_nvme_async_event_type =
+    0;
+pub const spdk_nvme_async_event_type_SPDK_NVME_ASYNC_EVENT_TYPE_SMART: spdk_nvme_async_event_type =
+    1;
+pub const spdk_nvme_async_event_type_SPDK_NVME_ASYNC_EVENT_TYPE_NOTICE: spdk_nvme_async_event_type =
+    2;
+pub const spdk_nvme_async_event_type_SPDK_NVME_ASYNC_EVENT_TYPE_IO: spdk_nvme_async_event_type = 6;
+pub const spdk_nvme_async_event_type_SPDK_NVME_ASYNC_EVENT_TYPE_VENDOR: spdk_nvme_async_event_type =
+    7;
+#[doc = " Asynchronous Event Type"]
+pub type spdk_nvme_async_event_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_WRITE_INVALID_DB:
+    spdk_nvme_async_event_info_error = 0;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_INVALID_DB_WRITE:
+    spdk_nvme_async_event_info_error = 1;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_DIAGNOSTIC_FAILURE:
+    spdk_nvme_async_event_info_error = 2;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_PERSISTENT_INTERNAL:
+    spdk_nvme_async_event_info_error = 3;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_TRANSIENT_INTERNAL:
+    spdk_nvme_async_event_info_error = 4;
+pub const spdk_nvme_async_event_info_error_SPDK_NVME_ASYNC_EVENT_FW_IMAGE_LOAD:
+    spdk_nvme_async_event_info_error = 5;
+#[doc = " Asynchronous Event Information for Error Status"]
+pub type spdk_nvme_async_event_info_error = ::std::os::raw::c_uint;
+pub const spdk_nvme_async_event_info_smart_SPDK_NVME_ASYNC_EVENT_SUBSYSTEM_RELIABILITY:
+    spdk_nvme_async_event_info_smart = 0;
+pub const spdk_nvme_async_event_info_smart_SPDK_NVME_ASYNC_EVENT_TEMPERATURE_THRESHOLD:
+    spdk_nvme_async_event_info_smart = 1;
+pub const spdk_nvme_async_event_info_smart_SPDK_NVME_ASYNC_EVENT_SPARE_BELOW_THRESHOLD:
+    spdk_nvme_async_event_info_smart = 2;
+#[doc = " Asynchronous Event Information for SMART/Health Status"]
+pub type spdk_nvme_async_event_info_smart = ::std::os::raw::c_uint;
+pub const spdk_nvme_async_event_info_notice_SPDK_NVME_ASYNC_EVENT_NS_ATTR_CHANGED:
+    spdk_nvme_async_event_info_notice = 0;
+pub const spdk_nvme_async_event_info_notice_SPDK_NVME_ASYNC_EVENT_FW_ACTIVATION_START:
+    spdk_nvme_async_event_info_notice = 1;
+pub const spdk_nvme_async_event_info_notice_SPDK_NVME_ASYNC_EVENT_TELEMETRY_LOG_CHANGED:
+    spdk_nvme_async_event_info_notice = 2;
+pub const spdk_nvme_async_event_info_notice_SPDK_NVME_ASYNC_EVENT_ANA_CHANGE:
+    spdk_nvme_async_event_info_notice = 3;
+#[doc = " Discovery log change event(refer to the NVMe over Fabrics specification)"]
+pub const spdk_nvme_async_event_info_notice_SPDK_NVME_ASYNC_EVENT_DISCOVERY_LOG_CHANGE:
+    spdk_nvme_async_event_info_notice = 240;
+#[doc = " Asynchronous Event Information for Notice"]
+pub type spdk_nvme_async_event_info_notice = ::std::os::raw::c_uint;
+pub const spdk_nvme_async_event_info_nvm_command_set_SPDK_NVME_ASYNC_EVENT_RESERVATION_LOG_AVAIL:
+    spdk_nvme_async_event_info_nvm_command_set = 0;
+pub const spdk_nvme_async_event_info_nvm_command_set_SPDK_NVME_ASYNC_EVENT_SANITIZE_COMPLETED:
+    spdk_nvme_async_event_info_nvm_command_set = 1;
+#[doc = " Asynchronous Event Information for NVM Command Set Specific Status"]
+pub type spdk_nvme_async_event_info_nvm_command_set = ::std::os::raw::c_uint;
+#[doc = " Asynchronous Event Request Completion"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_async_event_completion {
+    pub raw: u32,
+    pub bits: spdk_nvme_async_event_completion__bindgen_ty_1,
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_async_event_completion__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_async_event_completion__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_async_event_completion__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_async_event_completion__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_async_event_completion__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_async_event_completion__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_async_event_completion__bindgen_ty_1 {
+    #[inline]
+    pub fn async_event_type(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_async_event_type(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn async_event_info(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_async_event_info(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn log_page_identifier(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_log_page_identifier(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved2(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved2(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        async_event_type: u32,
+        reserved1: u32,
+        async_event_info: u32,
+        log_page_identifier: u32,
+        reserved2: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let async_event_type: u32 = unsafe { ::std::mem::transmute(async_event_type) };
+            async_event_type as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved1: u32 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 8u8, {
+            let async_event_info: u32 = unsafe { ::std::mem::transmute(async_event_info) };
+            async_event_info as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 8u8, {
+            let log_page_identifier: u32 = unsafe { ::std::mem::transmute(log_page_identifier) };
+            log_page_identifier as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 8u8, {
+            let reserved2: u32 = unsafe { ::std::mem::transmute(reserved2) };
+            reserved2 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_async_event_completion() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_async_event_completion>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_async_event_completion))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_async_event_completion>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_async_event_completion)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_async_event_completion>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_async_event_completion),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_async_event_completion>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_async_event_completion),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[doc = " Firmware slot information page (\\ref SPDK_NVME_LOG_FIRMWARE_SLOT)"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_firmware_page {
+    pub afi: spdk_nvme_firmware_page__bindgen_ty_1,
+    pub reserved: [u8; 7usize],
+    pub revision: [[u8; 8usize]; 7usize],
+    #[doc = " Revisions for 7 slots (ASCII strings)"]
+    pub reserved2: [u8; 448usize],
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_firmware_page__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_firmware_page__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_firmware_page__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_firmware_page__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_firmware_page__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_firmware_page__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_firmware_page__bindgen_ty_1 {
+    #[inline]
+    pub fn active_slot(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_active_slot(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved3(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved3(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn next_reset_slot(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_next_reset_slot(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved7(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved7(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        active_slot: u8,
+        reserved3: u8,
+        next_reset_slot: u8,
+        reserved7: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let active_slot: u8 = unsafe { ::std::mem::transmute(active_slot) };
+            active_slot as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let reserved3: u8 = unsafe { ::std::mem::transmute(reserved3) };
+            reserved3 as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 3u8, {
+            let next_reset_slot: u8 = unsafe { ::std::mem::transmute(next_reset_slot) };
+            next_reset_slot as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let reserved7: u8 = unsafe { ::std::mem::transmute(reserved7) };
+            reserved7 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_firmware_page() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_firmware_page>(),
+        512usize,
+        concat!("Size of: ", stringify!(spdk_nvme_firmware_page))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_firmware_page>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_firmware_page))
+    );
+    fn test_field_afi() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_firmware_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).afi) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_firmware_page),
+                "::",
+                stringify!(afi)
+            )
+        );
+    }
+    test_field_afi();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_firmware_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_firmware_page),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_revision() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_firmware_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).revision) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_firmware_page),
+                "::",
+                stringify!(revision)
+            )
+        );
+    }
+    test_field_revision();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_firmware_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_firmware_page),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+#[doc = " Asymmetric Namespace Acccess page (\\ref SPDK_NVME_LOG_ASYMMETRIC_NAMESPACE_ACCESS)"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ana_page {
+    pub change_count: u64,
+    pub num_ana_group_desc: u16,
+    pub reserved: [u8; 6usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ana_page() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ana_page>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ana_page))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ana_page>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ana_page))
+    );
+    fn test_field_change_count() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).change_count) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_page),
+                "::",
+                stringify!(change_count)
+            )
+        );
+    }
+    test_field_change_count();
+    fn test_field_num_ana_group_desc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).num_ana_group_desc) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_page),
+                "::",
+                stringify!(num_ana_group_desc)
+            )
+        );
+    }
+    test_field_num_ana_group_desc();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_page),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+pub const spdk_nvme_ana_state_SPDK_NVME_ANA_OPTIMIZED_STATE: spdk_nvme_ana_state = 1;
+pub const spdk_nvme_ana_state_SPDK_NVME_ANA_NON_OPTIMIZED_STATE: spdk_nvme_ana_state = 2;
+pub const spdk_nvme_ana_state_SPDK_NVME_ANA_INACCESSIBLE_STATE: spdk_nvme_ana_state = 3;
+pub const spdk_nvme_ana_state_SPDK_NVME_ANA_PERSISTENT_LOSS_STATE: spdk_nvme_ana_state = 4;
+pub const spdk_nvme_ana_state_SPDK_NVME_ANA_CHANGE_STATE: spdk_nvme_ana_state = 15;
+pub type spdk_nvme_ana_state = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug)]
+pub struct spdk_nvme_ana_group_descriptor {
+    pub ana_group_id: u32,
+    pub num_of_nsid: u32,
+    pub change_count: u64,
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub reserved1: [u8; 15usize],
+    pub nsid: __IncompleteArrayField<u32>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ana_group_descriptor() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ana_group_descriptor>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ana_group_descriptor))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ana_group_descriptor>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ana_group_descriptor))
+    );
+    fn test_field_ana_group_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_group_descriptor>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ana_group_id) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_group_descriptor),
+                "::",
+                stringify!(ana_group_id)
+            )
+        );
+    }
+    test_field_ana_group_id();
+    fn test_field_num_of_nsid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_group_descriptor>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).num_of_nsid) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_group_descriptor),
+                "::",
+                stringify!(num_of_nsid)
+            )
+        );
+    }
+    test_field_num_of_nsid();
+    fn test_field_change_count() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_group_descriptor>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).change_count) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_group_descriptor),
+                "::",
+                stringify!(change_count)
+            )
+        );
+    }
+    test_field_change_count();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_group_descriptor>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            17usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_group_descriptor),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_nsid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ana_group_descriptor>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsid) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ana_group_descriptor),
+                "::",
+                stringify!(nsid)
+            )
+        );
+    }
+    test_field_nsid();
+}
+impl spdk_nvme_ana_group_descriptor {
+    #[inline]
+    pub fn ana_state(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ana_state(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved0(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved0(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ana_state: u8, reserved0: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let ana_state: u8 = unsafe { ::std::mem::transmute(ana_state) };
+            ana_state as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let reserved0: u8 = unsafe { ::std::mem::transmute(reserved0) };
+            reserved0 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+pub const spdk_nvme_ns_attach_type_SPDK_NVME_NS_CTRLR_ATTACH: spdk_nvme_ns_attach_type = 0;
+pub const spdk_nvme_ns_attach_type_SPDK_NVME_NS_CTRLR_DETACH: spdk_nvme_ns_attach_type = 1;
+#[doc = " Namespace attachment Type Encoding"]
+pub type spdk_nvme_ns_attach_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_ns_management_type_SPDK_NVME_NS_MANAGEMENT_CREATE:
+    spdk_nvme_ns_management_type = 0;
+pub const spdk_nvme_ns_management_type_SPDK_NVME_NS_MANAGEMENT_DELETE:
+    spdk_nvme_ns_management_type = 1;
+#[doc = " Namespace management Type Encoding"]
+pub type spdk_nvme_ns_management_type = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_list {
+    pub ns_list: [u32; 1024usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_list() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_list>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_list))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_list>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_list))
+    );
+    fn test_field_ns_list() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ns_list) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_list),
+                "::",
+                stringify!(ns_list)
+            )
+        );
+    }
+    test_field_ns_list();
+}
+#[doc = " IEEE Extended Unique Identifier"]
+pub const spdk_nvme_nidt_SPDK_NVME_NIDT_EUI64: spdk_nvme_nidt = 1;
+#[doc = " Namespace GUID"]
+pub const spdk_nvme_nidt_SPDK_NVME_NIDT_NGUID: spdk_nvme_nidt = 2;
+#[doc = " Namespace UUID"]
+pub const spdk_nvme_nidt_SPDK_NVME_NIDT_UUID: spdk_nvme_nidt = 3;
+#[doc = " Namespace Command Set Identifier"]
+pub const spdk_nvme_nidt_SPDK_NVME_NIDT_CSI: spdk_nvme_nidt = 4;
+#[doc = " Namespace identification descriptor type"]
+#[doc = ""]
+#[doc = " \\sa spdk_nvme_ns_id_desc"]
+pub type spdk_nvme_nidt = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug)]
+pub struct spdk_nvme_ns_id_desc {
+    #[doc = " Namespace identifier type"]
+    pub nidt: u8,
+    #[doc = " Namespace identifier length (length of nid field)"]
+    pub nidl: u8,
+    pub reserved2: u8,
+    pub reserved3: u8,
+    #[doc = " Namespace identifier"]
+    pub nid: __IncompleteArrayField<u8>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_id_desc() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_id_desc>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_id_desc))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_id_desc>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_id_desc))
+    );
+    fn test_field_nidt() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_id_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nidt) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_id_desc),
+                "::",
+                stringify!(nidt)
+            )
+        );
+    }
+    test_field_nidt();
+    fn test_field_nidl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_id_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nidl) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_id_desc),
+                "::",
+                stringify!(nidl)
+            )
+        );
+    }
+    test_field_nidl();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_id_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_id_desc),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_reserved3() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_id_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_id_desc),
+                "::",
+                stringify!(reserved3)
+            )
+        );
+    }
+    test_field_reserved3();
+    fn test_field_nid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_id_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nid) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_id_desc),
+                "::",
+                stringify!(nid)
+            )
+        );
+    }
+    test_field_nid();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ctrlr_list {
+    pub ctrlr_count: u16,
+    pub ctrlr_list: [u16; 2047usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ctrlr_list() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ctrlr_list>(),
+        4096usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ctrlr_list))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ctrlr_list>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ctrlr_list))
+    );
+    fn test_field_ctrlr_count() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ctrlr_count) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_list),
+                "::",
+                stringify!(ctrlr_count)
+            )
+        );
+    }
+    test_field_ctrlr_count();
+    fn test_field_ctrlr_list() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ctrlr_list>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ctrlr_list) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ctrlr_list),
+                "::",
+                stringify!(ctrlr_list)
+            )
+        );
+    }
+    test_field_ctrlr_list();
+}
+pub const spdk_nvme_csi_SPDK_NVME_CSI_NVM: spdk_nvme_csi = 0;
+pub const spdk_nvme_csi_SPDK_NVME_CSI_KV: spdk_nvme_csi = 1;
+pub const spdk_nvme_csi_SPDK_NVME_CSI_ZNS: spdk_nvme_csi = 2;
+pub type spdk_nvme_csi = ::std::os::raw::c_uint;
+pub const spdk_nvme_secure_erase_setting_SPDK_NVME_FMT_NVM_SES_NO_SECURE_ERASE:
+    spdk_nvme_secure_erase_setting = 0;
+pub const spdk_nvme_secure_erase_setting_SPDK_NVME_FMT_NVM_SES_USER_DATA_ERASE:
+    spdk_nvme_secure_erase_setting = 1;
+pub const spdk_nvme_secure_erase_setting_SPDK_NVME_FMT_NVM_SES_CRYPTO_ERASE:
+    spdk_nvme_secure_erase_setting = 2;
+pub type spdk_nvme_secure_erase_setting = ::std::os::raw::c_uint;
+pub const spdk_nvme_pi_location_SPDK_NVME_FMT_NVM_PROTECTION_AT_TAIL: spdk_nvme_pi_location = 0;
+pub const spdk_nvme_pi_location_SPDK_NVME_FMT_NVM_PROTECTION_AT_HEAD: spdk_nvme_pi_location = 1;
+pub type spdk_nvme_pi_location = ::std::os::raw::c_uint;
+pub const spdk_nvme_pi_type_SPDK_NVME_FMT_NVM_PROTECTION_DISABLE: spdk_nvme_pi_type = 0;
+pub const spdk_nvme_pi_type_SPDK_NVME_FMT_NVM_PROTECTION_TYPE1: spdk_nvme_pi_type = 1;
+pub const spdk_nvme_pi_type_SPDK_NVME_FMT_NVM_PROTECTION_TYPE2: spdk_nvme_pi_type = 2;
+pub const spdk_nvme_pi_type_SPDK_NVME_FMT_NVM_PROTECTION_TYPE3: spdk_nvme_pi_type = 3;
+pub type spdk_nvme_pi_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_metadata_setting_SPDK_NVME_FMT_NVM_METADATA_TRANSFER_AS_BUFFER:
+    spdk_nvme_metadata_setting = 0;
+pub const spdk_nvme_metadata_setting_SPDK_NVME_FMT_NVM_METADATA_TRANSFER_AS_LBA:
+    spdk_nvme_metadata_setting = 1;
+pub type spdk_nvme_metadata_setting = ::std::os::raw::c_uint;
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_format {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_format() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_format>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_format))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_format>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_format))
+    );
+}
+impl spdk_nvme_format {
+    #[inline]
+    pub fn lbaf(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lbaf(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ms(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ms(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pi(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pi(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pil(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pil(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ses(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ses(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        lbaf: u32,
+        ms: u32,
+        pi: u32,
+        pil: u32,
+        ses: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let lbaf: u32 = unsafe { ::std::mem::transmute(lbaf) };
+            lbaf as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let ms: u32 = unsafe { ::std::mem::transmute(ms) };
+            ms as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let pi: u32 = unsafe { ::std::mem::transmute(pi) };
+            pi as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let pil: u32 = unsafe { ::std::mem::transmute(pil) };
+            pil as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 3u8, {
+            let ses: u32 = unsafe { ::std::mem::transmute(ses) };
+            ses as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 20u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_protection_info {
+    pub guard: u16,
+    pub app_tag: u16,
+    pub ref_tag: u32,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_protection_info() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_protection_info>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_protection_info))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_protection_info>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_protection_info))
+    );
+    fn test_field_guard() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_protection_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).guard) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_protection_info),
+                "::",
+                stringify!(guard)
+            )
+        );
+    }
+    test_field_guard();
+    fn test_field_app_tag() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_protection_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).app_tag) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_protection_info),
+                "::",
+                stringify!(app_tag)
+            )
+        );
+    }
+    test_field_app_tag();
+    fn test_field_ref_tag() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_protection_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ref_tag) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_protection_info),
+                "::",
+                stringify!(ref_tag)
+            )
+        );
+    }
+    test_field_ref_tag();
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_sanitize {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_sanitize() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_sanitize>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_sanitize))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_sanitize>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_sanitize))
+    );
+}
+impl spdk_nvme_sanitize {
+    #[inline]
+    pub fn sanact(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sanact(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ause(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ause(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn owpass(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u32) }
+    }
+    #[inline]
+    pub fn set_owpass(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn oipbp(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_oipbp(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ndas(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ndas(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 22u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 22u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        sanact: u32,
+        ause: u32,
+        owpass: u32,
+        oipbp: u32,
+        ndas: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let sanact: u32 = unsafe { ::std::mem::transmute(sanact) };
+            sanact as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let ause: u32 = unsafe { ::std::mem::transmute(ause) };
+            ause as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let owpass: u32 = unsafe { ::std::mem::transmute(owpass) };
+            owpass as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let oipbp: u32 = unsafe { ::std::mem::transmute(oipbp) };
+            oipbp as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let ndas: u32 = unsafe { ::std::mem::transmute(ndas) };
+            ndas as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 22u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+pub const spdk_sanitize_action_SPDK_NVME_SANITIZE_EXIT_FAILURE_MODE: spdk_sanitize_action = 1;
+pub const spdk_sanitize_action_SPDK_NVME_SANITIZE_BLOCK_ERASE: spdk_sanitize_action = 2;
+pub const spdk_sanitize_action_SPDK_NVME_SANITIZE_OVERWRITE: spdk_sanitize_action = 3;
+pub const spdk_sanitize_action_SPDK_NVME_SANITIZE_CRYPTO_ERASE: spdk_sanitize_action = 4;
+pub type spdk_sanitize_action = ::std::os::raw::c_uint;
+#[doc = " Downloaded image replaces the image specified by"]
+#[doc = " the Firmware Slot field. This image is not activated."]
+pub const spdk_nvme_fw_commit_action_SPDK_NVME_FW_COMMIT_REPLACE_IMG: spdk_nvme_fw_commit_action =
+    0;
+#[doc = " Downloaded image replaces the image specified by"]
+#[doc = " the Firmware Slot field. This image is activated at the next reset."]
+pub const spdk_nvme_fw_commit_action_SPDK_NVME_FW_COMMIT_REPLACE_AND_ENABLE_IMG:
+    spdk_nvme_fw_commit_action = 1;
+#[doc = " The image specified by the Firmware Slot field is"]
+#[doc = " activated at the next reset."]
+pub const spdk_nvme_fw_commit_action_SPDK_NVME_FW_COMMIT_ENABLE_IMG: spdk_nvme_fw_commit_action = 2;
+#[doc = " The image specified by the Firmware Slot field is"]
+#[doc = " requested to be activated immediately without reset."]
+pub const spdk_nvme_fw_commit_action_SPDK_NVME_FW_COMMIT_RUN_IMG: spdk_nvme_fw_commit_action = 3;
+#[doc = " Parameters for SPDK_NVME_OPC_FIRMWARE_COMMIT cdw10: commit action"]
+pub type spdk_nvme_fw_commit_action = ::std::os::raw::c_uint;
+#[doc = " Parameters for SPDK_NVME_OPC_FIRMWARE_COMMIT cdw10"]
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_fw_commit {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_fw_commit() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_fw_commit>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvme_fw_commit))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_fw_commit>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_fw_commit))
+    );
+}
+impl spdk_nvme_fw_commit {
+    #[inline]
+    pub fn fs(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fs(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ca(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 3u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ca(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 26u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 26u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(fs: u32, ca: u32, reserved: u32) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let fs: u32 = unsafe { ::std::mem::transmute(fs) };
+            fs as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 3u8, {
+            let ca: u32 = unsafe { ::std::mem::transmute(ca) };
+            ca as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 26u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+pub const spdk_nvme_zns_zone_send_action_SPDK_NVME_ZONE_CLOSE: spdk_nvme_zns_zone_send_action = 1;
+pub const spdk_nvme_zns_zone_send_action_SPDK_NVME_ZONE_FINISH: spdk_nvme_zns_zone_send_action = 2;
+pub const spdk_nvme_zns_zone_send_action_SPDK_NVME_ZONE_OPEN: spdk_nvme_zns_zone_send_action = 3;
+pub const spdk_nvme_zns_zone_send_action_SPDK_NVME_ZONE_RESET: spdk_nvme_zns_zone_send_action = 4;
+pub const spdk_nvme_zns_zone_send_action_SPDK_NVME_ZONE_OFFLINE: spdk_nvme_zns_zone_send_action = 5;
+pub type spdk_nvme_zns_zone_send_action = ::std::os::raw::c_uint;
+pub const spdk_nvme_zns_zone_receive_action_SPDK_NVME_ZONE_REPORT:
+    spdk_nvme_zns_zone_receive_action = 0;
+pub type spdk_nvme_zns_zone_receive_action = ::std::os::raw::c_uint;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ALL: spdk_nvme_zns_zra_report_opts = 0;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSE: spdk_nvme_zns_zra_report_opts = 1;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSIO: spdk_nvme_zns_zra_report_opts = 2;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSEO: spdk_nvme_zns_zra_report_opts = 3;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSC: spdk_nvme_zns_zra_report_opts = 4;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSF: spdk_nvme_zns_zra_report_opts = 5;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSRO: spdk_nvme_zns_zra_report_opts = 6;
+pub const spdk_nvme_zns_zra_report_opts_SPDK_NVME_ZRA_LIST_ZSO: spdk_nvme_zns_zra_report_opts = 7;
+pub type spdk_nvme_zns_zra_report_opts = ::std::os::raw::c_uint;
+pub const spdk_nvme_zns_zone_type_SPDK_NVME_ZONE_TYPE_SEQWR: spdk_nvme_zns_zone_type = 2;
+pub type spdk_nvme_zns_zone_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_EMPTY: spdk_nvme_zns_zone_state = 1;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_IOPEN: spdk_nvme_zns_zone_state = 2;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_EOPEN: spdk_nvme_zns_zone_state = 3;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_CLOSED: spdk_nvme_zns_zone_state = 4;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_RONLY: spdk_nvme_zns_zone_state = 13;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_FULL: spdk_nvme_zns_zone_state = 14;
+pub const spdk_nvme_zns_zone_state_SPDK_NVME_ZONE_STATE_OFFLINE: spdk_nvme_zns_zone_state = 15;
+pub type spdk_nvme_zns_zone_state = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_zns_zone_desc {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize]>,
+    pub za: spdk_nvme_zns_zone_desc__bindgen_ty_1,
+    pub reserved: [u8; 5usize],
+    #[doc = " Zone Capacity (in number of LBAs)"]
+    pub zcap: u64,
+    #[doc = " Zone Start LBA"]
+    pub zslba: u64,
+    #[doc = " Write Pointer (LBA)"]
+    pub wp: u64,
+    pub reserved32: [u8; 32usize],
+}
+#[doc = " Zone Attributes"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_zns_zone_desc__bindgen_ty_1 {
+    pub raw: u8,
+    pub bits: spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_zns_zone_desc__bindgen_ty_1__bindgen_ty_1 {
+    #[inline]
+    pub fn zfc(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_zfc(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn zfr(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_zfr(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rzr(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rzr(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rsvd3(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rsvd3(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn zdev(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_zdev(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        zfc: u8,
+        zfr: u8,
+        rzr: u8,
+        rsvd3: u8,
+        zdev: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let zfc: u8 = unsafe { ::std::mem::transmute(zfc) };
+            zfc as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let zfr: u8 = unsafe { ::std::mem::transmute(zfr) };
+            zfr as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let rzr: u8 = unsafe { ::std::mem::transmute(rzr) };
+            rzr as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 4u8, {
+            let rsvd3: u8 = unsafe { ::std::mem::transmute(rsvd3) };
+            rsvd3 as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let zdev: u8 = unsafe { ::std::mem::transmute(zdev) };
+            zdev as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_zone_desc__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_zone_desc__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_zone_desc__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc__bindgen_ty_1),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_zone_desc() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_zone_desc>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_zone_desc))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_zone_desc>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_zns_zone_desc))
+    );
+    fn test_field_za() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).za) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(za)
+            )
+        );
+    }
+    test_field_za();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+    fn test_field_zcap() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).zcap) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(zcap)
+            )
+        );
+    }
+    test_field_zcap();
+    fn test_field_zslba() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).zslba) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(zslba)
+            )
+        );
+    }
+    test_field_zslba();
+    fn test_field_wp() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).wp) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(wp)
+            )
+        );
+    }
+    test_field_wp();
+    fn test_field_reserved32() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_desc>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved32) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_desc),
+                "::",
+                stringify!(reserved32)
+            )
+        );
+    }
+    test_field_reserved32();
+}
+impl spdk_nvme_zns_zone_desc {
+    #[inline]
+    pub fn zt(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_zt(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rsvd0(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rsvd0(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn rsvd1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_rsvd1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn zs(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_zs(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        zt: u8,
+        rsvd0: u8,
+        rsvd1: u8,
+        zs: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 2usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 2usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let zt: u8 = unsafe { ::std::mem::transmute(zt) };
+            zt as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 4u8, {
+            let rsvd0: u8 = unsafe { ::std::mem::transmute(rsvd0) };
+            rsvd0 as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 4u8, {
+            let rsvd1: u8 = unsafe { ::std::mem::transmute(rsvd1) };
+            rsvd1 as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 4u8, {
+            let zs: u8 = unsafe { ::std::mem::transmute(zs) };
+            zs as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+pub struct spdk_nvme_zns_zone_report {
+    pub nr_zones: u64,
+    pub reserved8: [u8; 56usize],
+    pub descs: __IncompleteArrayField<spdk_nvme_zns_zone_desc>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_zns_zone_report() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_zns_zone_report>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvme_zns_zone_report))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_zns_zone_report>(),
+        8usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_zns_zone_report))
+    );
+    fn test_field_nr_zones() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_report>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nr_zones) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_report),
+                "::",
+                stringify!(nr_zones)
+            )
+        );
+    }
+    test_field_nr_zones();
+    fn test_field_reserved8() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_report>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved8) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_report),
+                "::",
+                stringify!(reserved8)
+            )
+        );
+    }
+    test_field_reserved8();
+    fn test_field_descs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_zns_zone_report>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).descs) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_zns_zone_report),
+                "::",
+                stringify!(descs)
+            )
+        );
+    }
+    test_field_descs();
+}
+pub const spdk_nvme_directive_type_SPDK_NVME_DIRECTIVE_TYPE_IDENTIFY: spdk_nvme_directive_type = 0;
+pub const spdk_nvme_directive_type_SPDK_NVME_DIRECTIVE_TYPE_STREAMS: spdk_nvme_directive_type = 1;
+pub type spdk_nvme_directive_type = ::std::os::raw::c_uint;
+pub const spdk_nvme_identify_directive_send_operation_SPDK_NVME_IDENTIFY_DIRECTIVE_SEND_ENABLED:
+    spdk_nvme_identify_directive_send_operation = 1;
+pub type spdk_nvme_identify_directive_send_operation = ::std::os::raw::c_uint;
+pub const spdk_nvme_identify_directive_receive_operation_SPDK_NVME_IDENTIFY_DIRECTIVE_RECEIVE_RETURN_PARAM : spdk_nvme_identify_directive_receive_operation = 1 ;
+pub type spdk_nvme_identify_directive_receive_operation = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_identify_directive_param {
+    pub directives_supported: spdk_nvme_ns_identify_directive_param__bindgen_ty_1,
+    pub directives_enabled: spdk_nvme_ns_identify_directive_param__bindgen_ty_2,
+    pub reserved: [u32; 1008usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_identify_directive_param__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub reserved2: [u8; 31usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_identify_directive_param__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_identify_directive_param__bindgen_ty_1>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_identify_directive_param__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_1)
+        )
+    );
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_ns_identify_directive_param__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_1),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+impl spdk_nvme_ns_identify_directive_param__bindgen_ty_1 {
+    #[inline]
+    pub fn identify(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_identify(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn streams(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_streams(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        identify: u8,
+        streams: u8,
+        reserved1: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let identify: u8 = unsafe { ::std::mem::transmute(identify) };
+            identify as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let streams: u8 = unsafe { ::std::mem::transmute(streams) };
+            streams as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_identify_directive_param__bindgen_ty_2 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub reserved2: [u8; 31usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_identify_directive_param__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_identify_directive_param__bindgen_ty_2>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_identify_directive_param__bindgen_ty_2>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_2)
+        )
+    );
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_ns_identify_directive_param__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_identify_directive_param__bindgen_ty_2),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+impl spdk_nvme_ns_identify_directive_param__bindgen_ty_2 {
+    #[inline]
+    pub fn identify(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_identify(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn streams(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_streams(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved1(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved1(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        identify: u8,
+        streams: u8,
+        reserved1: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let identify: u8 = unsafe { ::std::mem::transmute(identify) };
+            identify as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let streams: u8 = unsafe { ::std::mem::transmute(streams) };
+            streams as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved1: u8 = unsafe { ::std::mem::transmute(reserved1) };
+            reserved1 as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_identify_directive_param() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_identify_directive_param>(),
+        4096usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_identify_directive_param)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_identify_directive_param>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_identify_directive_param)
+        )
+    );
+    fn test_field_directives_supported() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ns_identify_directive_param>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).directives_supported) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_identify_directive_param),
+                "::",
+                stringify!(directives_supported)
+            )
+        );
+    }
+    test_field_directives_supported();
+    fn test_field_directives_enabled() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ns_identify_directive_param>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).directives_enabled) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_identify_directive_param),
+                "::",
+                stringify!(directives_enabled)
+            )
+        );
+    }
+    test_field_directives_enabled();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_ns_identify_directive_param>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_identify_directive_param),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+pub const spdk_nvme_streams_directive_receive_operation_SPDK_NVME_STREAMS_DIRECTIVE_RECEIVE_RETURN_PARAM : spdk_nvme_streams_directive_receive_operation = 1 ;
+pub const spdk_nvme_streams_directive_receive_operation_SPDK_NVME_STREAMS_DIRECTIVE_RECEIVE_GET_STATUS : spdk_nvme_streams_directive_receive_operation = 2 ;
+pub const spdk_nvme_streams_directive_receive_operation_SPDK_NVME_STREAMS_DIRECTIVE_RECEIVE_ALLOCATE_RESOURCE : spdk_nvme_streams_directive_receive_operation = 3 ;
+pub type spdk_nvme_streams_directive_receive_operation = ::std::os::raw::c_uint;
+pub const spdk_nvme_streams_directive_send_operation_SPDK_NVME_STREAMS_DIRECTIVE_SEND_RELEASE_ID:
+    spdk_nvme_streams_directive_send_operation = 1;
+pub const spdk_nvme_streams_directive_send_operation_SPDK_NVME_STREAMS_DIRECTIVE_SEND_RELEASE_RESOURCE : spdk_nvme_streams_directive_send_operation = 2 ;
+pub type spdk_nvme_streams_directive_send_operation = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_streams_data {
+    pub msl: u16,
+    pub nssa: u16,
+    pub nsso: u16,
+    pub nssc: spdk_nvme_ns_streams_data__bindgen_ty_1,
+    pub reserved1: [u8; 9usize],
+    pub sws: u32,
+    pub sgs: u16,
+    pub nsa: u16,
+    pub nso: u16,
+    pub reserved2: [u8; 6usize],
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_streams_data__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_streams_data__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_streams_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_ns_streams_data__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_streams_data__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_ns_streams_data__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_ns_streams_data__bindgen_ty_1 {
+    #[inline]
+    pub fn ssid(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ssid(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 7u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 7u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(ssid: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ssid: u8 = unsafe { ::std::mem::transmute(ssid) };
+            ssid as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 7u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_streams_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_streams_data>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_streams_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_streams_data>(),
+        4usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_streams_data))
+    );
+    fn test_field_msl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).msl) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(msl)
+            )
+        );
+    }
+    test_field_msl();
+    fn test_field_nssa() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nssa) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(nssa)
+            )
+        );
+    }
+    test_field_nssa();
+    fn test_field_nsso() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsso) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(nsso)
+            )
+        );
+    }
+    test_field_nsso();
+    fn test_field_nssc() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nssc) as usize - ptr as usize
+            },
+            6usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(nssc)
+            )
+        );
+    }
+    test_field_nssc();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            7usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_sws() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sws) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(sws)
+            )
+        );
+    }
+    test_field_sws();
+    fn test_field_sgs() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sgs) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(sgs)
+            )
+        );
+    }
+    test_field_sgs();
+    fn test_field_nsa() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nsa) as usize - ptr as usize
+            },
+            22usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(nsa)
+            )
+        );
+    }
+    test_field_nsa();
+    fn test_field_nso() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nso) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(nso)
+            )
+        );
+    }
+    test_field_nso();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            26usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_data),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_ns_streams_status {
+    pub open_streams_count: u16,
+    pub stream_id: [u16; 65535usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_ns_streams_status() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_ns_streams_status>(),
+        131072usize,
+        concat!("Size of: ", stringify!(spdk_nvme_ns_streams_status))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_ns_streams_status>(),
+        2usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_ns_streams_status))
+    );
+    fn test_field_open_streams_count() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_status>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).open_streams_count) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_status),
+                "::",
+                stringify!(open_streams_count)
+            )
+        );
+    }
+    test_field_open_streams_count();
+    fn test_field_stream_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_ns_streams_status>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).stream_id) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_ns_streams_status),
+                "::",
+                stringify!(stream_id)
+            )
+        );
+    }
+    test_field_stream_id();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_capsule_cmd {
+    pub opcode: u8,
+    pub reserved1: u8,
+    pub cid: u16,
+    pub fctype: u8,
+    pub reserved2: [u8; 35usize],
+    pub fabric_specific: [u8; 24usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_capsule_cmd() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_capsule_cmd>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_capsule_cmd))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_capsule_cmd>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_capsule_cmd))
+    );
+    fn test_field_opcode() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).opcode) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(opcode)
+            )
+        );
+    }
+    test_field_opcode();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_cid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(cid)
+            )
+        );
+    }
+    test_field_cid();
+    fn test_field_fctype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fctype) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(fctype)
+            )
+        );
+    }
+    test_field_fctype();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_fabric_specific() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_capsule_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fabric_specific) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_capsule_cmd),
+                "::",
+                stringify!(fabric_specific)
+            )
+        );
+    }
+    test_field_fabric_specific();
+}
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_PROPERTY_SET:
+    spdk_nvmf_fabric_cmd_types = 0;
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_CONNECT: spdk_nvmf_fabric_cmd_types =
+    1;
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_PROPERTY_GET:
+    spdk_nvmf_fabric_cmd_types = 4;
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_AUTHENTICATION_SEND:
+    spdk_nvmf_fabric_cmd_types = 5;
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_AUTHENTICATION_RECV:
+    spdk_nvmf_fabric_cmd_types = 6;
+pub const spdk_nvmf_fabric_cmd_types_SPDK_NVMF_FABRIC_COMMAND_START_VENDOR_SPECIFIC:
+    spdk_nvmf_fabric_cmd_types = 192;
+pub type spdk_nvmf_fabric_cmd_types = ::std::os::raw::c_uint;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_INCOMPATIBLE_FORMAT:
+    spdk_nvmf_fabric_cmd_status_code = 128;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_CONTROLLER_BUSY:
+    spdk_nvmf_fabric_cmd_status_code = 129;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_INVALID_PARAM:
+    spdk_nvmf_fabric_cmd_status_code = 130;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_RESTART_DISCOVERY:
+    spdk_nvmf_fabric_cmd_status_code = 131;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_INVALID_HOST:
+    spdk_nvmf_fabric_cmd_status_code = 132;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_LOG_RESTART_DISCOVERY:
+    spdk_nvmf_fabric_cmd_status_code = 144;
+pub const spdk_nvmf_fabric_cmd_status_code_SPDK_NVMF_FABRIC_SC_AUTH_REQUIRED:
+    spdk_nvmf_fabric_cmd_status_code = 145;
+pub type spdk_nvmf_fabric_cmd_status_code = ::std::os::raw::c_uint;
+#[doc = " Reliable connected"]
+pub const spdk_nvmf_rdma_qptype_SPDK_NVMF_RDMA_QPTYPE_RELIABLE_CONNECTED: spdk_nvmf_rdma_qptype = 1;
+#[doc = " Reliable datagram"]
+pub const spdk_nvmf_rdma_qptype_SPDK_NVMF_RDMA_QPTYPE_RELIABLE_DATAGRAM: spdk_nvmf_rdma_qptype = 2;
+#[doc = " RDMA Queue Pair service types"]
+pub type spdk_nvmf_rdma_qptype = ::std::os::raw::c_uint;
+#[doc = " No provider specified"]
+pub const spdk_nvmf_rdma_prtype_SPDK_NVMF_RDMA_PRTYPE_NONE: spdk_nvmf_rdma_prtype = 1;
+#[doc = " InfiniBand"]
+pub const spdk_nvmf_rdma_prtype_SPDK_NVMF_RDMA_PRTYPE_IB: spdk_nvmf_rdma_prtype = 2;
+#[doc = " RoCE v1"]
+pub const spdk_nvmf_rdma_prtype_SPDK_NVMF_RDMA_PRTYPE_ROCE: spdk_nvmf_rdma_prtype = 3;
+#[doc = " RoCE v2"]
+pub const spdk_nvmf_rdma_prtype_SPDK_NVMF_RDMA_PRTYPE_ROCE2: spdk_nvmf_rdma_prtype = 4;
+#[doc = " iWARP"]
+pub const spdk_nvmf_rdma_prtype_SPDK_NVMF_RDMA_PRTYPE_IWARP: spdk_nvmf_rdma_prtype = 5;
+#[doc = " RDMA provider types"]
+pub type spdk_nvmf_rdma_prtype = ::std::os::raw::c_uint;
+#[doc = " Sockets based endpoint addressing"]
+pub const spdk_nvmf_rdma_cms_SPDK_NVMF_RDMA_CMS_RDMA_CM: spdk_nvmf_rdma_cms = 1;
+#[doc = " RDMA connection management service types"]
+pub type spdk_nvmf_rdma_cms = ::std::os::raw::c_uint;
+#[doc = " RDMA"]
+pub const spdk_nvmf_trtype_SPDK_NVMF_TRTYPE_RDMA: spdk_nvmf_trtype = 1;
+#[doc = " Fibre Channel"]
+pub const spdk_nvmf_trtype_SPDK_NVMF_TRTYPE_FC: spdk_nvmf_trtype = 2;
+#[doc = " TCP"]
+pub const spdk_nvmf_trtype_SPDK_NVMF_TRTYPE_TCP: spdk_nvmf_trtype = 3;
+#[doc = " Intra-host transport (loopback)"]
+pub const spdk_nvmf_trtype_SPDK_NVMF_TRTYPE_INTRA_HOST: spdk_nvmf_trtype = 254;
+#[doc = " NVMe over Fabrics transport types"]
+pub type spdk_nvmf_trtype = ::std::os::raw::c_uint;
+#[doc = " IPv4 (AF_INET)"]
+pub const spdk_nvmf_adrfam_SPDK_NVMF_ADRFAM_IPV4: spdk_nvmf_adrfam = 1;
+#[doc = " IPv6 (AF_INET6)"]
+pub const spdk_nvmf_adrfam_SPDK_NVMF_ADRFAM_IPV6: spdk_nvmf_adrfam = 2;
+#[doc = " InfiniBand (AF_IB)"]
+pub const spdk_nvmf_adrfam_SPDK_NVMF_ADRFAM_IB: spdk_nvmf_adrfam = 3;
+#[doc = " Fibre Channel address family"]
+pub const spdk_nvmf_adrfam_SPDK_NVMF_ADRFAM_FC: spdk_nvmf_adrfam = 4;
+#[doc = " Intra-host transport (loopback)"]
+pub const spdk_nvmf_adrfam_SPDK_NVMF_ADRFAM_INTRA_HOST: spdk_nvmf_adrfam = 254;
+#[doc = " Address family types"]
+pub type spdk_nvmf_adrfam = ::std::os::raw::c_uint;
+#[doc = " Discovery type for NVM subsystem"]
+pub const spdk_nvmf_subtype_SPDK_NVMF_SUBTYPE_DISCOVERY: spdk_nvmf_subtype = 1;
+#[doc = " NVMe type for NVM subsystem"]
+pub const spdk_nvmf_subtype_SPDK_NVMF_SUBTYPE_NVME: spdk_nvmf_subtype = 2;
+#[doc = " NVM subsystem types"]
+pub type spdk_nvmf_subtype = ::std::os::raw::c_uint;
+#[doc = " Not specified"]
+pub const spdk_nvmf_treq_secure_channel_SPDK_NVMF_TREQ_SECURE_CHANNEL_NOT_SPECIFIED:
+    spdk_nvmf_treq_secure_channel = 0;
+#[doc = " Required"]
+pub const spdk_nvmf_treq_secure_channel_SPDK_NVMF_TREQ_SECURE_CHANNEL_REQUIRED:
+    spdk_nvmf_treq_secure_channel = 1;
+#[doc = " Not required"]
+pub const spdk_nvmf_treq_secure_channel_SPDK_NVMF_TREQ_SECURE_CHANNEL_NOT_REQUIRED:
+    spdk_nvmf_treq_secure_channel = 2;
+#[doc = " Connections shall be made over a fabric secure channel"]
+pub type spdk_nvmf_treq_secure_channel = ::std::os::raw::c_uint;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_connect_data {
+    pub hostid: [u8; 16usize],
+    pub cntlid: u16,
+    pub reserved5: [u8; 238usize],
+    pub subnqn: [u8; 256usize],
+    pub hostnqn: [u8; 256usize],
+    pub reserved6: [u8; 256usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_connect_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_connect_data>(),
+        1024usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_fabric_connect_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_connect_data>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_fabric_connect_data))
+    );
+    fn test_field_hostid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hostid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(hostid)
+            )
+        );
+    }
+    test_field_hostid();
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_reserved5() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved5) as usize - ptr as usize
+            },
+            18usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(reserved5)
+            )
+        );
+    }
+    test_field_reserved5();
+    fn test_field_subnqn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).subnqn) as usize - ptr as usize
+            },
+            256usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(subnqn)
+            )
+        );
+    }
+    test_field_subnqn();
+    fn test_field_hostnqn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hostnqn) as usize - ptr as usize
+            },
+            512usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(hostnqn)
+            )
+        );
+    }
+    test_field_hostnqn();
+    fn test_field_reserved6() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved6) as usize - ptr as usize
+            },
+            768usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_data),
+                "::",
+                stringify!(reserved6)
+            )
+        );
+    }
+    test_field_reserved6();
+}
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub union spdk_nvmf_fabric_connect_rsp__bindgen_ty_1 {
+    pub success: spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1,
+    pub invalid: spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2,
+    pub raw: u32,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1 {
+    pub cntlid: u16,
+    pub authreq: u16,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_authreq() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).authreq) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(authreq)
+            )
+        );
+    }
+    test_field_authreq();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2 {
+    pub ipo: u16,
+    pub iattr: u8,
+    pub reserved: u8,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    fn test_field_ipo() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ipo) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2),
+                "::",
+                stringify!(ipo)
+            )
+        );
+    }
+    test_field_ipo();
+    fn test_field_iattr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iattr) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2),
+                "::",
+                stringify!(iattr)
+            )
+        );
+    }
+    test_field_iattr();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1__bindgen_ty_2),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_connect_rsp__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1)
+        )
+    );
+    fn test_field_success() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).success) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1),
+                "::",
+                stringify!(success)
+            )
+        );
+    }
+    test_field_success();
+    fn test_field_invalid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).invalid) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1),
+                "::",
+                stringify!(invalid)
+            )
+        );
+    }
+    test_field_invalid();
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_connect_rsp__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_connect_rsp__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_get_cmd {
+    pub opcode: u8,
+    pub reserved1: u8,
+    pub cid: u16,
+    pub fctype: u8,
+    pub reserved2: [u8; 35usize],
+    pub attrib: spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1,
+    pub reserved3: [u8; 3usize],
+    pub ofst: u32,
+    pub reserved4: [u8; 16usize],
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvmf_fabric_prop_get_cmd__bindgen_ty_1 {
+    #[inline]
+    pub fn size(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_size(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(size: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let size: u8 = unsafe { ::std::mem::transmute(size) };
+            size as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_get_cmd() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_get_cmd>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_fabric_prop_get_cmd))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_get_cmd>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_fabric_prop_get_cmd))
+    );
+    fn test_field_opcode() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).opcode) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(opcode)
+            )
+        );
+    }
+    test_field_opcode();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_cid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(cid)
+            )
+        );
+    }
+    test_field_cid();
+    fn test_field_fctype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fctype) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(fctype)
+            )
+        );
+    }
+    test_field_fctype();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_attrib() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).attrib) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(attrib)
+            )
+        );
+    }
+    test_field_attrib();
+    fn test_field_reserved3() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize
+            },
+            41usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(reserved3)
+            )
+        );
+    }
+    test_field_reserved3();
+    fn test_field_ofst() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ofst) as usize - ptr as usize
+            },
+            44usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(ofst)
+            )
+        );
+    }
+    test_field_ofst();
+    fn test_field_reserved4() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved4) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_cmd),
+                "::",
+                stringify!(reserved4)
+            )
+        );
+    }
+    test_field_reserved4();
+}
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub union spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1 {
+    pub u64_: u64,
+    pub u32_: spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1 {
+    pub low: u32,
+    pub high: u32,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    fn test_field_low() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).low) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(low)
+            )
+        );
+    }
+    test_field_low();
+    fn test_field_high() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).high) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1__bindgen_ty_1),
+                "::",
+                stringify!(high)
+            )
+        );
+    }
+    test_field_high();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1)
+        )
+    );
+    fn test_field_u64() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).u64_) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1),
+                "::",
+                stringify!(u64_)
+            )
+        );
+    }
+    test_field_u64();
+    fn test_field_u32() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).u32_) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_get_rsp__bindgen_ty_1),
+                "::",
+                stringify!(u32_)
+            )
+        );
+    }
+    test_field_u32();
+}
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_set_cmd {
+    pub opcode: u8,
+    pub reserved0: u8,
+    pub cid: u16,
+    pub fctype: u8,
+    pub reserved1: [u8; 35usize],
+    pub attrib: spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1,
+    pub reserved2: [u8; 3usize],
+    pub ofst: u32,
+    pub value: spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2,
+    pub reserved4: [u8; 8usize],
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_1 {
+    #[inline]
+    pub fn size(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_size(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 5u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 5u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(size: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 3u8, {
+            let size: u8 = unsafe { ::std::mem::transmute(size) };
+            size as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 5u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub union spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2 {
+    pub u64_: u64,
+    pub u32_: spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1 {
+    pub low: u32,
+    pub high: u32,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1)
+        )
+    );
+    fn test_field_low() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).low) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1),
+                "::",
+                stringify!(low)
+            )
+        );
+    }
+    test_field_low();
+    fn test_field_high() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).high) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2__bindgen_ty_1),
+                "::",
+                stringify!(high)
+            )
+        );
+    }
+    test_field_high();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2)
+        )
+    );
+    fn test_field_u64() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).u64_) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2),
+                "::",
+                stringify!(u64_)
+            )
+        );
+    }
+    test_field_u64();
+    fn test_field_u32() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).u32_) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd__bindgen_ty_2),
+                "::",
+                stringify!(u32_)
+            )
+        );
+    }
+    test_field_u32();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_fabric_prop_set_cmd() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_fabric_prop_set_cmd>(),
+        64usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_fabric_prop_set_cmd))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_fabric_prop_set_cmd>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_fabric_prop_set_cmd))
+    );
+    fn test_field_opcode() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).opcode) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(opcode)
+            )
+        );
+    }
+    test_field_opcode();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+    fn test_field_cid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(cid)
+            )
+        );
+    }
+    test_field_cid();
+    fn test_field_fctype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fctype) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(fctype)
+            )
+        );
+    }
+    test_field_fctype();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            5usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_attrib() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).attrib) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(attrib)
+            )
+        );
+    }
+    test_field_attrib();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            41usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+    fn test_field_ofst() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ofst) as usize - ptr as usize
+            },
+            44usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(ofst)
+            )
+        );
+    }
+    test_field_ofst();
+    fn test_field_value() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).value) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(value)
+            )
+        );
+    }
+    test_field_value();
+    fn test_field_reserved4() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_fabric_prop_set_cmd>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved4) as usize - ptr as usize
+            },
+            56usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_fabric_prop_set_cmd),
+                "::",
+                stringify!(reserved4)
+            )
+        );
+    }
+    test_field_reserved4();
+}
+#[doc = " RDMA transport-specific address subtype"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_rdma_transport_specific_address_subtype {
+    #[doc = " RDMA QP service type (\\ref spdk_nvmf_rdma_qptype)"]
+    pub rdma_qptype: u8,
+    #[doc = " RDMA provider type (\\ref spdk_nvmf_rdma_prtype)"]
+    pub rdma_prtype: u8,
+    #[doc = " RDMA connection management service (\\ref spdk_nvmf_rdma_cms)"]
+    pub rdma_cms: u8,
+    pub reserved0: [u8; 5usize],
+    #[doc = " RDMA partition key for AF_IB"]
+    pub rdma_pkey: u16,
+    pub reserved2: [u8; 246usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_rdma_transport_specific_address_subtype() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_rdma_transport_specific_address_subtype>(),
+        256usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_rdma_transport_specific_address_subtype)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_rdma_transport_specific_address_subtype>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_rdma_transport_specific_address_subtype)
+        )
+    );
+    fn test_field_rdma_qptype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rdma_qptype) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(rdma_qptype)
+            )
+        );
+    }
+    test_field_rdma_qptype();
+    fn test_field_rdma_prtype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rdma_prtype) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(rdma_prtype)
+            )
+        );
+    }
+    test_field_rdma_prtype();
+    fn test_field_rdma_cms() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rdma_cms) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(rdma_cms)
+            )
+        );
+    }
+    test_field_rdma_cms();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+    fn test_field_rdma_pkey() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rdma_pkey) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(rdma_pkey)
+            )
+        );
+    }
+    test_field_rdma_pkey();
+    fn test_field_reserved2() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvmf_rdma_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_transport_specific_address_subtype),
+                "::",
+                stringify!(reserved2)
+            )
+        );
+    }
+    test_field_reserved2();
+}
+#[doc = " No security"]
+pub const spdk_nvme_tcp_secure_socket_type_SPDK_NVME_TCP_SECURITY_NONE:
+    spdk_nvme_tcp_secure_socket_type = 0;
+#[doc = " TLS (Secure Sockets)"]
+pub const spdk_nvme_tcp_secure_socket_type_SPDK_NVME_TCP_SECURITY_TLS:
+    spdk_nvme_tcp_secure_socket_type = 1;
+#[doc = " TCP Secure Socket Type"]
+pub type spdk_nvme_tcp_secure_socket_type = ::std::os::raw::c_uint;
+#[doc = " TCP transport-specific address subtype"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_transport_specific_address_subtype {
+    #[doc = " Security type (\\ref spdk_nvme_tcp_secure_socket_type)"]
+    pub sectype: u8,
+    pub reserved0: [u8; 255usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_transport_specific_address_subtype() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_transport_specific_address_subtype>(),
+        256usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_tcp_transport_specific_address_subtype)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_transport_specific_address_subtype>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_tcp_transport_specific_address_subtype)
+        )
+    );
+    fn test_field_sectype() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_tcp_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sectype) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_transport_specific_address_subtype),
+                "::",
+                stringify!(sectype)
+            )
+        );
+    }
+    test_field_sectype();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<
+                    spdk_nvme_tcp_transport_specific_address_subtype,
+                >::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_transport_specific_address_subtype),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+}
+#[doc = " Transport-specific address subtype"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvmf_transport_specific_address_subtype {
+    pub raw: [u8; 256usize],
+    #[doc = " RDMA"]
+    pub rdma: spdk_nvmf_rdma_transport_specific_address_subtype,
+    #[doc = " TCP"]
+    pub tcp: spdk_nvme_tcp_transport_specific_address_subtype,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_transport_specific_address_subtype() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_transport_specific_address_subtype>(),
+        256usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_transport_specific_address_subtype)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_transport_specific_address_subtype>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_transport_specific_address_subtype)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_transport_specific_address_subtype>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_transport_specific_address_subtype),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_rdma() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_transport_specific_address_subtype>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).rdma) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_transport_specific_address_subtype),
+                "::",
+                stringify!(rdma)
+            )
+        );
+    }
+    test_field_rdma();
+    fn test_field_tcp() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_transport_specific_address_subtype>::uninit(
+                    );
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).tcp) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_transport_specific_address_subtype),
+                "::",
+                stringify!(tcp)
+            )
+        );
+    }
+    test_field_tcp();
+}
+#[doc = " Discovery Log Page entry"]
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvmf_discovery_log_page_entry {
+    #[doc = " Transport type (\\ref spdk_nvmf_trtype)"]
+    pub trtype: u8,
+    #[doc = " Address family (\\ref spdk_nvmf_adrfam)"]
+    pub adrfam: u8,
+    #[doc = " Subsystem type (\\ref spdk_nvmf_subtype)"]
+    pub subtype: u8,
+    pub treq: spdk_nvmf_discovery_log_page_entry__bindgen_ty_1,
+    #[doc = " NVM subsystem port ID"]
+    pub portid: u16,
+    #[doc = " Controller ID"]
+    pub cntlid: u16,
+    #[doc = " Admin max SQ size"]
+    pub asqsz: u16,
+    pub reserved0: [u8; 22usize],
+    #[doc = " Transport service identifier"]
+    pub trsvcid: [u8; 32usize],
+    pub reserved1: [u8; 192usize],
+    #[doc = " NVM subsystem qualified name"]
+    pub subnqn: [u8; 256usize],
+    #[doc = " Transport address"]
+    pub traddr: [u8; 256usize],
+    #[doc = " Transport-specific address subtype"]
+    pub tsas: spdk_nvmf_transport_specific_address_subtype,
+}
+#[doc = " Transport requirements"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_discovery_log_page_entry__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_discovery_log_page_entry__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_discovery_log_page_entry__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvmf_discovery_log_page_entry__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_discovery_log_page_entry__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_discovery_log_page_entry__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvmf_discovery_log_page_entry__bindgen_ty_1 {
+    #[inline]
+    pub fn secure_channel(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 2u8) as u8) }
+    }
+    #[inline]
+    pub fn set_secure_channel(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 2u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(secure_channel: u8, reserved: u8) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 2u8, {
+            let secure_channel: u8 = unsafe { ::std::mem::transmute(secure_channel) };
+            secure_channel as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_discovery_log_page_entry() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_discovery_log_page_entry>(),
+        1024usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_discovery_log_page_entry))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_discovery_log_page_entry>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_discovery_log_page_entry)
+        )
+    );
+    fn test_field_trtype() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).trtype) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(trtype)
+            )
+        );
+    }
+    test_field_trtype();
+    fn test_field_adrfam() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).adrfam) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(adrfam)
+            )
+        );
+    }
+    test_field_adrfam();
+    fn test_field_subtype() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).subtype) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(subtype)
+            )
+        );
+    }
+    test_field_subtype();
+    fn test_field_treq() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).treq) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(treq)
+            )
+        );
+    }
+    test_field_treq();
+    fn test_field_portid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).portid) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(portid)
+            )
+        );
+    }
+    test_field_portid();
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            6usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_asqsz() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).asqsz) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(asqsz)
+            )
+        );
+    }
+    test_field_asqsz();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+    fn test_field_trsvcid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).trsvcid) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(trsvcid)
+            )
+        );
+    }
+    test_field_trsvcid();
+    fn test_field_reserved1() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(reserved1)
+            )
+        );
+    }
+    test_field_reserved1();
+    fn test_field_subnqn() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).subnqn) as usize - ptr as usize
+            },
+            256usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(subnqn)
+            )
+        );
+    }
+    test_field_subnqn();
+    fn test_field_traddr() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).traddr) as usize - ptr as usize
+            },
+            512usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(traddr)
+            )
+        );
+    }
+    test_field_traddr();
+    fn test_field_tsas() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page_entry>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).tsas) as usize - ptr as usize
+            },
+            768usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page_entry),
+                "::",
+                stringify!(tsas)
+            )
+        );
+    }
+    test_field_tsas();
+}
+#[repr(C, packed)]
+pub struct spdk_nvmf_discovery_log_page {
+    pub genctr: u64,
+    pub numrec: u64,
+    pub recfmt: u16,
+    pub reserved0: [u8; 1006usize],
+    pub entries: __IncompleteArrayField<spdk_nvmf_discovery_log_page_entry>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_discovery_log_page() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_discovery_log_page>(),
+        1024usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_discovery_log_page))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_discovery_log_page>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_discovery_log_page))
+    );
+    fn test_field_genctr() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).genctr) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page),
+                "::",
+                stringify!(genctr)
+            )
+        );
+    }
+    test_field_genctr();
+    fn test_field_numrec() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).numrec) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page),
+                "::",
+                stringify!(numrec)
+            )
+        );
+    }
+    test_field_numrec();
+    fn test_field_recfmt() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).recfmt) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page),
+                "::",
+                stringify!(recfmt)
+            )
+        );
+    }
+    test_field_recfmt();
+    fn test_field_reserved0() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize
+            },
+            18usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page),
+                "::",
+                stringify!(reserved0)
+            )
+        );
+    }
+    test_field_reserved0();
+    fn test_field_entries() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_discovery_log_page>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).entries) as usize - ptr as usize
+            },
+            1024usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_discovery_log_page),
+                "::",
+                stringify!(entries)
+            )
+        );
+    }
+    test_field_entries();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_rdma_request_private_data {
+    pub recfmt: u16,
+    pub qid: u16,
+    pub hrqsize: u16,
+    pub hsqsize: u16,
+    pub cntlid: u16,
+    pub reserved: [u8; 22usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_rdma_request_private_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_rdma_request_private_data>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_rdma_request_private_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_rdma_request_private_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_rdma_request_private_data)
+        )
+    );
+    fn test_field_recfmt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).recfmt) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(recfmt)
+            )
+        );
+    }
+    test_field_recfmt();
+    fn test_field_qid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).qid) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(qid)
+            )
+        );
+    }
+    test_field_qid();
+    fn test_field_hrqsize() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hrqsize) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(hrqsize)
+            )
+        );
+    }
+    test_field_hrqsize();
+    fn test_field_hsqsize() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hsqsize) as usize - ptr as usize
+            },
+            6usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(hsqsize)
+            )
+        );
+    }
+    test_field_hsqsize();
+    fn test_field_cntlid() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cntlid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(cntlid)
+            )
+        );
+    }
+    test_field_cntlid();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_request_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_request_private_data),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_rdma_accept_private_data {
+    pub recfmt: u16,
+    pub crqsize: u16,
+    pub reserved: [u8; 28usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_rdma_accept_private_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_rdma_accept_private_data>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_rdma_accept_private_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_rdma_accept_private_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_rdma_accept_private_data)
+        )
+    );
+    fn test_field_recfmt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_accept_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).recfmt) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_accept_private_data),
+                "::",
+                stringify!(recfmt)
+            )
+        );
+    }
+    test_field_recfmt();
+    fn test_field_crqsize() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_accept_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).crqsize) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_accept_private_data),
+                "::",
+                stringify!(crqsize)
+            )
+        );
+    }
+    test_field_crqsize();
+    fn test_field_reserved() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_accept_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_accept_private_data),
+                "::",
+                stringify!(reserved)
+            )
+        );
+    }
+    test_field_reserved();
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_rdma_reject_private_data {
+    pub recfmt: u16,
+    pub sts: u16,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_rdma_reject_private_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_rdma_reject_private_data>(),
+        4usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_rdma_reject_private_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_rdma_reject_private_data>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvmf_rdma_reject_private_data)
+        )
+    );
+    fn test_field_recfmt() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_reject_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).recfmt) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_reject_private_data),
+                "::",
+                stringify!(recfmt)
+            )
+        );
+    }
+    test_field_recfmt();
+    fn test_field_sts() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvmf_rdma_reject_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).sts) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_reject_private_data),
+                "::",
+                stringify!(sts)
+            )
+        );
+    }
+    test_field_sts();
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvmf_rdma_private_data {
+    pub pd_request: spdk_nvmf_rdma_request_private_data,
+    pub pd_accept: spdk_nvmf_rdma_accept_private_data,
+    pub pd_reject: spdk_nvmf_rdma_reject_private_data,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvmf_rdma_private_data() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvmf_rdma_private_data>(),
+        32usize,
+        concat!("Size of: ", stringify!(spdk_nvmf_rdma_private_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvmf_rdma_private_data>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvmf_rdma_private_data))
+    );
+    fn test_field_pd_request() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_rdma_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pd_request) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_private_data),
+                "::",
+                stringify!(pd_request)
+            )
+        );
+    }
+    test_field_pd_request();
+    fn test_field_pd_accept() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_rdma_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pd_accept) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_private_data),
+                "::",
+                stringify!(pd_accept)
+            )
+        );
+    }
+    test_field_pd_accept();
+    fn test_field_pd_reject() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvmf_rdma_private_data>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pd_reject) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvmf_rdma_private_data),
+                "::",
+                stringify!(pd_reject)
+            )
+        );
+    }
+    test_field_pd_reject();
+}
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_PRIVATE_DATA_LENGTH:
+    spdk_nvmf_rdma_transport_error = 1;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_RECFMT:
+    spdk_nvmf_rdma_transport_error = 2;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_QID:
+    spdk_nvmf_rdma_transport_error = 3;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_HSQSIZE:
+    spdk_nvmf_rdma_transport_error = 4;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_HRQSIZE:
+    spdk_nvmf_rdma_transport_error = 5;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_NO_RESOURCES:
+    spdk_nvmf_rdma_transport_error = 6;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_IRD:
+    spdk_nvmf_rdma_transport_error = 7;
+pub const spdk_nvmf_rdma_transport_error_SPDK_NVMF_RDMA_ERROR_INVALID_ORD:
+    spdk_nvmf_rdma_transport_error = 8;
+pub type spdk_nvmf_rdma_transport_error = ::std::os::raw::c_uint;
+#[doc = " Initialize Connection Request (ICReq)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_IC_REQ: spdk_nvme_tcp_pdu_type = 0;
+#[doc = " Initialize Connection Response (ICResp)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_IC_RESP: spdk_nvme_tcp_pdu_type = 1;
+#[doc = " Terminate Connection Request (TermReq)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_H2C_TERM_REQ: spdk_nvme_tcp_pdu_type = 2;
+#[doc = " Terminate Connection Response (TermResp)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_C2H_TERM_REQ: spdk_nvme_tcp_pdu_type = 3;
+#[doc = " Command Capsule (CapsuleCmd)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_CAPSULE_CMD: spdk_nvme_tcp_pdu_type = 4;
+#[doc = " Response Capsule (CapsuleRsp)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_CAPSULE_RESP: spdk_nvme_tcp_pdu_type = 5;
+#[doc = " Host To Controller Data (H2CData)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_H2C_DATA: spdk_nvme_tcp_pdu_type = 6;
+#[doc = " Controller To Host Data (C2HData)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_C2H_DATA: spdk_nvme_tcp_pdu_type = 7;
+#[doc = " Ready to Transfer (R2T)"]
+pub const spdk_nvme_tcp_pdu_type_SPDK_NVME_TCP_PDU_TYPE_R2T: spdk_nvme_tcp_pdu_type = 9;
+#[doc = " NVMe/TCP PDU type"]
+pub type spdk_nvme_tcp_pdu_type = ::std::os::raw::c_uint;
+#[doc = " Common NVMe/TCP PDU header"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_common_pdu_hdr {
+    #[doc = " PDU type (\\ref spdk_nvme_tcp_pdu_type)"]
+    pub pdu_type: u8,
+    #[doc = " pdu_type-specific flags"]
+    pub flags: u8,
+    #[doc = " Length of PDU header (not including the Header Digest)"]
+    pub hlen: u8,
+    #[doc = " PDU Data Offset from the start of the PDU"]
+    pub pdo: u8,
+    #[doc = " Total number of bytes in PDU, including pdu_hdr"]
+    pub plen: u32,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_common_pdu_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_common_pdu_hdr>(),
+        8usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_common_pdu_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_common_pdu_hdr>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_common_pdu_hdr))
+    );
+    fn test_field_pdu_type() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_common_pdu_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pdu_type) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_common_pdu_hdr),
+                "::",
+                stringify!(pdu_type)
+            )
+        );
+    }
+    test_field_pdu_type();
+    fn test_field_flags() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_common_pdu_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize
+            },
+            1usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_common_pdu_hdr),
+                "::",
+                stringify!(flags)
+            )
+        );
+    }
+    test_field_flags();
+    fn test_field_hlen() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_common_pdu_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hlen) as usize - ptr as usize
+            },
+            2usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_common_pdu_hdr),
+                "::",
+                stringify!(hlen)
+            )
+        );
+    }
+    test_field_hlen();
+    fn test_field_pdo() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_common_pdu_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pdo) as usize - ptr as usize
+            },
+            3usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_common_pdu_hdr),
+                "::",
+                stringify!(pdo)
+            )
+        );
+    }
+    test_field_pdo();
+    fn test_field_plen() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_common_pdu_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).plen) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_common_pdu_hdr),
+                "::",
+                stringify!(plen)
+            )
+        );
+    }
+    test_field_plen();
+}
+#[doc = " ICReq"]
+#[doc = ""]
+#[doc = " common.pdu_type == SPDK_NVME_TCP_PDU_TYPE_IC_REQ"]
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_tcp_ic_req {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub pfv: u16,
+    #[doc = " Specifies the data alignment for all PDUs transferred from the controller to the host that contain data"]
+    pub hpda: u8,
+    pub dgst: spdk_nvme_tcp_ic_req__bindgen_ty_1,
+    pub maxr2t: u32,
+    pub reserved16: [u8; 112usize],
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_tcp_ic_req__bindgen_ty_1 {
+    pub raw: u8,
+    pub bits: spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_tcp_ic_req__bindgen_ty_1__bindgen_ty_1 {
+    #[inline]
+    pub fn hdgst_enable(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_hdgst_enable(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ddgst_enable(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ddgst_enable(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        hdgst_enable: u8,
+        ddgst_enable: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let hdgst_enable: u8 = unsafe { ::std::mem::transmute(hdgst_enable) };
+            hdgst_enable as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ddgst_enable: u8 = unsafe { ::std::mem::transmute(ddgst_enable) };
+            ddgst_enable as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_req__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_req__bindgen_ty_1>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_req__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req__bindgen_ty_1),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_req() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_req>(),
+        128usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_ic_req))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_req>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_ic_req))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_pfv() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pfv) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(pfv)
+            )
+        );
+    }
+    test_field_pfv();
+    fn test_field_hpda() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).hpda) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(hpda)
+            )
+        );
+    }
+    test_field_hpda();
+    fn test_field_dgst() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dgst) as usize - ptr as usize
+            },
+            11usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(dgst)
+            )
+        );
+    }
+    test_field_dgst();
+    fn test_field_maxr2t() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).maxr2t) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(maxr2t)
+            )
+        );
+    }
+    test_field_maxr2t();
+    fn test_field_reserved16() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_req>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved16) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_req),
+                "::",
+                stringify!(reserved16)
+            )
+        );
+    }
+    test_field_reserved16();
+}
+#[doc = " ICResp"]
+#[doc = ""]
+#[doc = " common.pdu_type == SPDK_NVME_TCP_PDU_TYPE_IC_RESP"]
+#[repr(C, packed)]
+#[derive(Copy, Clone)]
+pub struct spdk_nvme_tcp_ic_resp {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub pfv: u16,
+    #[doc = " Specifies the data alignment for all PDUs transferred from the host to the controller that contain data"]
+    pub cpda: u8,
+    pub dgst: spdk_nvme_tcp_ic_resp__bindgen_ty_1,
+    #[doc = " Specifies the maximum number of PDU-Data bytes per H2C Data Transfer PDU"]
+    pub maxh2cdata: u32,
+    pub reserved16: [u8; 112usize],
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_nvme_tcp_ic_resp__bindgen_ty_1 {
+    pub raw: u8,
+    pub bits: spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1 {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Size of: ",
+            stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+}
+impl spdk_nvme_tcp_ic_resp__bindgen_ty_1__bindgen_ty_1 {
+    #[inline]
+    pub fn hdgst_enable(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_hdgst_enable(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ddgst_enable(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_ddgst_enable(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 6u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 6u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        hdgst_enable: u8,
+        ddgst_enable: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let hdgst_enable: u8 = unsafe { ::std::mem::transmute(hdgst_enable) };
+            hdgst_enable as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ddgst_enable: u8 = unsafe { ::std::mem::transmute(ddgst_enable) };
+            ddgst_enable as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 6u8, {
+            let reserved: u8 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_resp__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_resp__bindgen_ty_1>(),
+        1usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_resp__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1)
+        )
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+    fn test_field_bits() {
+        assert_eq!(
+            unsafe {
+                let uninit =
+                    ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bits) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp__bindgen_ty_1),
+                "::",
+                stringify!(bits)
+            )
+        );
+    }
+    test_field_bits();
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_ic_resp() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_ic_resp>(),
+        128usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_ic_resp))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_ic_resp>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_ic_resp))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_pfv() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pfv) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(pfv)
+            )
+        );
+    }
+    test_field_pfv();
+    fn test_field_cpda() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cpda) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(cpda)
+            )
+        );
+    }
+    test_field_cpda();
+    fn test_field_dgst() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).dgst) as usize - ptr as usize
+            },
+            11usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(dgst)
+            )
+        );
+    }
+    test_field_dgst();
+    fn test_field_maxh2cdata() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).maxh2cdata) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(maxh2cdata)
+            )
+        );
+    }
+    test_field_maxh2cdata();
+    fn test_field_reserved16() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_ic_resp>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved16) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_ic_resp),
+                "::",
+                stringify!(reserved16)
+            )
+        );
+    }
+    test_field_reserved16();
+}
+#[doc = " TermReq"]
+#[doc = ""]
+#[doc = " common.pdu_type == SPDK_NVME_TCP_PDU_TYPE_TERM_REQ"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_term_req_hdr {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub fes: u16,
+    pub fei: [u8; 4usize],
+    pub reserved14: [u8; 10usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_term_req_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_term_req_hdr>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_term_req_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_term_req_hdr>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_term_req_hdr))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_term_req_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_term_req_hdr),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_fes() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_term_req_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fes) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_term_req_hdr),
+                "::",
+                stringify!(fes)
+            )
+        );
+    }
+    test_field_fes();
+    fn test_field_fei() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_term_req_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).fei) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_term_req_hdr),
+                "::",
+                stringify!(fei)
+            )
+        );
+    }
+    test_field_fei();
+    fn test_field_reserved14() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_term_req_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved14) as usize - ptr as usize
+            },
+            14usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_term_req_hdr),
+                "::",
+                stringify!(reserved14)
+            )
+        );
+    }
+    test_field_reserved14();
+}
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_INVALID_HEADER_FIELD:
+    spdk_nvme_tcp_term_req_fes = 1;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_PDU_SEQUENCE_ERROR:
+    spdk_nvme_tcp_term_req_fes = 2;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_HDGST_ERROR:
+    spdk_nvme_tcp_term_req_fes = 3;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_DATA_TRANSFER_OUT_OF_RANGE:
+    spdk_nvme_tcp_term_req_fes = 4;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_DATA_TRANSFER_LIMIT_EXCEEDED:
+    spdk_nvme_tcp_term_req_fes = 5;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_R2T_LIMIT_EXCEEDED:
+    spdk_nvme_tcp_term_req_fes = 5;
+pub const spdk_nvme_tcp_term_req_fes_SPDK_NVME_TCP_TERM_REQ_FES_INVALID_DATA_UNSUPPORTED_PARAMETER : spdk_nvme_tcp_term_req_fes = 6 ;
+pub type spdk_nvme_tcp_term_req_fes = ::std::os::raw::c_uint;
+#[doc = " H2CData"]
+#[doc = ""]
+#[doc = " hdr.pdu_type == SPDK_NVME_TCP_PDU_TYPE_H2C_DATA"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_h2c_data_hdr {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub cccid: u16,
+    pub ttag: u16,
+    pub datao: u32,
+    pub datal: u32,
+    pub reserved20: [u8; 4usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_h2c_data_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_h2c_data_hdr>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_h2c_data_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_h2c_data_hdr>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_h2c_data_hdr))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_cccid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cccid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(cccid)
+            )
+        );
+    }
+    test_field_cccid();
+    fn test_field_ttag() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ttag) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(ttag)
+            )
+        );
+    }
+    test_field_ttag();
+    fn test_field_datao() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).datao) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(datao)
+            )
+        );
+    }
+    test_field_datao();
+    fn test_field_datal() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).datal) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(datal)
+            )
+        );
+    }
+    test_field_datal();
+    fn test_field_reserved20() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_h2c_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved20) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_h2c_data_hdr),
+                "::",
+                stringify!(reserved20)
+            )
+        );
+    }
+    test_field_reserved20();
+}
+#[doc = " C2HData"]
+#[doc = ""]
+#[doc = " hdr.pdu_type == SPDK_NVME_TCP_PDU_TYPE_C2H_DATA"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_c2h_data_hdr {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub cccid: u16,
+    pub reserved10: [u8; 2usize],
+    pub datao: u32,
+    pub datal: u32,
+    pub reserved20: [u8; 4usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_c2h_data_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_c2h_data_hdr>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_c2h_data_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_c2h_data_hdr>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_c2h_data_hdr))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_cccid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cccid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(cccid)
+            )
+        );
+    }
+    test_field_cccid();
+    fn test_field_reserved10() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved10) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(reserved10)
+            )
+        );
+    }
+    test_field_reserved10();
+    fn test_field_datao() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).datao) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(datao)
+            )
+        );
+    }
+    test_field_datao();
+    fn test_field_datal() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).datal) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(datal)
+            )
+        );
+    }
+    test_field_datal();
+    fn test_field_reserved20() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_c2h_data_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved20) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_c2h_data_hdr),
+                "::",
+                stringify!(reserved20)
+            )
+        );
+    }
+    test_field_reserved20();
+}
+#[doc = " R2T"]
+#[doc = ""]
+#[doc = " common.pdu_type == SPDK_NVME_TCP_PDU_TYPE_R2T"]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvme_tcp_r2t_hdr {
+    pub common: spdk_nvme_tcp_common_pdu_hdr,
+    pub cccid: u16,
+    pub ttag: u16,
+    pub r2to: u32,
+    pub r2tl: u32,
+    pub reserved20: [u8; 4usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_nvme_tcp_r2t_hdr() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_nvme_tcp_r2t_hdr>(),
+        24usize,
+        concat!("Size of: ", stringify!(spdk_nvme_tcp_r2t_hdr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_nvme_tcp_r2t_hdr>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_nvme_tcp_r2t_hdr))
+    );
+    fn test_field_common() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).common) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(common)
+            )
+        );
+    }
+    test_field_common();
+    fn test_field_cccid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).cccid) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(cccid)
+            )
+        );
+    }
+    test_field_cccid();
+    fn test_field_ttag() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ttag) as usize - ptr as usize
+            },
+            10usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(ttag)
+            )
+        );
+    }
+    test_field_ttag();
+    fn test_field_r2to() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).r2to) as usize - ptr as usize
+            },
+            12usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(r2to)
+            )
+        );
+    }
+    test_field_r2to();
+    fn test_field_r2tl() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).r2tl) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(r2tl)
+            )
+        );
+    }
+    test_field_r2tl();
+    fn test_field_reserved20() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_nvme_tcp_r2t_hdr>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).reserved20) as usize - ptr as usize
+            },
+            20usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_nvme_tcp_r2t_hdr),
+                "::",
+                stringify!(reserved20)
+            )
+        );
+    }
+    test_field_reserved20();
+}
+pub type pos_bdev_delete_callback = ::std::option::Option<
+    unsafe extern "C" fn(cb_arg: *mut ::std::os::raw::c_void, bdeverrno: ::std::os::raw::c_int),
+>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_bdev {
+    _unused: [u8; 0],
+}
+extern "C" {
+    pub fn spdk_bdev_create_pos_disk(
+        volume_name: *const ::std::os::raw::c_char,
+        volume_id: u32,
+        bdev_uuid: *const [u8; 0usize],
+        num_blocks: u64,
+        block_size: u32,
+        volume_type_in_memory: bool,
+        array_name: *const ::std::os::raw::c_char,
+        array_id: u32,
+    ) -> *mut spdk_bdev;
+}
+extern "C" {
+    pub fn spdk_bdev_delete_pos_disk(
+        bdev: *mut spdk_bdev,
+        cb_fn: pos_bdev_delete_callback,
+        cb_arg: *mut ::std::os::raw::c_void,
+    );
+}
+extern "C" {
+    #[doc = " Get the NQN ID of the specified subsystem."]
+    #[doc = ""]
+    #[doc = " \\param subsystem Subsystem to query."]
+    #[doc = ""]
+    #[doc = " \\return NQN ID of the specified subsystem."]
+    pub fn spdk_nvmf_subsystem_get_id(subsystem: *mut [u8; 0usize]) -> u32;
+}
+extern "C" {
+    #[doc = " This fn is used by POS QOS for initializing"]
+    #[doc = " the subsystem reactor Mapping"]
+    #[doc = ""]
+    pub fn spdk_nvmf_initialize_reactor_subsystem_mapping();
+}
+extern "C" {
+    #[doc = " This fn is used by POS QOS for getting"]
+    #[doc = " the subsystem reactor Mapping"]
+    #[doc = ""]
+    pub fn spdk_nvmf_get_reactor_subsystem_mapping(reactorId: u32, subsystemId: u32) -> u32;
+}
+extern "C" {
+    pub fn spdk_nvmf_update_reactor_subsystem_mapping(qpair: *mut [u8; 0usize]);
+}
+extern "C" {
+    pub fn spdk_nvmf_configure_pos_qos(value: bool);
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_ctrlr {
+    _unused: [u8; 0],
+}
+extern "C" {
+    pub fn spdk_nvmf_subsystem_get_first_ctrlr(
+        subsystem: *mut [u8; 0usize],
+    ) -> *mut spdk_nvmf_ctrlr;
+}
+extern "C" {
+    pub fn spdk_nvmf_subsystem_get_next_ctrlr(
+        subsystem: *mut [u8; 0usize],
+        prev_ctrlr: *mut spdk_nvmf_ctrlr,
+    ) -> *mut spdk_nvmf_ctrlr;
+}
+extern "C" {
+    pub fn spdk_nvmf_subsystem_get_ctrlr_hostnqn(
+        ctrlr: *mut spdk_nvmf_ctrlr,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn spdk_nvmf_subsystem_set_pause_state_directly(
+        subsystem: *mut [u8; 0usize],
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn spdk_nvmf_initialize_numa_aware_poll_group();
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_nvmf_poll_group {
+    _unused: [u8; 0],
+}
+extern "C" {
+    pub fn spdk_nvmf_get_numa_aware_poll_group(
+        tgt: *mut [u8; 0usize],
+        numa: ::std::os::raw::c_int,
+    ) -> *mut spdk_nvmf_poll_group;
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct spdk_uuid {
+    pub u: spdk_uuid__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union spdk_uuid__bindgen_ty_1 {
+    pub raw: [u8; 16usize],
+}
+#[test]
+fn bindgen_test_layout_spdk_uuid__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_uuid__bindgen_ty_1>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_uuid__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_uuid__bindgen_ty_1>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_uuid__bindgen_ty_1))
+    );
+    fn test_field_raw() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_uuid__bindgen_ty_1>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).raw) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_uuid__bindgen_ty_1),
+                "::",
+                stringify!(raw)
+            )
+        );
+    }
+    test_field_raw();
+}
+#[test]
+fn bindgen_test_layout_spdk_uuid() {
+    assert_eq!(
+        ::std::mem::size_of::<spdk_uuid>(),
+        16usize,
+        concat!("Size of: ", stringify!(spdk_uuid))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<spdk_uuid>(),
+        1usize,
+        concat!("Alignment of ", stringify!(spdk_uuid))
+    );
+    fn test_field_u() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<spdk_uuid>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).u) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(spdk_uuid),
+                "::",
+                stringify!(u)
+            )
+        );
+    }
+    test_field_u();
+}
+extern "C" {
+    #[doc = " Convert UUID in textual format into a spdk_uuid."]
+    #[doc = ""]
+    #[doc = " \\param[out] uuid User-provided UUID buffer."]
+    #[doc = " \\param uuid_str UUID in textual format in C string."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, or negative errno on failure."]
+    pub fn spdk_uuid_parse(
+        uuid: *mut spdk_uuid,
+        uuid_str: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Convert UUID in spdk_uuid into lowercase textual format."]
+    #[doc = ""]
+    #[doc = " \\param uuid_str User-provided string buffer to write the textual format into."]
+    #[doc = " \\param uuid_str_size Size of uuid_str buffer. Must be at least SPDK_UUID_STRING_LEN."]
+    #[doc = " \\param uuid UUID to convert to textual format."]
+    #[doc = ""]
+    #[doc = " \\return 0 on success, or negative errno on failure."]
+    pub fn spdk_uuid_fmt_lower(
+        uuid_str: *mut ::std::os::raw::c_char,
+        uuid_str_size: size_t,
+        uuid: *const spdk_uuid,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Compare two UUIDs."]
+    #[doc = ""]
+    #[doc = " \\param u1 UUID 1."]
+    #[doc = " \\param u2 UUID 2."]
+    #[doc = ""]
+    #[doc = " \\return 0 if u1 == u2, less than 0 if u1 < u2, greater than 0 if u1 > u2."]
+    pub fn spdk_uuid_compare(u1: *const spdk_uuid, u2: *const spdk_uuid) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = " Generate a new UUID."]
+    #[doc = ""]
+    #[doc = " \\param[out] uuid User-provided UUID buffer to fill."]
+    pub fn spdk_uuid_generate(uuid: *mut spdk_uuid);
+}
+extern "C" {
+    #[doc = " Copy a UUID."]
+    #[doc = ""]
+    #[doc = " \\param src Source UUID to copy from."]
+    #[doc = " \\param dst Destination UUID to store."]
+    pub fn spdk_uuid_copy(dst: *mut spdk_uuid, src: *const spdk_uuid);
+}
+pub const IO_TYPE_READ: IO_TYPE = 0;
+pub const IO_TYPE_WRITE: IO_TYPE = 1;
+pub const IO_TYPE_FLUSH: IO_TYPE = 2;
+pub const IO_TYPE_ADMIN: IO_TYPE = 100;
+pub const IO_TYPE_GET_LOG_PAGE: IO_TYPE = 101;
+pub type IO_TYPE = ::std::os::raw::c_uint;
+pub type unvmf_submit_handler =
+    ::std::option::Option<unsafe extern "C" fn(io: *mut pos_io) -> ::std::os::raw::c_int>;
+pub type unvmf_complete_handler = ::std::option::Option<unsafe extern "C" fn()>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct unvmf_io_handler {
+    pub submit: unvmf_submit_handler,
+    pub complete: unvmf_complete_handler,
+}
+#[test]
+fn bindgen_test_layout_unvmf_io_handler() {
+    assert_eq!(
+        ::std::mem::size_of::<unvmf_io_handler>(),
+        16usize,
+        concat!("Size of: ", stringify!(unvmf_io_handler))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<unvmf_io_handler>(),
+        8usize,
+        concat!("Alignment of ", stringify!(unvmf_io_handler))
+    );
+    fn test_field_submit() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<unvmf_io_handler>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).submit) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(unvmf_io_handler),
+                "::",
+                stringify!(submit)
+            )
+        );
+    }
+    test_field_submit();
+    fn test_field_complete() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<unvmf_io_handler>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).complete) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(unvmf_io_handler),
+                "::",
+                stringify!(complete)
+            )
+        );
+    }
+    test_field_complete();
+}
+extern "C" {
+    pub fn get_attached_subsystem_id(bdev_name: *const ::std::os::raw::c_char) -> u32;
+}
+extern "C" {
+    pub fn spdk_bdev_pos_register_io_handler(
+        bdev_name: *const ::std::os::raw::c_char,
+        handler: unvmf_io_handler,
+    );
+}
+extern "C" {
+    pub fn get_nvmf_thread_from_reactor(reactor: ::std::os::raw::c_int) -> *mut spdk_thread;
+}
+extern "C" {
+    pub fn spdk_bdev_pos_unregister_io_handler(bdev_name: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn set_pos_volume_info(
+        bdev_name: *const ::std::os::raw::c_char,
+        nqn: *const ::std::os::raw::c_char,
+        nqn_id: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn reset_pos_volume_info(bdev_name: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn send_msg_to_all_nvmf_thread(
+        current_core: u32,
+        fn_: *mut ::std::os::raw::c_void,
+        arg1: *mut ::std::os::raw::c_void,
+    );
+}
+extern "C" {
+    pub fn get_attached_subsystem_nqn(
+        bdev_name: *const ::std::os::raw::c_char,
+    ) -> *const ::std::os::raw::c_char;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct spdk_bdev_io {
+    _unused: [u8; 0],
+}
+pub type pos_bdev_io_handler = ::std::option::Option<
+    unsafe extern "C" fn(
+        ch: *mut spdk_io_channel,
+        bdev_io: *mut spdk_bdev_io,
+    ) -> ::std::os::raw::c_int,
+>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct pos_volume_info {
+    pub id: u32,
+    pub array_id: u32,
+    pub name: [::std::os::raw::c_char; 256usize],
+    pub nqn: [::std::os::raw::c_char; 224usize],
+    pub array_name: [::std::os::raw::c_char; 64usize],
+    pub uuid: [::std::os::raw::c_char; 37usize],
+    pub nqn_id: u32,
+    pub size_mb: u64,
+    pub iops_limit: u64,
+    pub bw_limit: u64,
+    pub pos_bdev_io: pos_bdev_io_handler,
+    pub pos_bdev_flush: pos_bdev_io_handler,
+    pub pos_bdev_admin: pos_bdev_io_handler,
+    pub unvmf_io: unvmf_io_handler,
+}
+#[test]
+fn bindgen_test_layout_pos_volume_info() {
+    assert_eq!(
+        ::std::mem::size_of::<pos_volume_info>(),
+        664usize,
+        concat!("Size of: ", stringify!(pos_volume_info))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<pos_volume_info>(),
+        8usize,
+        concat!("Alignment of ", stringify!(pos_volume_info))
+    );
+    fn test_field_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).id) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(id)
+            )
+        );
+    }
+    test_field_id();
+    fn test_field_array_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).array_id) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(array_id)
+            )
+        );
+    }
+    test_field_array_id();
+    fn test_field_name() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(name)
+            )
+        );
+    }
+    test_field_name();
+    fn test_field_nqn() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nqn) as usize - ptr as usize
+            },
+            264usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(nqn)
+            )
+        );
+    }
+    test_field_nqn();
+    fn test_field_array_name() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).array_name) as usize - ptr as usize
+            },
+            488usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(array_name)
+            )
+        );
+    }
+    test_field_array_name();
+    fn test_field_uuid() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).uuid) as usize - ptr as usize
+            },
+            552usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(uuid)
+            )
+        );
+    }
+    test_field_uuid();
+    fn test_field_nqn_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).nqn_id) as usize - ptr as usize
+            },
+            592usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(nqn_id)
+            )
+        );
+    }
+    test_field_nqn_id();
+    fn test_field_size_mb() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).size_mb) as usize - ptr as usize
+            },
+            600usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(size_mb)
+            )
+        );
+    }
+    test_field_size_mb();
+    fn test_field_iops_limit() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iops_limit) as usize - ptr as usize
+            },
+            608usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(iops_limit)
+            )
+        );
+    }
+    test_field_iops_limit();
+    fn test_field_bw_limit() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).bw_limit) as usize - ptr as usize
+            },
+            616usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(bw_limit)
+            )
+        );
+    }
+    test_field_bw_limit();
+    fn test_field_pos_bdev_io() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pos_bdev_io) as usize - ptr as usize
+            },
+            624usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(pos_bdev_io)
+            )
+        );
+    }
+    test_field_pos_bdev_io();
+    fn test_field_pos_bdev_flush() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pos_bdev_flush) as usize - ptr as usize
+            },
+            632usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(pos_bdev_flush)
+            )
+        );
+    }
+    test_field_pos_bdev_flush();
+    fn test_field_pos_bdev_admin() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).pos_bdev_admin) as usize - ptr as usize
+            },
+            640usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(pos_bdev_admin)
+            )
+        );
+    }
+    test_field_pos_bdev_admin();
+    fn test_field_unvmf_io() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_volume_info>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).unvmf_io) as usize - ptr as usize
+            },
+            648usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_volume_info),
+                "::",
+                stringify!(unvmf_io)
+            )
+        );
+    }
+    test_field_unvmf_io();
+}
+pub type pos_bdev_io_complete_callback =
+    ::std::option::Option<unsafe extern "C" fn(io: *mut pos_io, status: ::std::os::raw::c_int)>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct pos_io {
+    pub ioType: ::std::os::raw::c_int,
+    pub volume_id: u32,
+    pub array_id: u32,
+    pub iov: *mut iovec,
+    pub iovcnt: ::std::os::raw::c_int,
+    pub length: u64,
+    pub offset: u64,
+    pub context: *mut ::std::os::raw::c_void,
+    pub arrayName: *mut ::std::os::raw::c_char,
+    pub complete_cb: pos_bdev_io_complete_callback,
+}
+#[test]
+fn bindgen_test_layout_pos_io() {
+    assert_eq!(
+        ::std::mem::size_of::<pos_io>(),
+        72usize,
+        concat!("Size of: ", stringify!(pos_io))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<pos_io>(),
+        8usize,
+        concat!("Alignment of ", stringify!(pos_io))
+    );
+    fn test_field_ioType() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).ioType) as usize - ptr as usize
+            },
+            0usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(ioType)
+            )
+        );
+    }
+    test_field_ioType();
+    fn test_field_volume_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).volume_id) as usize - ptr as usize
+            },
+            4usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(volume_id)
+            )
+        );
+    }
+    test_field_volume_id();
+    fn test_field_array_id() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).array_id) as usize - ptr as usize
+            },
+            8usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(array_id)
+            )
+        );
+    }
+    test_field_array_id();
+    fn test_field_iov() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iov) as usize - ptr as usize
+            },
+            16usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(iov)
+            )
+        );
+    }
+    test_field_iov();
+    fn test_field_iovcnt() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).iovcnt) as usize - ptr as usize
+            },
+            24usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(iovcnt)
+            )
+        );
+    }
+    test_field_iovcnt();
+    fn test_field_length() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).length) as usize - ptr as usize
+            },
+            32usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(length)
+            )
+        );
+    }
+    test_field_length();
+    fn test_field_offset() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).offset) as usize - ptr as usize
+            },
+            40usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(offset)
+            )
+        );
+    }
+    test_field_offset();
+    fn test_field_context() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).context) as usize - ptr as usize
+            },
+            48usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(context)
+            )
+        );
+    }
+    test_field_context();
+    fn test_field_arrayName() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).arrayName) as usize - ptr as usize
+            },
+            56usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(arrayName)
+            )
+        );
+    }
+    test_field_arrayName();
+    fn test_field_complete_cb() {
+        assert_eq!(
+            unsafe {
+                let uninit = ::std::mem::MaybeUninit::<pos_io>::uninit();
+                let ptr = uninit.as_ptr();
+                ::std::ptr::addr_of!((*ptr).complete_cb) as usize - ptr as usize
+            },
+            64usize,
+            concat!(
+                "Offset of field: ",
+                stringify!(pos_io),
+                "::",
+                stringify!(complete_cb)
+            )
+        );
+    }
+    test_field_complete_cb();
 }
 pub type __builtin_va_list = *mut ::std::os::raw::c_char;
 pub type __uint128_t = u128;

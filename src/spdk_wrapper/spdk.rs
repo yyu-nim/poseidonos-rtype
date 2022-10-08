@@ -228,6 +228,14 @@ pub mod spdk_clib {
         // STUB
         0
     }
+
+    pub fn spdk_bdev_pos_register_poller(func: ::std::option::Option<unsafe extern "C" fn()>) {
+        // STUB
+    }
+
+    pub fn spdk_bdev_pos_unregister_poller(func: ::std::option::Option<unsafe extern "C" fn()>) {
+        // STUB
+    }
 }
 
 impl Default for spdk_app_opts {

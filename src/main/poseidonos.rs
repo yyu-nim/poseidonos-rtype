@@ -1,10 +1,12 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
+use std::borrow::Borrow;
 use crate::include::pos_event_id::PosEventId;
 use crate::master_context::config_manager::ConfigManagerSingleton;
 use crate::network::transport_configuration::TransportConfiguration;
 use crate::spdk_wrapper;
+use crate::spdk_wrapper::caller::spdk_caller::SpdkCallerSingleton;
 
 pub struct Poseidonos;
 
@@ -57,9 +59,11 @@ impl Poseidonos {
     }
     fn _InitAffinity(&self, _conf: &PosConfiguration) {
         // TODO
+        //SpdkCallerSingleton.borrow().SpdkBdevPosRegisterPoller();
     }
     fn _SetupThreadModel(&self, _conf: &PosConfiguration) {
         // TODO
+
     }
     fn _SetPerfImpact(&self, _conf: &PosConfiguration) {
         // TODO

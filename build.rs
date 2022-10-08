@@ -22,6 +22,22 @@ fn main() {
         // bindings for.
         .header("wrapper.h")
         .clang_arg("-Ilib/spdk-headers/include")
+        // 아래 blocklist는
+        // error[E0588]: packed type cannot transitively contain a `#[repr(align)]` type
+        // 를 회피하기 위한 것임. pos rtype에서 직접 참조하지 않는 struct들은 굳이
+        // bindings.rs에 넣지 않아도 되므로 일단 아래와 같이 처리.
+        .blocklist_item("spdk_nvme_tcp_rsp")
+        .blocklist_item("spdk_nvme_tcp_cmd")
+        .blocklist_item("spdk_nvmf_fabric_prop_get_rsp")
+        .blocklist_item("spdk_nvmf_fabric_connect_rsp")
+        .blocklist_item("spdk_nvmf_fabric_connect_cmd")
+        .blocklist_item("spdk_nvmf_fabric_auth_send_cmd")
+        .blocklist_item("spdk_nvmf_fabric_auth_recv_cmd")
+        .blocklist_item("spdk_nvme_ctrlr_data")
+        .blocklist_item("spdk_nvme_health_information_page")
+        .blocklist_item("spdk_nvme_sgl_descriptor")
+        .blocklist_item("spdk_nvme_cmd")
+        .blocklist_item("spdk_nvme_cmd__bindgen_ty_1")
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
