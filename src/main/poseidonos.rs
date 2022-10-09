@@ -1,10 +1,16 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-use std::borrow::Borrow;
+use std::borrow::{Borrow, BorrowMut};
+use crate::device::device_manager::DeviceManagerSingleton;
+use crate::event_scheduler::event_scheduler::EventSchedulerSingleton;
 use crate::include::pos_event_id::PosEventId;
+use crate::io::frontend_io::unvmf_io_handler::UNVMfCompleteHandler;
+use crate::io_scheduler::io_dispatcher::{IODispatcher, IODispatcherSingleton};
 use crate::master_context::config_manager::ConfigManagerSingleton;
+use crate::metafs::metafs_service::MetaFsServiceSingleton;
 use crate::network::transport_configuration::TransportConfiguration;
+use crate::qos::qos_manager::QosManagerSingleton;
 use crate::spdk_wrapper;
 use crate::spdk_wrapper::caller::spdk_caller::SpdkCallerSingleton;
 
@@ -59,11 +65,16 @@ impl Poseidonos {
     }
     fn _InitAffinity(&self, _conf: &PosConfiguration) {
         // TODO
-        //SpdkCallerSingleton.borrow().SpdkBdevPosRegisterPoller();
     }
     fn _SetupThreadModel(&self, _conf: &PosConfiguration) {
-        // TODO
+        // TODO: AffinityManager isn't being introduced yet
+        SpdkCallerSingleton.SpdkBdevPosRegisterPoller(Some(UNVMfCompleteHandler));
+        QosManagerSingleton.InitializeSpdkManager();
+        QosManagerSingleton.Initialize();
 
+        EventSchedulerSingleton.Initialize(8 /* TODO */, Vec::new(), Vec::new());
+        DeviceManagerSingleton.Initialize();
+        MetaFsServiceSingleton.Initialize(0 /* TODO */, Vec::new(), Vec::new());
     }
     fn _SetPerfImpact(&self, _conf: &PosConfiguration) {
         // TODO

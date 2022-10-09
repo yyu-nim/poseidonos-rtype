@@ -1,7 +1,7 @@
-pub fn UNVMfCompleteHandler() {
+pub extern "C" fn UNVMfCompleteHandler() {
     // TODO
 }
 
-pub fn UNVMfSubmitHandler() {
+pub extern "C" fn UNVMfSubmitHandler() {
     // TODO
 }
