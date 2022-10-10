@@ -1,0 +1,18 @@
+use lazy_static::lazy_static;
+use crate::io::general_io::io_recovery_event_factory::IoRecoveryEventFactory;
+
+pub struct IoCompleter;
+
+lazy_static!{
+    static ref recoveryEventFactory: IoRecoveryEventFactory = {
+        IoRecoveryEventFactory::new()
+    };
+}
+
+impl IoCompleter {
+
+}
+
+pub fn RegisterRecoveryEventFactory(_recoveryEventFactory: IoRecoveryEventFactory) {
+    // Not meaningful. Instead, use "recoveryEventFactory" as above.
+}

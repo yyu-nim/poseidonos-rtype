@@ -10,6 +10,8 @@ pub mod event_scheduler;
 pub mod device;
 pub mod io_scheduler;
 pub mod metafs;
+pub mod io_submit_interface;
+pub mod bio;
 
 // FFI bindings for SPDK
 pub mod generated;
