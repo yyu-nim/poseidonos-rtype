@@ -2,7 +2,13 @@
 #![allow(non_snake_case)]
 
 use std::borrow::{Borrow, BorrowMut};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, mpsc, Mutex};
+use std::sync::mpsc::RecvError;
+use std::thread;
+use std::time::Duration;
+use log::{error, info};
+use crate::array_mgmt::array_manager::ArrayManagerSingleton;
+use crate::array_models::dto::device_set::DeviceSet;
 use crate::device::device_manager::DeviceManagerSingleton;
 use crate::event_scheduler::event_scheduler::EventSchedulerSingleton;
 use crate::event_scheduler::io_completer;
@@ -48,6 +54,50 @@ impl Poseidonos {
 
     pub fn Run(&self) {
         // TODO
+        enum CliMsg {
+            CreateArray(String /* array name */,
+                        DeviceSet<String> /* nvm, data, spare */,
+                        String /* meta raid */,
+                        String /* data raid */),
+        };
+        let (tx, rx) = mpsc::channel();
+        let cli_server = thread::spawn(move || {
+            info!("CLI server is up...");
+            loop {
+                let received = rx.recv();
+                match received {
+                    Ok(CliMsg::CreateArray(a, b, c, d)) => {
+                        info!("Creating POS array...");
+                        let array_name = a;
+                        let device_set = b;
+                        let meta_raid = c;
+                        let data_raid = d;
+
+                        // TODO: deviceset was empty always
+                        ArrayManagerSingleton.Create(array_name, device_set, meta_raid, data_raid);
+                    }
+                    Err(e) => {
+                        error!("Failed to receive from CLI channel: e = {:?}", e);
+                    }
+                };
+            }
+        });
+
+        info!("CLI client is sleeping for 3 seconds...");
+        thread::sleep(Duration::from_secs(3));
+        let device_set = DeviceSet::<String>::new(
+            vec!["uram0".into()],
+            vec!["data1".into(), "data2".into(), "data3".into()],
+            vec!["spare1".into()],
+        );
+        info!("CLI client is sending CreateArray msg to CLI server...");
+        tx.send(CliMsg::CreateArray("POSArray".into(),
+                                    device_set,
+                                    "RAID1".into(),
+                                    "RAID5".into()));
+
+        info!("Waiting CLI server to terminate...");
+        cli_server.join();
     }
 
     pub fn Terminate(&self) {

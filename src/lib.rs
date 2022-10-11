@@ -12,6 +12,8 @@ pub mod io_scheduler;
 pub mod metafs;
 pub mod io_submit_interface;
 pub mod bio;
+pub mod array_mgmt;
+pub mod array_models;
 
 // FFI bindings for SPDK
 pub mod generated;
