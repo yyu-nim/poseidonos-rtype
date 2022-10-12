@@ -73,8 +73,8 @@ impl Poseidonos {
                         let meta_raid = c;
                         let data_raid = d;
 
-                        // TODO: deviceset was empty always
-                        ArrayManagerSingleton.Create(array_name, device_set, meta_raid, data_raid);
+                        // TODO: ArrayManagerSingleton cannot borrow as mutable.
+                        // ArrayManagerSingleton.borrow_mut().Create(array_name, device_set, meta_raid, data_raid);
                     }
                     Err(e) => {
                         error!("Failed to receive from CLI channel: e = {:?}", e);

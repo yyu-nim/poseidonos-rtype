@@ -14,6 +14,8 @@ pub mod io_submit_interface;
 pub mod bio;
 pub mod array_mgmt;
 pub mod array_models;
+pub mod array_components;
+pub mod array;
 
 // FFI bindings for SPDK
 pub mod generated;
