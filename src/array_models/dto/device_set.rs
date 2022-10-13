@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct DeviceSet<T> {
     nvm: Vec<T>,
     data: Vec<T>,

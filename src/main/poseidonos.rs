@@ -7,7 +7,7 @@ use std::sync::mpsc::RecvError;
 use std::thread;
 use std::time::Duration;
 use log::{error, info};
-use crate::array_mgmt::array_manager::ArrayManagerSingleton;
+use crate::array_mgmt::array_manager::{ArrayManager, ArrayManagerSingleton};
 use crate::array_models::dto::device_set::DeviceSet;
 use crate::device::device_manager::DeviceManagerSingleton;
 use crate::event_scheduler::event_scheduler::EventSchedulerSingleton;
@@ -73,8 +73,13 @@ impl Poseidonos {
                         let meta_raid = c;
                         let data_raid = d;
 
+                        ArrayManagerSingleton.Create(array_name, device_set, meta_raid, data_raid);
+
                         // TODO: ArrayManagerSingleton cannot borrow as mutable.
                         // ArrayManagerSingleton.borrow_mut().Create(array_name, device_set, meta_raid, data_raid);
+                        // let am = ArrayManager;
+
+
                     }
                     Err(e) => {
                         error!("Failed to receive from CLI channel: e = {:?}", e);

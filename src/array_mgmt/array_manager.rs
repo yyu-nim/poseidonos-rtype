@@ -21,10 +21,10 @@ impl ArrayManager {
         }
     }
 
-    pub fn Create(&mut self, name: String, devs: DeviceSet<String>, metaFt: String, dataFt: String) {
+    pub fn Create(&self, name: String, devs: DeviceSet<String>, metaFt: String, dataFt: String) {
         // TODO
         info!("Creating an array {} with devices {:?} with meta {} and data {}", name, devs, metaFt, dataFt);
-
+        self.array_components.Create(name, devs, metaFt, dataFt);
 
     }
 }

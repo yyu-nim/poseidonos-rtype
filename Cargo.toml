@@ -12,6 +12,7 @@ error-code = "2.3.1"
 lazy_static = "1.4.0"
 log = "0.4.0"
 env_logger = "0.9.0"
+rand = "0.8.5"
 
 [build-dependencies]
 bindgen = "0.60.1"
