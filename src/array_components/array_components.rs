@@ -1,3 +1,4 @@
+use std::sync::{Arc, Mutex};
 use log::info;
 use crate::array::array::Array;
 use crate::array::device::array_device_manager::ArrayDeviceManager;
@@ -7,10 +8,14 @@ use crate::array::partition::partition_manager::PartitionManager;
 use crate::array::state::array_state::ArrayState;
 use crate::array_models::dto::device_set::DeviceSet;
 use crate::metafs::metafs::MetaFs;
+use crate::state::interface::i_state_control::IStateControl;
+use crate::state::state_manager::{StateManager, StateManagerSingleton};
 
 pub struct ArrayComponents {
     array: Array,
     metafs: Option<MetaFs>,
+    stateMgr: Arc<Mutex<StateManager>>,
+    state: Box<dyn IStateControl>,
 }
 
 impl ArrayComponents {
@@ -59,10 +64,15 @@ impl ArrayComponents {
             }
         }
 
+        let array_name = "POSArray"; // TODO
         let boxed = Box::new(MockAbrControl);
+        let state_manager = StateManagerSingleton.clone();
+        let state = state_manager.lock().unwrap().CreateStateControl(array_name.to_string());
         ArrayComponents {
-            array: Array::new("test".to_string(), ArrayDeviceManager, boxed, PartitionManager, ArrayState),
+            array: Array::new(array_name.to_string(), ArrayDeviceManager, boxed, PartitionManager, ArrayState),
             metafs: None,
+            stateMgr: state_manager,
+            state: state,
         }
     }
 
