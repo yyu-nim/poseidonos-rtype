@@ -1,6 +1,6 @@
 use crate::array::meta::array_meta::ArrayMeta;
 
-pub trait IAbrControl : Sync {
+pub trait IAbrControl : Sync + Send {
     fn CreateAbr(&self, meta: ArrayMeta) -> i32;
     fn DeleteAbr(&self, arrayName: String) -> i32;
     fn LoadAbr(&self, meta: ArrayMeta) -> i32;

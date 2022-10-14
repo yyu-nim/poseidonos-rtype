@@ -73,12 +73,7 @@ impl Poseidonos {
                         let meta_raid = c;
                         let data_raid = d;
 
-                        ArrayManagerSingleton.Create(array_name, device_set, meta_raid, data_raid);
-
-                        // TODO: ArrayManagerSingleton cannot borrow as mutable.
-                        // ArrayManagerSingleton.borrow_mut().Create(array_name, device_set, meta_raid, data_raid);
-                        // let am = ArrayManager;
-
+                        ArrayManagerSingleton.lock().unwrap().Create(array_name, device_set, meta_raid, data_raid);
 
                     }
                     Err(e) => {

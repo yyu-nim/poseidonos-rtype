@@ -1,3 +1,5 @@
+use std::borrow::BorrowMut;
+use lazy_static::lazy_static;
 use log::{error, info};
 use crate::array::device::array_device_manager::ArrayDeviceManager;
 use crate::array::interface::i_abr_control::IAbrControl;
@@ -6,9 +8,15 @@ use crate::array::partition::partition_manager::PartitionManager;
 use crate::array::state::array_state::ArrayState;
 use crate::array_models::dto::device_set::DeviceSet;
 use crate::master_context::unique_id_generator;
+use std::sync::atomic::{AtomicU32, Ordering};
+
+lazy_static!{
+    static ref array_idx_allocator : AtomicU32 = AtomicU32::new(0);
+}
 
 pub struct Array {
     name_ : String,
+    index_ : u32,
     devMgr_ : ArrayDeviceManager,
     abrControl: Box<dyn IAbrControl>,
     ptnMgr: PartitionManager,
@@ -19,12 +27,14 @@ impl Array {
 
     pub fn new(name_: String, devMgr_: ArrayDeviceManager,
                abrControl: Box<dyn IAbrControl>, ptnMgr: PartitionManager, state: ArrayState) -> Array {
+        let index_ = array_idx_allocator.fetch_add(1, Ordering::Relaxed);
         Array {
             name_,
+            index_,
             devMgr_,
             abrControl,
             ptnMgr,
-            state
+            state,
         }
     }
 
@@ -73,4 +83,13 @@ impl Array {
         self.devMgr_.Clear();
         self.abrControl.DeleteAbr(arrayName);
     }
+
+    pub fn GetName(&self) -> String {
+        self.name_.clone()
+    }
+
+    pub fn GetIndex(&self) -> u32 {
+        self.index_.clone()
+    }
+
 }

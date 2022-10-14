@@ -6,9 +6,11 @@ use crate::array::meta::array_meta::ArrayMeta;
 use crate::array::partition::partition_manager::PartitionManager;
 use crate::array::state::array_state::ArrayState;
 use crate::array_models::dto::device_set::DeviceSet;
+use crate::metafs::metafs::MetaFs;
 
 pub struct ArrayComponents {
     array: Array,
+    metafs: Option<MetaFs>,
 }
 
 impl ArrayComponents {
@@ -60,11 +62,12 @@ impl ArrayComponents {
         let boxed = Box::new(MockAbrControl);
         ArrayComponents {
             array: Array::new("test".to_string(), ArrayDeviceManager, boxed, PartitionManager, ArrayState),
+            metafs: None,
         }
     }
 
-    pub fn Create(&self, name: String, devs: DeviceSet<String>,
-               metaFt: String, dataFt: String) {
+    pub fn Create(&mut self, name: String, devs: DeviceSet<String>,
+                  metaFt: String, dataFt: String) {
         // TODO
         info!("[CREATE_ARRAY_DEBUG_MSG] Creating array component for {}", name);
         self.array.Create(devs, metaFt, dataFt);
@@ -73,8 +76,11 @@ impl ArrayComponents {
         self._SetMountSequence();
     }
 
-    fn _InstantiateMetaComponentsAndMountSequenceInOrder(&self, is_array_loaded: bool) {
+    fn _InstantiateMetaComponentsAndMountSequenceInOrder(&mut self, is_array_loaded: bool) {
         // TODO
+        self.metafs = Some(MetaFs::new(&self.array, is_array_loaded));
+
+
     }
 
     fn _SetMountSequence(&self) {
