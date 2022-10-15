@@ -87,7 +87,7 @@ impl ArrayManager {
             }
         };
 
-        abrList.iter().find(|&abr| &abr.arrayName == name).is_some()
+        abrList.iter().find(|&abr| &std::str::from_utf8(&abr.arrayName).unwrap() == name).is_some()
     }
 
     pub fn GetAbrList(&self) -> Option<&Vec::<ArrayBootRecord>>{
