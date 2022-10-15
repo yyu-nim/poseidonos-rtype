@@ -8,8 +8,10 @@ use crate::array::partition::partition_manager::PartitionManager;
 use crate::array::state::array_state::ArrayState;
 use crate::array_models::dto::device_set::DeviceSet;
 use crate::metafs::metafs::MetaFs;
+use crate::network::nvmf::Nvmf;
 use crate::state::interface::i_state_control::IStateControl;
 use crate::state::state_manager::{StateManager, StateManagerSingleton};
+use crate::volume::volume_manager::VolumeManager;
 use anyhow::Result;
 
 pub struct ArrayComponents {
@@ -17,6 +19,8 @@ pub struct ArrayComponents {
     metafs: Option<MetaFs>,
     stateMgr: Arc<Mutex<StateManager>>,
     state: Box<dyn IStateControl>,
+    volMgr: Option<VolumeManager>,
+    nvmf: Option<Nvmf>,
 }
 
 impl ArrayComponents {
@@ -74,6 +78,8 @@ impl ArrayComponents {
             metafs: None,
             stateMgr: state_manager,
             state: state,
+            volMgr: None,
+            nvmf: None,
         }
     }
 
@@ -97,7 +103,8 @@ impl ArrayComponents {
     fn _InstantiateMetaComponentsAndMountSequenceInOrder(&mut self, is_array_loaded: bool) {
         // TODO
         self.metafs = Some(MetaFs::new(&self.array, is_array_loaded));
-
+        self.volMgr = Some(VolumeManager::new(&self.array, &self.state));
+        self.nvmf = Some(Nvmf::new(self.array.GetName(), self.array.GetIndex()));
 
     }
 
