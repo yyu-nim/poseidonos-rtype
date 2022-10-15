@@ -17,6 +17,7 @@ pub mod array_models;
 pub mod array_components;
 pub mod array;
 pub mod state;
+pub mod mbr;
 
 // FFI bindings for SPDK
 pub mod generated;

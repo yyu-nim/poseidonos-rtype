@@ -92,4 +92,7 @@ impl Array {
         self.index_.clone()
     }
 
+    pub fn Delete(&self) {
+        // TODO
+    }
 }
