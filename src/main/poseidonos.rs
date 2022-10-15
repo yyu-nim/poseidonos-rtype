@@ -73,7 +73,12 @@ impl Poseidonos {
                         let meta_raid = c;
                         let data_raid = d;
 
-                        ArrayManagerSingleton.lock().unwrap().Create(array_name, device_set, meta_raid, data_raid);
+                        match ArrayManagerSingleton.lock().unwrap().Create(array_name.clone(), device_set, meta_raid, data_raid) {
+                            Ok(()) => {},
+                            Err(e) => {
+                                error!("Failed to create array {array_name}, reason: {e}");
+                            }
+                        }
 
                     }
                     Err(e) => {

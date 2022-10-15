@@ -10,6 +10,7 @@ use crate::array_models::dto::device_set::DeviceSet;
 use crate::metafs::metafs::MetaFs;
 use crate::state::interface::i_state_control::IStateControl;
 use crate::state::state_manager::{StateManager, StateManagerSingleton};
+use anyhow::Result;
 
 pub struct ArrayComponents {
     array: Array,
@@ -77,13 +78,20 @@ impl ArrayComponents {
     }
 
     pub fn Create(&mut self, name: String, devs: DeviceSet<String>,
-                  metaFt: String, dataFt: String) {
+                  metaFt: String, dataFt: String) -> Result<()> {
         // TODO
         info!("[CREATE_ARRAY_DEBUG_MSG] Creating array component for {}", name);
         self.array.Create(devs, metaFt, dataFt);
 
         self._InstantiateMetaComponentsAndMountSequenceInOrder(false/* array has not been loaded yet*/);
         self._SetMountSequence();
+
+        Ok(())
+    }
+
+    pub fn Delete(&mut self) -> Result<()> {
+        self.array.Delete();
+        Ok(())
     }
 
     fn _InstantiateMetaComponentsAndMountSequenceInOrder(&mut self, is_array_loaded: bool) {
