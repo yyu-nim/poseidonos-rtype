@@ -23,3 +23,6 @@ pub mod mbr;
 
 // FFI bindings for SPDK
 pub mod generated;
+
+#[macro_use]
+extern crate static_assertions;
