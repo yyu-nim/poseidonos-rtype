@@ -1,8 +1,8 @@
 #[derive(Debug, Clone)]
 pub struct DeviceSet<T> {
-    nvm: Vec<T>,
-    data: Vec<T>,
-    spares: Vec<T>,
+    pub nvm: Vec<T>,
+    pub data: Vec<T>,
+    pub spares: Vec<T>,
 }
 
 impl<T> DeviceSet<T> {

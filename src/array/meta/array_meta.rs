@@ -3,14 +3,14 @@ use crate::array_models::dto::device_set::DeviceSet;
 
 #[derive(Clone)]
 pub struct ArrayMeta {
-    devs: DeviceSet<DeviceMeta>,
-    id: u32,
-    arrayName: String,
-    metaRaidType: String,
-    dataRaidType: String,
-    createDatetime: String,
-    updateDatetime: String,
-    unique_id: u32,
+    pub devs: DeviceSet<DeviceMeta>,
+    pub id: u32,
+    pub arrayName: String,
+    pub metaRaidType: String,
+    pub dataRaidType: String,
+    pub createDatetime: String,
+    pub updateDatetime: String,
+    pub unique_id: u32,
 }
 
 impl ArrayMeta {

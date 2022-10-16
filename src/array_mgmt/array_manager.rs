@@ -59,7 +59,7 @@ impl ArrayManager {
         let array = match self._FindArray(&name) {
             Some(a) => a,
             None => {
-                if self.AbrExist(&name) {
+                if self.AbrExists(&name) {
                     self._DeleteFaultArray(&name);
                 }
 
@@ -78,11 +78,11 @@ impl ArrayManager {
         self.arrayList.get_mut(name)
     }
 
-    pub fn AbrExist(&self, name: &String) -> bool {
+    pub fn AbrExists(&self, name: &String) -> bool {
         let abrList = match self.GetAbrList() {
-            Some(list) => list,
-            None => {
-                error!("Failed to get abr list");
+            Ok(list) => list,
+            Err(e) => {
+                error!("Failed to get abr list, {e}");
                 return false;
             }
         };
@@ -90,7 +90,7 @@ impl ArrayManager {
         abrList.iter().find(|&abr| &std::str::from_utf8(&abr.arrayName).unwrap() == name).is_some()
     }
 
-    pub fn GetAbrList(&self) -> Option<&Vec::<ArrayBootRecord>>{
+    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>>{
         self.abrManager.GetAbrList()
     }
 
