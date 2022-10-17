@@ -20,6 +20,9 @@ pub mod state;
 pub mod volume;
 pub mod sys_event;
 pub mod mbr;
+pub mod metadata;
+pub mod allocator;
+pub mod journal_manager;
 
 // FFI bindings for SPDK
 pub mod generated;

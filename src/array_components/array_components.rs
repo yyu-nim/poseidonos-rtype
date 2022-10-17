@@ -13,6 +13,7 @@ use crate::state::interface::i_state_control::IStateControl;
 use crate::state::state_manager::{StateManager, StateManagerSingleton};
 use crate::volume::volume_manager::VolumeManager;
 use anyhow::Result;
+use crate::metadata::metadata::Metadata;
 
 pub struct ArrayComponents {
     array: Array,
@@ -21,6 +22,7 @@ pub struct ArrayComponents {
     state: Box<dyn IStateControl>,
     volMgr: Option<VolumeManager>,
     nvmf: Option<Nvmf>,
+    meta: Option<Metadata>,
 }
 
 impl ArrayComponents {
@@ -80,6 +82,7 @@ impl ArrayComponents {
             state: state,
             volMgr: None,
             nvmf: None,
+            meta: None,
         }
     }
 
@@ -105,7 +108,7 @@ impl ArrayComponents {
         self.metafs = Some(MetaFs::new(&self.array, is_array_loaded));
         self.volMgr = Some(VolumeManager::new(&self.array, &self.state));
         self.nvmf = Some(Nvmf::new(self.array.GetName(), self.array.GetIndex()));
-
+        self.meta = Some(Metadata::new(self.array.GetName(), self.array.GetIndex(), &self.state));
     }
 
     fn _SetMountSequence(&self) {

@@ -13,11 +13,13 @@ impl Nvmf {
     pub fn new(arrayName: String, arrayId: u32) -> Nvmf {
         // TODO
         info!("Creating NVMf for {} with idx {}", arrayName, arrayId);
-
-        Nvmf {
+        let nvmf = Nvmf {
             arrayName,
             arrayId
-        }
+        };
+        //let boxed : Box<dyn VolumeEvent> = Box::new(nvmf);
+        //VolumeEventPublisherSingleton.RegisterSubscriber(&boxed, arrayName.clone(), arrayId as i32);
+        nvmf
     }
 
 }
