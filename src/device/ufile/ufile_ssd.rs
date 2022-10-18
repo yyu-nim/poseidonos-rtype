@@ -119,22 +119,17 @@ mod tests {
         let lba_locations = vec![0, 500, 1000];
         let expected_pattern = vec![0, 1, 2, 3, 4, 5, 6, 7];
         for lba in &lba_locations {
-            let buf : Vec<u8> = expected_pattern.clone(); // 1 byte signature
+            let buf : Vec<u8> = expected_pattern.clone(); // 8 bytes signature
             let mut ubio = Ubio::new(UbioDir::Write, lba.clone(), buf);
             ssd.SubmitAsyncIO(&mut ubio);
         }
 
-        let mut res = Vec::new();
         for lba in &lba_locations {
-            let buf : Vec<u8> = vec![0; 8]; // 1 byte buffer
+            let buf : Vec<u8> = vec![0; 8]; // 8 bytes buffer
             let mut ubio = Ubio::new(UbioDir::Read, lba.clone(), buf);
             ssd.SubmitAsyncIO(&mut ubio);
-            res.push( ubio.dataBuffer.unwrap() );
+            assert_eq!(expected_pattern, ubio.dataBuffer.unwrap());
         }
-
-        assert_eq!(3, res.len());
-        for pattern in res {
-            assert_eq!(expected_pattern, pattern);
-        }
+        ssd.Close();
     }
 }
