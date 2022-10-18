@@ -13,30 +13,34 @@ Production에서의 사용을 권하지 않는다. PR 환영!
 
 
 ### 실행하는 법
+
 ```bash
-[2022-10-15T15:48:23Z INFO  poseidonos] Hello, PoseidonOS R-type!
-[2022-10-15T15:48:23Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
-[2022-10-15T15:48:23Z INFO  poseidonos_rtype::spdk_wrapper::spdk::spdk_clib] Invoking start_fn in a new thread...
-[2022-10-15T15:48:23Z INFO  poseidonos_rtype::spdk_wrapper::spdk] poseidonos started
-[2022-10-15T15:48:23Z INFO  poseidonos_rtype::spdk_wrapper::spdk] spdk_app_start result = 0
-[2022-10-15T15:48:24Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] SpdkRpcClient is about to create a transport TCP 64 4096 512
-[2022-10-15T15:48:24Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] TODO: send json message to domain socket on /var/tmp/spdk.sock
-[2022-10-15T15:48:24Z INFO  poseidonos_rtype::metafs::config::metafs_config_manager] need to build a config
-[2022-10-15T15:48:24Z INFO  poseidonos_rtype::main::poseidonos] CLI client is sleeping for 3 seconds...
-[2022-10-15T15:48:24Z INFO  poseidonos_rtype::main::poseidonos] CLI server is up...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::main::poseidonos] CLI client is sending CreateArray msg to CLI server...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::main::poseidonos] Waiting CLI server to terminate...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::main::poseidonos] Creating POS array...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array_mgmt::array_manager] ArrayManager has been created
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array_mgmt::array_manager] Creating an array POSArray with devices DeviceSet { nvm: ["uram0"], data: ["data1", "data2", "data3"], spares: ["spare1"] } with meta RAID1 and data RAID5
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::state::array_state] ArrayState has been created
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array_components::array_components] [CREATE_ARRAY_DEBUG_MSG] Creating array component for POSArray
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::device::array_device_manager] Importing DeviceSet { nvm: ["uram0"], data: ["data1", "data2", "data3"], spares: ["spare1"] }...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::device::array_device_manager] Exporting devices info with DeviceMeta
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::array] [UPDATE_ABR_DEBUG_MSG] Trying to save Array to MBR, name:POSArray, metaRaid:RAID1, dataRaid:RAID5
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::array] TODO: _CreatePartitions() ...
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::array::array] [POS_TRACE_ARRAY_CREATED] Array has been created
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::metafs::metafs] Creating MetaFs for POSArray with idx 0
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::volume::volume_manager] Creating VolumeManager for POSArray with idx 0
-[2022-10-15T15:48:27Z INFO  poseidonos_rtype::network::nvmf] Creating NVMf for POSArray with idx 0
+$ cargo run --bin poseidonos
+[2022-10-18T15:22:59Z INFO  poseidonos] Hello, PoseidonOS R-type!
+[2022-10-18T15:22:59Z INFO  poseidonos_rtype::spdk_wrapper::spdk] waiting for spdk initialization...
+[2022-10-18T15:22:59Z INFO  poseidonos_rtype::spdk_wrapper::spdk::spdk_clib] Invoking start_fn in a new thread...
+[2022-10-18T15:22:59Z INFO  poseidonos_rtype::spdk_wrapper::spdk] poseidonos started
+[2022-10-18T15:22:59Z INFO  poseidonos_rtype::spdk_wrapper::spdk] spdk_app_start result = 0
+[2022-10-18T15:23:00Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] SpdkRpcClient is about to create a transport TCP 64 4096 512
+[2022-10-18T15:23:00Z INFO  poseidonos_rtype::helper::rpc::spdk_rpc_client] TODO: send json message to domain socket on /var/tmp/spdk.sock
+[2022-10-18T15:23:00Z INFO  poseidonos_rtype::metafs::config::metafs_config_manager] need to build a config
+[2022-10-18T15:23:00Z INFO  poseidonos_rtype::main::poseidonos] CLI client is sleeping for 3 seconds...
+[2022-10-18T15:23:00Z INFO  poseidonos_rtype::main::poseidonos] CLI server is up...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::main::poseidonos] CLI client is sending CreateArray msg to CLI server...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::main::poseidonos] Waiting CLI server to terminate...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::main::poseidonos] Creating POS array...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array_mgmt::array_manager] ArrayManager has been created
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array_mgmt::array_manager] Creating an array POSArray with devices DeviceSet { nvm: ["uram0"], data: ["data1", "data2", "data3"], spares: ["spare1"] } with meta RAID1 and data RAID5
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::state::array_state] ArrayState has been created
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array_components::array_components] [CREATE_ARRAY_DEBUG_MSG] Creating array component for POSArray
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::device::array_device_manager] Importing DeviceSet { nvm: ["uram0"], data: ["data1", "data2", "data3"], spares: ["spare1"] }...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::device::array_device_manager] Exporting devices info with DeviceMeta
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::array] [UPDATE_ABR_DEBUG_MSG] Trying to save Array to MBR, name:POSArray, metaRaid:RAID1, dataRaid:RAID5
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::array] TODO: _CreatePartitions() ...
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::array::array] [POS_TRACE_ARRAY_CREATED] Array has been created
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::metafs::metafs] Creating MetaFs for POSArray with idx 0
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::volume::volume_manager] Creating VolumeManager for POSArray with idx 0
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::network::nvmf] Creating NVMf for POSArray with idx 0
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::allocator::allocator] Creating Allocator for POSArray
+[2022-10-18T15:23:03Z INFO  poseidonos_rtype::journal_manager::journal_manager] Creating JournalManager for POSArray
 ```
