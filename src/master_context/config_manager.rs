@@ -1,7 +1,7 @@
 use std::fs;
 use lazy_static::lazy_static;
 use log::info;
-use crate::master_context::config::Config;
+use crate::master_context::config::{Config, Journal};
 
 const DEFAULT_CONFIG_FILE: &str = "config/pos.toml";
 
@@ -57,6 +57,8 @@ impl ConfigManager {
     pub fn ioUnitSize(&self) -> u32 {
         self.config.transport.ioUnitSize.clone()
     }
+
+    pub fn journalConfig(&self) -> Journal { self.config.journal.clone() }
 }
 
 #[cfg(test)]
