@@ -1,0 +1,5 @@
+[transport]
+trType = "TCP"
+bufCacheSize = 64
+numSharedBuf = 4096
+ioUnitSize = 512
