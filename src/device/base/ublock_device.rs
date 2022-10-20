@@ -1,3 +1,4 @@
+use std::fmt::{Debug, Formatter};
 use crate::bio::ubio::Ubio;
 
 pub trait UBlockDevice : Sync + Send {
@@ -14,3 +15,16 @@ pub struct UBlockDeviceBase;
 // 구현을 할 struct을 별도로 만들었다.
 // uint32_t UBlockDevice::Close(void);
 // bool UBlockDevice::Open(void);
+
+impl Debug for Box<dyn UBlockDevice> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("UBlockDevice").finish()
+    }
+}
+
+impl Clone for Box<dyn UBlockDevice> {
+    fn clone(&self) -> Self {
+        todo!("shouldn't reach here if I'm understood correctly... \
+            instead, whoever implements UBlockDevice and has clone(&self) should be called")
+    }
+}

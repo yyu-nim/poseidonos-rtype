@@ -1,10 +1,12 @@
 use std::borrow::{Borrow, BorrowMut};
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom, Write};
+use std::ops::Deref;
 use std::path::{Path, PathBuf};
 use log::{info, warn};
 use crate::bio::ubio::{Ubio, UbioDir};
 use crate::device::base::ublock_device::UBlockDevice;
+use crate::generated::bindings::spdk_new_thread_fn;
 
 pub struct UfileSsd {
     filePath: PathBuf,
@@ -72,12 +74,16 @@ impl UBlockDevice for UfileSsd {
 }
 
 impl UfileSsd {
-    fn new(filePath: PathBuf, fileSize: usize) -> UfileSsd {
+    pub fn new(filePath: PathBuf, fileSize: usize) -> UfileSsd {
         UfileSsd {
             filePath,
             fileSize,
             file: None,
         }
+    }
+
+    pub fn boxed(self) -> Box<Self> {
+        Box::new(self)
     }
 
     fn read(&self, lba: u64, buf: &mut Vec<u8>) {
@@ -90,6 +96,20 @@ impl UfileSsd {
         let mut f = self.file.as_ref().unwrap();
         f.seek(SeekFrom::Start(lba * 512));
         f.write(&buf);
+    }
+}
+
+impl Clone for Box<UfileSsd> {
+    fn clone(&self) -> Self {
+        let mut new_ufile_ssd = UfileSsd {
+            filePath: self.filePath.clone(),
+            fileSize: self.fileSize.clone(),
+            file: None,
+        };
+        if self.file.is_some() {
+            new_ufile_ssd.Open();
+        }
+        Box::new(new_ufile_ssd)
     }
 }
 
