@@ -1,6 +1,6 @@
 use std::fs;
 use lazy_static::lazy_static;
-use log::info;
+use log::{info, error};
 use crate::master_context::config::{Config, Journal};
 
 const DEFAULT_CONFIG_FILE: &str = "config/pos.toml";
@@ -18,7 +18,7 @@ pub struct ConfigManager {
 impl Default for ConfigManager {
     fn default() -> Self {
         ConfigManager {
-            config: Config::new(),
+            config: Config::default(),
         }
     }
 }
@@ -34,10 +34,12 @@ impl ConfigManager {
     pub fn ReadFile(&mut self, file_path: &str) {
         match fs::read_to_string(file_path) {
             Ok(config_string) => {
+                info!("Configuration {:#}", config_string);
                 self.config = toml::from_str(&config_string).expect("Failed to parse toml");
             },
             Err(e) => {
-                info!("Failed to read config file {file_path}, use default");
+                error!("Failed to read config file {file_path}");
+                panic!("Failed to read config file {file_path}");
             }
         };
     }
@@ -66,13 +68,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_default_config() {
-        let mut config_manager = ConfigManager::new("invalid.file");
-
-        assert_eq!(config_manager.trType(), "default-tr".to_string());
-        assert_eq!(config_manager.bufCacheSize(), 0);
-        assert_eq!(config_manager.numSharedBuf(), 0);
-        assert_eq!(config_manager.ioUnitSize(), 0);
+    #[should_panic]
+    fn test_invalid_config() {
+        let config_manager = ConfigManager::new("invalid.file");
     }
 
     #[test]
