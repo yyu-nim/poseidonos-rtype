@@ -1,3 +1,4 @@
+use std::any::Any;
 use std::fmt::{Debug, Formatter};
 use crate::bio::ubio::Ubio;
 
@@ -6,6 +7,7 @@ pub trait UBlockDevice : Sync + Send {
     fn CompleteIOs(&self) -> i32;
     fn Close(&self) -> u32;
     fn Open(&mut self) -> bool;
+    fn clone_box(&self) -> Box<dyn UBlockDevice>;
 }
 
 pub struct UBlockDeviceBase;
@@ -19,12 +21,5 @@ pub struct UBlockDeviceBase;
 impl Debug for Box<dyn UBlockDevice> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("UBlockDevice").finish()
-    }
-}
-
-impl Clone for Box<dyn UBlockDevice> {
-    fn clone(&self) -> Self {
-        todo!("shouldn't reach here if I'm understood correctly... \
-            instead, whoever implements UBlockDevice and has clone(&self) should be called")
     }
 }

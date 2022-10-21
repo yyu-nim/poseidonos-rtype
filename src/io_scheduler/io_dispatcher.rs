@@ -3,6 +3,7 @@ use lazy_static::lazy_static;
 use std::sync::{Mutex, Arc};
 use log::error;
 use crate::bio::ubio::Ubio;
+use crate::device::base::ublock_device::UBlockDevice;
 use crate::device::i_io_dispatcher::IIODispatcher;
 use crate::device::ufile::ufile_ssd::UfileSsd;
 use crate::include::pos_event_id::PosEventId;
@@ -41,7 +42,7 @@ impl IIODispatcher for IODispatcher {
             return UBIO_WITHOUT_UBLOCKDEV;
         }
 
-        let uBlock_cloned = Box::clone(&uBlock);
+        let uBlock_cloned = uBlock.clone_box();
         IODispatcherSubmissionSingleton.lock().unwrap().SubmitIO(
             uBlock_cloned, ubio, None);
 

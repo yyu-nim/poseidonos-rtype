@@ -71,6 +71,18 @@ impl UBlockDevice for UfileSsd {
         }
         0
     }
+
+    fn clone_box(&self) -> Box<dyn UBlockDevice> {
+        let mut new_ufile_ssd = UfileSsd {
+            filePath: self.filePath.clone(),
+            fileSize: self.fileSize.clone(),
+            file: None,
+        };
+        if self.file.is_some() {
+            new_ufile_ssd.Open();
+        }
+        Box::new(new_ufile_ssd)
+    }
 }
 
 impl UfileSsd {
@@ -96,20 +108,6 @@ impl UfileSsd {
         let mut f = self.file.as_ref().unwrap();
         f.seek(SeekFrom::Start(lba * 512));
         f.write(&buf);
-    }
-}
-
-impl Clone for Box<UfileSsd> {
-    fn clone(&self) -> Self {
-        let mut new_ufile_ssd = UfileSsd {
-            filePath: self.filePath.clone(),
-            fileSize: self.fileSize.clone(),
-            file: None,
-        };
-        if self.file.is_some() {
-            new_ufile_ssd.Open();
-        }
-        Box::new(new_ufile_ssd)
     }
 }
 
