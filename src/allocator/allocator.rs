@@ -1,11 +1,12 @@
 use log::info;
+use crate::array_models::interface::i_array_info::ArrayInfo;
 use crate::array_models::interface::i_mount_sequence::IMountSequence;
 
 pub struct Allocator;
 
 impl Allocator {
-    pub fn new(arrayName: String, arrayIdx: u32) -> Allocator {
-        info!("Creating Allocator for {}", arrayName);
+    pub fn new(arrayInfo: ArrayInfo) -> Allocator {
+        info!("Creating Allocator for {}", arrayInfo.name);
         Allocator
     }
 }

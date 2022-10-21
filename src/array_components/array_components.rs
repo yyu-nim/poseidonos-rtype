@@ -76,7 +76,7 @@ impl ArrayComponents {
         let state_manager = StateManagerSingleton.clone();
         let state = state_manager.lock().unwrap().CreateStateControl(array_name.to_string());
         ArrayComponents {
-            array: Array::new(array_name.to_string(), ArrayDeviceManager, boxed, PartitionManager, ArrayState),
+            array: Array::new(ArrayDeviceManager, boxed, PartitionManager, ArrayState),
             metafs: None,
             stateMgr: state_manager,
             state: state,
@@ -90,7 +90,7 @@ impl ArrayComponents {
                   metaFt: String, dataFt: String) -> Result<()> {
         // TODO
         info!("[CREATE_ARRAY_DEBUG_MSG] Creating array component for {}", name);
-        self.array.Create(devs, metaFt, dataFt);
+        self.array.Create(name, devs, metaFt, dataFt);
 
         self._InstantiateMetaComponentsAndMountSequenceInOrder(false/* array has not been loaded yet*/);
         self._SetMountSequence();
@@ -107,8 +107,8 @@ impl ArrayComponents {
         // TODO
         self.metafs = Some(MetaFs::new(&self.array, is_array_loaded));
         self.volMgr = Some(VolumeManager::new(&self.array, &self.state));
-        self.nvmf = Some(Nvmf::new(self.array.GetName(), self.array.GetIndex()));
-        self.meta = Some(Metadata::new(self.array.GetName(), self.array.GetIndex(), &self.state));
+        self.nvmf = Some(Nvmf::new(self.array.GetArrayInfo().clone()));
+        self.meta = Some(Metadata::new(self.array.GetArrayInfo().clone(), &self.state));
     }
 
     fn _SetMountSequence(&self) {
