@@ -32,7 +32,12 @@ impl UBlockDevice for UfileSsd {
         match bio.callback {
             None => {}
             Some(f) => {
-                f();
+                if let Some(tx) = &bio.callback_tx {
+                    let data = bio.dataBuffer.as_ref().unwrap();
+                    f(tx.clone(), data);
+                } else {
+                    warn!("Did you forget to put a sender channel for your read?");
+                }
             }
         }
         0
@@ -79,7 +84,7 @@ impl UBlockDevice for UfileSsd {
             file: None,
         };
         if self.file.is_some() {
-            new_ufile_ssd.Open();
+            new_ufile_ssd.Open(); // TODO: 이런 방식의 Clone은 문제가 있을 지도. 동일 file을 각각 열어서 쓰면 consistency 문제가 있을 수 있으니.
         }
         Box::new(new_ufile_ssd)
     }
