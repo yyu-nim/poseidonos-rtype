@@ -57,6 +57,7 @@ pub fn RegisterRecoveryEventFactory(_recoveryEventFactory: IoRecoveryEventFactor
 #[cfg(test)]
 #[allow(non_snake_case)]
 mod tests {
+    use std::sync::{Arc, Mutex};
     use std::sync::mpsc::channel;
     use log::{debug, info};
     use crate::bio::ubio::{Ubio, UbioDir};
@@ -78,29 +79,35 @@ mod tests {
         let mut ublock_device_cloned = ublock_device.clone_box(); // TODO: clone vs. arc<mutex> 고민해볼 것.
 
         let PATTERN = b"CerTAinUnIquePATteRn";
-        let mut write_ubio = Ubio::new(UbioDir::Write, 0, PATTERN.to_vec());
+        let mut write_ubio = Ubio::new(UbioDir::Write, 0, PATTERN.to_vec(), Box::new(|_| {}));
         write_ubio.uBlock = Some(ublock_device.boxed()); // TODO: move to constructor param
 
         IODispatcherSingleton.lock().unwrap().Submit(write_ubio, false, false);
 
         // When: we read a block where the pattern was written to
-        let mut dataBuffer = vec![0; PATTERN.len()];
-        let mut read_ubio = Ubio::new(UbioDir::Read, 0, dataBuffer);
-        let (tx, rx) = channel::<Vec<u8>>();
+        let result_to_copy_to = Arc::new(Mutex::new(Vec::new()));
+        let read_callback = {
+            let result_to_copy_to = result_to_copy_to.clone();
+            Box::new(move |read_buffer: &Vec<u8>| {
+                // "FnMut" closure to capture "a result buffer" and modify it by pushing bytes
+                // TODO: 사실 Arc, Mutex, move 를 쓰게되면서 FnMut을 쓴 의미가 퇴색되었고,
+                // 대신 FnOnce closure로 더 제한하는게 맞아보이는데,
+                // ubio 혹은 그 안에 담긴 member들을 move out하는 것이, callstack 여러 부분의 signature를 바꿔야 하는 것 같고,
+                // 이 경우, original pos (cpp) 코드와 차이가 벌어지게 만들 수 있어서, 일단은 현재의 fn signature를
+                // 유지하고자 Arc, Mutex, move를 써서 구현함. Callback.cpp 포팅/리팩토링이 끝난 이후 이 부분 다시 검토해 볼 것.
+                let mut result_to_copy_to = result_to_copy_to.lock().unwrap();
+                for &each_byte in read_buffer {
+                    result_to_copy_to.push(each_byte);
+                }
+            })
+        };
+        let mut read_buffer = vec![0; PATTERN.len()];
+        let mut read_ubio = Ubio::new(UbioDir::Read, 0, read_buffer, read_callback);
         read_ubio.uBlock = Some(ublock_device_cloned);
-        read_ubio.callback_tx = Some(tx);
-        read_ubio.callback = Some(move |tx, data| {
-            // TODO: callback 이라기 보다는 completion handler에 가까운데, 일단 POC로 동작 검증. 사용성에 대해서는 추가 고민 필요할듯.
-            debug!("read callback is invoked");
-            tx.send(data.to_vec()); // TODO: 복사가 없이 sender에게 보낼 수 있으면 좋을 듯.
-        });
         IODispatcherSingleton.lock().unwrap().Submit(read_ubio, false, false);
 
         // Then: we should see the same pattern
-        let actual = rx.recv();
-        assert!(actual.is_ok());
-        let actual = actual.unwrap();
-
-        assert_eq!(PATTERN.to_vec(), actual);
+        let actual = result_to_copy_to.lock().unwrap();
+        assert_eq!(PATTERN.to_vec(), actual.to_vec());
     }
 }

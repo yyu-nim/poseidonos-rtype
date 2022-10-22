@@ -3,11 +3,13 @@ use std::sync::mpsc::Sender;
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::include::i_array_device::IArrayDevice;
 
+// TODO: Callback needs to be generic (refer to Callback.cpp)
+type Callback = Box<dyn FnMut(&Vec<u8>)->()>;
+
 pub struct Ubio {
     pub dir: UbioDir,
     pub dataBuffer: Option<Vec<u8>>,
-    pub callback: Option<fn(Sender<Vec<u8>> /* channel */, &Vec<u8> /* data reference */)->()>,
-    pub callback_tx: Option<Sender<Vec<u8>>>,
+    pub callback: Callback,
     pub lba: u64,
     pub uBlock: Option<Box<dyn UBlockDevice>>,
     pub arrayDev: Option<Box<dyn IArrayDevice>>,
@@ -16,12 +18,11 @@ pub struct Ubio {
 }
 
 impl Ubio {
-    pub fn new(dir: UbioDir, lba: u64, dataBuffer: Vec<u8>) -> Ubio {
+    pub fn new(dir: UbioDir, lba: u64, dataBuffer: Vec<u8>, callback: Callback) -> Ubio {
         Ubio {
             dir: dir,
             dataBuffer: Some(dataBuffer),
-            callback: None,
-            callback_tx: None,
+            callback: callback,
             lba: lba,
             uBlock: None,
             arrayDev: None,

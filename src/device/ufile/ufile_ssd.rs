@@ -29,17 +29,9 @@ impl UBlockDevice for UfileSsd {
                 self.write(lba, buf);
             }
         }
-        match bio.callback {
-            None => {}
-            Some(f) => {
-                if let Some(tx) = &bio.callback_tx {
-                    let data = bio.dataBuffer.as_ref().unwrap();
-                    f(tx.clone(), data);
-                } else {
-                    warn!("Did you forget to put a sender channel for your read?");
-                }
-            }
-        }
+        let callback_closure = bio.callback.as_mut();
+        callback_closure(bio.dataBuffer.as_ref().unwrap());
+
         0
     }
 
@@ -143,13 +135,13 @@ mod tests {
         let expected_pattern = vec![0, 1, 2, 3, 4, 5, 6, 7];
         for lba in &lba_locations {
             let buf : Vec<u8> = expected_pattern.clone(); // 8 bytes signature
-            let mut ubio = Ubio::new(UbioDir::Write, lba.clone(), buf);
+            let mut ubio = Ubio::new(UbioDir::Write, lba.clone(), buf, Box::new(|_| {}));
             ssd.SubmitAsyncIO(&mut ubio);
         }
 
         for lba in &lba_locations {
             let buf : Vec<u8> = vec![0; 8]; // 8 bytes buffer
-            let mut ubio = Ubio::new(UbioDir::Read, lba.clone(), buf);
+            let mut ubio = Ubio::new(UbioDir::Read, lba.clone(), buf, Box::new(|_| {}));
             ssd.SubmitAsyncIO(&mut ubio);
             assert_eq!(expected_pattern, ubio.dataBuffer.unwrap());
         }
