@@ -1,3 +1,7 @@
+#![allow(nonstandard_style, unused_variables, unused_imports, non_snake_case, non_camel_case_types)]
+// TODO: 위와 같은 허용을 하는 것이 code quality 떨어뜨릴 우려가 있으므로, 추후 삭제를 한다.
+// 현재는 stub 들이 많아, warning이 너무 많아 error 찾기가 힘드므로 일시적으로 허용한다.
+
 pub mod include;
 pub mod main;
 pub mod spdk_wrapper;
