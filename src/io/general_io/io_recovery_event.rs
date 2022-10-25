@@ -1,11 +1,14 @@
 use crate::bio::ubio::Ubio;
 use crate::event_scheduler::event::Event;
 use crate::event_scheduler::io_completer::IoCompleter;
+use crate::include::backend_event::BackendEvent;
 
 pub struct IoRecoveryEvent;
 
 impl Event for IoRecoveryEvent {
-
+    fn GetEventType(&self) -> BackendEvent {
+        todo!()
+    }
 }
 
 impl IoRecoveryEvent {
