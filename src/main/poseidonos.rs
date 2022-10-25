@@ -98,7 +98,7 @@ impl Poseidonos {
         info!("CLI client is sending CreateArray msg to CLI server...");
         tx.send(CliMsg::CreateArray("POSArray".into(),
                                     device_set,
-                                    "RAID1".into(),
+                                    "RAID0".into(),
                                     "RAID5".into()));
 
         info!("Waiting CLI server to terminate...");
