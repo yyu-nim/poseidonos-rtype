@@ -14,7 +14,7 @@ pub trait Callback : Event {
     }
 
     fn _InvokeCallee(&mut self) {
-        if let Some(mut callee) = self._GetCallee() {
+        if let Some(mut callee) = self._TakeCallee() {
             let isOkToCall = callee._RecordCallerCompletionAndCheckOkToCall();
             if isOkToCall {
                 self._PreCallExecuteCallee();
@@ -46,7 +46,7 @@ pub trait Callback : Event {
 
     // 아래 두개는, trait이 member variable을 못가지기 때문에, member getter/setter를
     // pure function으로 두어 개발자에게 맡기도록 함; abstract struct 같은게 있었으면 좋을듯;
-    fn _GetCallee(&mut self) -> Option<Box<dyn Callback>>;
+    fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>>;
     fn _MarkExecutedDone(&mut self);
 }
 
@@ -78,7 +78,7 @@ mod tests {
                 true
             }
 
-            fn _GetCallee(&mut self) -> Option<Box<dyn Callback>> {
+            fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>> {
                 self.callee.take()
             }
 
