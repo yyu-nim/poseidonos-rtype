@@ -25,7 +25,7 @@ pub fn CheckArrayName(name: &String) -> i32 {
     let char_validities: Vec<bool> = name.chars().map(|c| c.is_numeric() || c.is_alphabetic() ).collect();
     if !char_validities.iter().all(|v| *v == true) {
         let ret = CREATE_ARRAY_NAME_INCLUDES_SPECIAL_CHAR as i32;
-        warn!("[CREATE_ARRAY_NAME_INCLUDES_SPECIAL_CHAR] name allowed only: numerics, ascii alphabetic");
+        warn!("[CREATE_ARRAY_NAME_INCLUDES_SPECIAL_CHAR] name allowed only: numerics, ascii alphabetic, name: {}", name);
         return ret;
     }
 
