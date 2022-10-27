@@ -11,7 +11,7 @@ use crate::master_context::unique_id_generator;
 use std::sync::atomic::{AtomicU32, Ordering};
 use crate::array::array_name_policy;
 use crate::array_models::interface::i_array_info::ArrayInfo;
-use crate::include::pos_event_id::PosEventId::*;
+use crate::include::pos_event_id::PosEventId;
 use crate::include::raid_type::RaidTypeEnum;
 
 lazy_static!{
@@ -51,43 +51,47 @@ impl Array {
         }
     }
 
-    pub fn Create(&mut self, name: String, nameSet: DeviceSet<String>, metaFt: String, dataFt: String) -> i32 {
+    pub fn Create(&mut self, name: String, nameSet: DeviceSet<String>, metaFt: String, dataFt: String) -> Result<(), PosEventId> {
         let dataRaidType = RaidTypeEnum::from(dataFt.as_str());
         let metaRaidType = RaidTypeEnum::from(metaFt.as_str());
-        info!("[CREATE_ARRAY_DEBUG_MSG] Trying to create array({}), dataFt: {}, metaFt:{}",
-            &name, dataRaidType.to_string(), metaRaidType.to_string());
+        info!("[{}] Trying to create array({}), dataFt: {}, metaFt:{}",
+            PosEventId::CREATE_ARRAY_DEBUG_MSG.to_string(), &name, dataRaidType.to_string(), metaRaidType.to_string());
 
         if dataRaidType == RaidTypeEnum::NOT_SUPPORTED ||
             metaRaidType == RaidTypeEnum::NOT_SUPPORTED {
-            let eventId = CREATE_ARRAY_NOT_SUPPORTED_RAIDTYPE as i32;
-            warn!("[CREATE_ARRAY_NOT_SUPPORTED_RAIDTYPE],\
-                metaFt: {}, dataFt: {}", metaFt, dataFt);
+            let eventId = PosEventId::CREATE_ARRAY_NOT_SUPPORTED_RAIDTYPE;
+            warn!("[{}],metaFt: {}, dataFt: {}", eventId.to_string(), metaFt, dataFt);
 
-            return eventId;
+            return Err(eventId);
         }
 
         let canAddSpare = dataRaidType != RaidTypeEnum::NONE && dataRaidType != RaidTypeEnum::RAID0;
         if canAddSpare == false && nameSet.spares.len() > 0 {
-            let eventId = CREATE_ARRAY_RAID_DOES_NOT_SUPPORT_SPARE_DEV as i32;
-            warn!("[CREATE_ARRAY_RAID_DOES_NOT_SUPPORT_SPARE_DEV], RaidType: {}", dataRaidType.to_string());
+            let eventId = PosEventId::CREATE_ARRAY_RAID_DOES_NOT_SUPPORT_SPARE_DEV;
+            warn!("[{}], RaidType: {}", eventId.to_string(), dataRaidType.to_string());
 
-            return eventId;
+            return Err(eventId);
         }
 
         //TODO pthread_rwlock_wrlock(&stateLock);
 
-        let ret = self.devMgr_.ImportByName(nameSet);
-        if ret != 0 {
-            error!("Import device manager failed, ret: {} array: {}", ret, name);
-            self._CleanupAfterError();
-            return ret;
+        match self.devMgr_.ImportByName(nameSet) {
+            Ok(()) => {},
+            Err(e) => {
+                error!("[{}] Import device manager failed, array: {}", e.to_string(), name);
+                self._CleanupAfterError();
+                return Err(e);
+            }
         }
 
-        let ret = array_name_policy::CheckArrayName(&name);
-        if ret != 0 {
-            error!("Unable to create array due to invalid name, ret: {}, array: {}", ret, &name);
-            self._CleanupAfterError();
-            return ret;
+        match array_name_policy::CheckArrayName(&name) {
+            Ok(()) => {},
+            Err(e) => {
+                error!("[{}] Unable to create array due to invalid name, array: {}",
+                    e.to_string(), &name);
+                self._CleanupAfterError();
+                return Err(e);
+            }
         }
 
         let index = array_idx_allocator.fetch_add(1, Ordering::Relaxed);
@@ -110,30 +114,35 @@ impl Array {
 
         self.info = Some(info);
 
-        let ret = self.abrControl.CreateAbr(meta.clone());
-        if ret != 0 {
-            error!("[{}] Unable to create array({})", ret, &name);
-            self._CleanupAfterError();
-            return ret;
-        } else {
-            self.index = meta.id;
+        match self.abrControl.CreateAbr(meta.clone()) {
+            Ok(()) => { self.index = meta.id; },
+            Err(e) => {
+                error!("[{}] Unable to create array({})", e.to_string(), &name);
+                self._CleanupAfterError();
+                return Err(e);
+            }
         }
 
-        let ret = self._Flush(meta.clone());
-        if ret != 0 {
-            error!("failed to flush array metadata!");
-            self.abrControl.DeleteAbr(name.clone());
-            self._CleanupAfterError();
-            return ret;
+        match self._Flush(meta.clone()) {
+            Ok(()) => {},
+            Err(e) => {
+                error!("[{}] failed to flush array metadata!", e.to_string());
+                self.abrControl.DeleteAbr(name.clone());
+                self._CleanupAfterError();
+                return Err(e);
+            }
         }
 
-        let ret = self._CreatePartitions();
-        if ret != 0 {
-            error!("failed to create new partitions!");
-            self.abrControl.DeleteAbr(name.clone());
-            self._CleanupAfterError();
-            return ret;
+        match self._CreatePartitions() {
+            Ok(()) => {},
+            Err(e) => {
+                error!("[{}] failed to create new partitions!", e.to_string());
+                self.abrControl.DeleteAbr(name.clone());
+                self._CleanupAfterError();
+                return Err(e);
+            }
         }
+
         self.ptnMgr.FormatPartition();
         self.state.SetCreate();
 
@@ -144,19 +153,19 @@ impl Array {
         // TODO pthread_rwlock_unlock(&stateLock);
         info!("[POS_TRACE_ARRAY_CREATED] {}", self.to_string());
 
-        0
+        Ok(())
     }
 
-    fn _Flush(&self, meta: ArrayMeta) -> i32 {
+    fn _Flush(&self, meta: ArrayMeta) -> Result<(), PosEventId>{
         info!("[UPDATE_ABR_DEBUG_MSG] Trying to save Array to MBR, name:{}, metaRaid:{}, dataRaid:{}",
             meta.arrayName(), meta.metaRaidType(), meta.dataRaidType());
         self.abrControl.SaveAbr(meta)
     }
 
-    fn _CreatePartitions(&self) -> i32 {
+    fn _CreatePartitions(&self) -> Result<(), PosEventId>{
         // TODO
         info!("TODO: _CreatePartitions() ...");
-        0
+        Ok(())
     }
 
     fn _CleanupAfterError(&self) {

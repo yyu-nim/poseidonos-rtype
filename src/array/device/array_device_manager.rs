@@ -1,14 +1,16 @@
 use log::info;
 use crate::array::meta::device_meta::DeviceMeta;
 use crate::array_models::dto::device_set::DeviceSet;
+use crate::include::pos_event_id::PosEventId;
 
 pub struct ArrayDeviceManager;
 
 impl ArrayDeviceManager {
-    pub fn ImportByName(&self, nameSet: DeviceSet<String>) -> i32 {
+    pub fn ImportByName(&self, nameSet: DeviceSet<String>) -> Result<(), PosEventId> {
         // TODO
         info!("Importing {:?}...", nameSet);
-        0
+
+        Ok(())
     }
 
     pub fn ExportToMeta(&self) -> DeviceSet<DeviceMeta> {

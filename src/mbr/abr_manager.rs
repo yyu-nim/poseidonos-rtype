@@ -5,15 +5,14 @@ use crate::array_models::dto::device_set::DeviceSet;
 use crate::array::device::array_device_type::ArrayDeviceType;
 
 use log::{error, warn};
-use anyhow::bail;
 
 pub struct AbrManager {
     mbrManager: MbrManager,
 }
 
-use anyhow::Result;
 use crate::include::array_device_state::ArrayDeviceState;
-use crate::mbr::mbr_info::ArrayBootRecord;
+use crate::include::pos_event_id::PosEventId;
+use crate::mbr::mbr_info::{ArrayBootRecord, MBR_ABR_OFFSET};
 
 impl AbrManager {
     pub fn new() -> Self {
@@ -22,12 +21,13 @@ impl AbrManager {
         }
     }
 
-    pub fn LoadAbr(&self, name: &String) -> Result<ArrayMeta> {
+    pub fn LoadAbr(&self, name: &String) -> Result<ArrayMeta, PosEventId> {
         let (abr, index) = match self.mbrManager.GetAbr(name) {
             Some((a, i)) => (a, i),
             None => {
-                warn!("[MBR_ABR_NOT_FOUND] No array found with arrayName {name}");
-                bail!("MBR_ABR_NOT_FOUND");
+                let eventId = PosEventId::MBR_ABR_NOT_FOUND;
+                warn!("[{}] No array found with arrayName {}", eventId.to_string(), name);
+                return Err(eventId);
             }
         };
 
@@ -79,12 +79,13 @@ impl AbrManager {
         Ok(meta)
     }
 
-    pub fn SaveAbr(&mut self, meta: &mut ArrayMeta) -> Result<()> {
+    pub fn SaveAbr(&mut self, meta: &mut ArrayMeta) -> Result<(), PosEventId> {
         let (mut abr, index) = match self.mbrManager.GetAbr(&meta.arrayName) {
             Some((a, i)) => (a, i),
             None => {
-                error!("[MBR_ABR_NOT_FOUND] Cannot save abr, abr not found {}", meta.arrayName);
-                bail!("MBR_ABR_NOT_FOUND");
+                let eventId = PosEventId::MBR_ABR_NOT_FOUND;
+                error!("[{}] Cannot save abr, abr not found {}", eventId.to_string(), meta.arrayName);
+                return Err(eventId);
             }
         };
 
@@ -133,29 +134,30 @@ impl AbrManager {
         self.mbrManager.SaveMbr()
     }
 
-    pub fn CreateAbr(&self, meta: ArrayMeta) -> Result<()> {
+    pub fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
         self.mbrManager.CreateAbr(meta)
     }
 
-    pub fn DeleteAbr(&self, name: &String) -> Result<()> {
+    pub fn DeleteAbr(&self, name: &String) -> Result<(), PosEventId> {
         self.mbrManager.DeleteAbr(name)
     }
 
-    pub fn ResetMbr(&self) -> Result<()> {
+    pub fn ResetMbr(&self) -> Result<(), PosEventId> {
         self.mbrManager.ResetMbr()
     }
 
-    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>> {
+    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>, PosEventId> {
         self.mbrManager.LoadMbr()?;
         self.mbrManager.GetAbrList()
     }
 
-    pub fn GetLastUpdatedDateTime(&self, arrayName: &String) -> Result<String> {
+    pub fn GetLastUpdatedDateTime(&self, arrayName: &String) -> Result<String, PosEventId> {
         let (abr, _) = match self.mbrManager.GetAbr(arrayName) {
             Some((a, i)) => (a, i),
             None => {
-                warn!("[MBR_ABR_NOT_FOUND] Cannot get Abr for {arrayName}");
-                bail!("MBR_ABR_NOT_FOUND");
+                let eventId = PosEventId::MBR_ABR_NOT_FOUND;
+                warn!("[{}] Cannot get Abr for {arrayName}", eventId.to_string());
+                return Err(eventId);
             }
         };
 
@@ -163,12 +165,13 @@ impl AbrManager {
         Ok(updateDatetime)
     }
 
-    pub fn GetCreatedDateTime(&self, arrayName: &String) -> Result<String> {
+    pub fn GetCreatedDateTime(&self, arrayName: &String) -> Result<String, PosEventId> {
         let (abr, _) = match self.mbrManager.GetAbr(arrayName) {
             Some((a, i)) => (a, i),
             None => {
-                warn!("[MBR_ABR_NOT_FOUND] Cannot get Abr for {arrayName}");
-                bail!("MBR_ABR_NOT_FOUND");
+                let eventId = PosEventId::MBR_ABR_NOT_FOUND;
+                warn!("[{}] Cannot get Abr for {arrayName}", eventId.to_string());
+                return Err(eventId);
             }
         };
 
