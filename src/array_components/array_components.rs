@@ -12,7 +12,7 @@ use crate::network::nvmf::Nvmf;
 use crate::state::interface::i_state_control::IStateControl;
 use crate::state::state_manager::{StateManager, StateManagerSingleton};
 use crate::volume::volume_manager::VolumeManager;
-use anyhow::Result;
+use crate::include::pos_event_id::PosEventId;
 use crate::metadata::metadata::Metadata;
 
 pub struct ArrayComponents {
@@ -30,29 +30,29 @@ impl ArrayComponents {
     pub fn new() -> ArrayComponents {
         struct MockAbrControl;
         impl IAbrControl for MockAbrControl {
-            fn CreateAbr(&self, meta: ArrayMeta) -> i32 {
+            fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
                 // TODO
-                0
+                Ok(())
             }
 
-            fn DeleteAbr(&self, arrayName: String) -> i32 {
+            fn DeleteAbr(&self, arrayName: String) -> Result<(), PosEventId> {
                 // TODO
-                0
+                Ok(())
             }
 
-            fn LoadAbr(&self, meta: ArrayMeta) -> i32 {
+            fn LoadAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
                 // TODO
-                0
+                Ok(())
             }
 
-            fn SaveAbr(&self, meta: ArrayMeta) -> i32 {
+            fn SaveAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
                 // TODO
-                0
+                Ok(())
             }
 
-            fn ResetMbr(&self) -> i32 {
+            fn ResetMbr(&self) -> Result<(), PosEventId> {
                 // TODO
-                0
+                Ok(())
             }
 
             fn FindArrayWithDeviceSN(&self, devSN: String) -> String {
@@ -87,10 +87,10 @@ impl ArrayComponents {
     }
 
     pub fn Create(&mut self, name: String, devs: DeviceSet<String>,
-                  metaFt: String, dataFt: String) -> Result<()> {
+                  metaFt: String, dataFt: String) -> Result<(), PosEventId> {
         // TODO
         info!("[CREATE_ARRAY_DEBUG_MSG] Creating array component for {}", name);
-        self.array.Create(name, devs, metaFt, dataFt);
+        self.array.Create(name, devs, metaFt, dataFt)?;
 
         self._InstantiateMetaComponentsAndMountSequenceInOrder(false/* array has not been loaded yet*/);
         self._SetMountSequence();
@@ -98,7 +98,7 @@ impl ArrayComponents {
         Ok(())
     }
 
-    pub fn Delete(&mut self) -> Result<()> {
+    pub fn Delete(&mut self) -> Result<(), PosEventId> {
         self.array.Delete();
         Ok(())
     }

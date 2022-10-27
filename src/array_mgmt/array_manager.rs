@@ -5,11 +5,11 @@ use lazy_static::lazy_static;
 use log::{info, warn, error};
 use crate::array_components::array_components::ArrayComponents;
 use crate::array_models::dto::device_set::DeviceSet;
-use anyhow::{Context, Result, bail};
 use crate::include::array_mgmt_policy;
 use crate::mbr::abr_manager::AbrManager;
 use crate::mbr::mbr_info::ArrayBootRecord;
 use crate::array::meta::array_meta::ArrayMeta;
+use crate::include::pos_event_id::PosEventId;
 
 lazy_static!{
     pub static ref ArrayManagerSingleton: Arc<Mutex<ArrayManager>> = {
@@ -32,19 +32,22 @@ impl ArrayManager {
         }
     }
 
-    pub fn Create(&mut self, name: String, devs: DeviceSet<String>, metaFt: String, dataFt: String) -> Result<()>{
+    pub fn Create(&mut self, name: String, devs: DeviceSet<String>, metaFt: String, dataFt: String) -> Result<(), PosEventId>{
         info!("Creating an array {} with devices {:?} with meta {} and data {}", name, devs, metaFt, dataFt);
 
         if self._FindArray(&name).is_some() == true {
-            warn!("[CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS] name duplicated: {name}");
-            bail!("Create array same array name exists".to_string());
+            let eventId = PosEventId::CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS;
+            warn!("[{}] name duplicated: {name}", eventId.to_string());
+            return Err(eventId);
         }
 
         if self.arrayList.len() >= array_mgmt_policy::MAX_ARRAY_CNT {
             let len = self.arrayList.len();
-            warn!("[CREATE_ARRAY_EXCEED_MAX_NUM_OF_ARRAYS] Current num of arrays: {len}");
 
-            bail!("Create array exceed max num of arrays".to_string());
+            let eventId = PosEventId::CREATE_ARRAY_EXCEED_MAX_NUM_OF_ARRAYS;
+            warn!("[{}] Current num of arrays: {len}", eventId.to_string());
+
+            return Err(eventId);
         }
 
         let mut components = ArrayComponents::new();
@@ -55,7 +58,7 @@ impl ArrayManager {
         Ok(())
     }
 
-    pub fn Delete(&mut self, name: String) -> Result<()> {
+    pub fn Delete(&mut self, name: String) -> Result<(), PosEventId> {
         let array = match self._FindArray(&name) {
             Some(a) => a,
             None => {
@@ -63,8 +66,9 @@ impl ArrayManager {
                     self._DeleteFaultArray(&name);
                 }
 
-                warn!("[DELETE_ARRAY_ARRAY_NAME_DOES_NOT_EXIST] array_name: {name}");
-                bail!("Delete array {name} failed. Do not exist");
+                let eventId = PosEventId::DELETE_ARRAY_ARRAY_NAME_DOES_NOT_EXIST;
+                warn!("[{}] array_name: {name}", eventId.to_string());
+                return Err(eventId);
             }
         };
 
@@ -90,11 +94,11 @@ impl ArrayManager {
         abrList.iter().find(|&abr| &std::str::from_utf8(&abr.arrayName).unwrap() == name).is_some()
     }
 
-    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>>{
+    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>, PosEventId>{
         self.abrManager.GetAbrList()
     }
 
-    fn _DeleteFaultArray(&self, name: &String) -> Result<()> {
+    fn _DeleteFaultArray(&self, name: &String) -> Result<(), PosEventId> {
         self.abrManager.LoadAbr(name)?;
         self.abrManager.DeleteAbr(name)?;
 

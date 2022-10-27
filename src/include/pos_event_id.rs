@@ -1,4 +1,6 @@
-#[derive(Debug)]
+use strum_macros::Display;
+
+#[derive(Display, Debug, PartialEq)]
 pub enum PosEventId {
     SUCCESS,
     POS_TRACE_STARTED,
@@ -7,6 +9,10 @@ pub enum PosEventId {
     POS_TRACE_ARRAY_CREATED,
     UBIO_WITHOUT_UBLOCKDEV,
 
+    MBR_ABR_NOT_FOUND,
+
+    CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS,
+    CREATE_ARRAY_EXCEED_MAX_NUM_OF_ARRAYS,
     CREATE_ARRAY_NAME_TOO_SHORT,
     CREATE_ARRAY_NAME_TOO_LONG,
     CREATE_ARRAY_NAME_INCLUDES_SPECIAL_CHAR,
@@ -14,4 +20,19 @@ pub enum PosEventId {
 
     CREATE_ARRAY_NOT_SUPPORTED_RAIDTYPE,
     CREATE_ARRAY_RAID_DOES_NOT_SUPPORT_SPARE_DEV,
+
+    DELETE_ARRAY_ARRAY_NAME_DOES_NOT_EXIST,
+
+    CREATE_ARRAY_DEBUG_MSG,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_enum_to_string() {
+        assert_eq!("SUCCESS".to_string(), PosEventId::SUCCESS.to_string());
+        assert_eq!("POS_TRACE_STARTED".to_string(), PosEventId::POS_TRACE_STARTED.to_string());
+    }
 }
