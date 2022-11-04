@@ -9,27 +9,58 @@ use crate::device::ufile::ufile_ssd::UfileSsd;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 lazy_static!{
     pub static ref DeviceManagerSingleton: DeviceManager = {
-        DeviceManager::new()
+        DeviceManager::new(None)
     };
 }
 
 // TODO: config 파일에 넣어 명시적으로 알 수 있도록 하기
-const DEF_DEVICE_DIR : &str = "/tmp/";
-const DEF_DEVICE_NAME_PREFIX : &str = "UfileSsd.";
-const DEF_NUM_OF_DEVICES : usize = 4;
-const DEF_SIZE_OF_DEVICE : usize = 100 * 1024 * 1024; // 100 MB
+pub struct DeviceManagerConfig {
+    dir_to_lookup: &'static str,
+    device_prefix: &'static str,
+    num_devices_to_create: u32,
+    device_size_bytes: usize,
+}
+
+impl Default for DeviceManagerConfig {
+    fn default() -> Self {
+        DeviceManagerConfig {
+            dir_to_lookup: "/tmp/",
+            device_prefix: "UfileSsd.",
+            num_devices_to_create: 4,
+            device_size_bytes: 100 * 1024 * 1024,
+        }
+    }
+}
+
+impl Clone for DeviceManagerConfig {
+    fn clone(&self) -> Self {
+        DeviceManagerConfig {
+            dir_to_lookup: self.dir_to_lookup,
+            device_prefix: self.device_prefix,
+            num_devices_to_create: self.num_devices_to_create,
+            device_size_bytes: self.device_size_bytes,
+        }
+    }
+}
 
 pub struct DeviceManager {
     devices: Vec<Box<dyn UBlockDevice>>,
     ioDispatcher: &'static IODispatcherSingleton,
+    config: DeviceManagerConfig,
 }
 
 impl DeviceManager {
-    pub fn new() -> DeviceManager {
+    pub fn new(config: Option<DeviceManagerConfig>) -> DeviceManager {
         let io_dispatcher_singleton = IODispatcherSingleton.borrow();
+        let config = if config.is_none() {
+            Default::default()
+        } else {
+            config.unwrap()
+        };
         DeviceManager {
             devices: vec![],
             ioDispatcher: io_dispatcher_singleton,
+            config,
         }
     }
 
@@ -60,28 +91,28 @@ impl DeviceManager {
         // "DeviceDriver" 추상화 레이어 없이 곧바로 UBlockDevice 만들어서,
         // "devices"에 추가해도 좋을 것.
         let mut _devs : Vec<Box<dyn UBlockDevice>> = Vec::new();
-        if let Ok(r) = PathBuf::from(DEF_DEVICE_DIR).read_dir() {
+        if let Ok(r) = PathBuf::from(self.config.dir_to_lookup).read_dir() {
             for entry in r {
                 let dir_entry = entry.unwrap();
                 let file = dir_entry.file_name();
-                if file.to_str().unwrap().starts_with(DEF_DEVICE_NAME_PREFIX) {
+                if file.to_str().unwrap().starts_with(self.config.device_prefix) {
                     let file_size = dir_entry.metadata().unwrap().size();
                     let device = UfileSsd::new(dir_entry.path(), file_size as usize);
                     _devs.push(device.boxed());
                 }
             }
         } else {
-            warn!("Failed to list files from {:?}", DEF_DEVICE_DIR);
+            warn!("Failed to list files from {:?}", self.config.dir_to_lookup);
         }
 
         if _devs.len() == 0 {
             // 혹시 디바이스가 하나도 스캔되지 않았으면, default 설정으로
             // 100 MB file * 4 개를 생성한다.
-            info!("No device has been scanned. Creating {} new devices...", DEF_NUM_OF_DEVICES);
-            for i in 0..DEF_NUM_OF_DEVICES {
-                let device_file = format!("{}{}{}", DEF_DEVICE_DIR, DEF_DEVICE_NAME_PREFIX, i);
+            info!("No device has been scanned. Creating {} new devices...", self.config.num_devices_to_create);
+            for i in 0..self.config.num_devices_to_create {
+                let device_file = format!("{}{}{}", self.config.dir_to_lookup, self.config.device_prefix, i);
                 info!("Creating UBlockDevice at {}...", device_file);
-                let device = UfileSsd::new(PathBuf::from(device_file), DEF_SIZE_OF_DEVICE);
+                let device = UfileSsd::new(PathBuf::from(device_file), self.config.device_size_bytes);
                 _devs.push(device.boxed());
             }
         }
@@ -119,24 +150,24 @@ mod tests {
     use std::path::PathBuf;
     use log::{info, LevelFilter};
     use crate::device::base::ublock_device::UBlockDevice;
-    use crate::device::device_manager::{DEF_DEVICE_DIR, DEF_DEVICE_NAME_PREFIX, DEF_NUM_OF_DEVICES, DeviceManager};
+    use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
     use crate::device::ufile::ufile_ssd::UfileSsd;
 
-    fn setup() {
+    fn setup(dm_config: &DeviceManagerConfig) {
         // set up the logger for the test context
         env_logger::builder().is_test(true).try_init();
 
         // clean up device files
-        cleanup_device_files();
+        cleanup_device_files(dm_config);
     }
 
-    fn cleanup_device_files() {
-        let device_dir = PathBuf::from(DEF_DEVICE_DIR).read_dir();
+    fn cleanup_device_files(dm_config: &DeviceManagerConfig) {
+        let device_dir = PathBuf::from(dm_config.dir_to_lookup).read_dir();
         if let Ok(d) = device_dir {
             for entry in d {
                 let file_path = entry.unwrap().path();
                 let file_name = file_path.file_name().unwrap().to_str().unwrap();
-                if file_name.starts_with(DEF_DEVICE_NAME_PREFIX) {
+                if file_name.starts_with(dm_config.device_prefix) {
                     info!("Removing a test file at {:?}", file_path);
                     fs::remove_file(file_path).unwrap();
                 }
@@ -144,9 +175,9 @@ mod tests {
         }
     }
 
-    fn create_device_file(dev_num: u32) {
-        let device_dir = PathBuf::from(DEF_DEVICE_DIR);
-        let device_file = device_dir.join(format!("{}{}", DEF_DEVICE_NAME_PREFIX, dev_num));
+    fn create_device_file(dev_num: u32, dm_config: &DeviceManagerConfig) {
+        let device_dir = PathBuf::from(dm_config.dir_to_lookup);
+        let device_file = device_dir.join(format!("{}{}", dm_config.device_prefix, dev_num));
         let mut dev = UfileSsd::new(device_file, 1024 * 1024);
         dev.Open();
         dev.Close();
@@ -154,40 +185,52 @@ mod tests {
 
     #[test]
     fn test_if_scanning_with_default_conf_works() {
-        setup();
+        let dm_config = DeviceManagerConfig {
+            dir_to_lookup: "/tmp/",
+            device_prefix: "TestUfileSsd.",
+            num_devices_to_create: 4,
+            device_size_bytes: 1 * 1024 * 1024,
+        };
+        setup(&dm_config);
 
         // Given: an initialized device manager
-        let mut dm = DeviceManager::new();
+        let mut dm = DeviceManager::new(Some(dm_config.clone()));
         dm.Initialize();
 
         // When 1: the device manager scans devices
         dm.ScanDevs();
 
         // Then 1: the device manager should have scanned the default number of devices
-        assert_eq!(DEF_NUM_OF_DEVICES, dm.devices.len());
+        assert_eq!(dm_config.num_devices_to_create, dm.devices.len() as u32);
 
         // When 2: the device manager scans again,
         dm.ScanDevs();
 
         // Then 2: the device manager should have the same number of devices,
-        assert_eq!(DEF_NUM_OF_DEVICES, dm.devices.len());
+        assert_eq!(dm_config.num_devices_to_create, dm.devices.len() as u32);
     }
 
     #[test]
     fn test_if_rescanning_works_for_the_varying_number_of_devices() {
-        setup();
+        let dm_config = DeviceManagerConfig {
+            dir_to_lookup: "/tmp/",
+            device_prefix: "TestUfileSsd.",
+            num_devices_to_create: 3,
+            device_size_bytes: 1 * 1024 * 1024,
+        };
+        setup(&dm_config);
 
         // Given: "three" UBlockDevices
         for dev_num in 0..3 {
-            create_device_file(dev_num);
+            create_device_file(dev_num, &dm_config);
         }
-        let mut dm = DeviceManager::new();
+        let mut dm = DeviceManager::new(Some(dm_config.clone()));
         dm.Initialize();
         dm.ScanDevs();
         assert_eq!(3, dm.devices.len());
 
         // When: a new UBlockDevice is added and Device Manager performs "Rescan"
-        create_device_file(4 /* new device's number */);
+        create_device_file(4 /* new device's number */, &dm_config);
         dm.ScanDevs();
 
         // Then: Device Manager should be aware of "four" UBlockDevices
