@@ -6,3 +6,4 @@ pub mod io_error_type;
 pub mod i_array_device;
 pub mod backend_event;
 pub mod raid_type;
+pub mod meta_const;
