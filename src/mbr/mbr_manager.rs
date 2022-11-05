@@ -1,19 +1,18 @@
-use crate::mbr::mbr_info::{ArrayBootRecord, masterBootRecord};
 use std::any::Any;
 use std::rc::Rc;
 use std::sync::Mutex;
-use anyhow::Result;
+
 use crossbeam::sync::Parker;
 use log::warn;
 
 use crate::array::meta::array_meta::ArrayMeta;
 use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
-use crate::include::pos_event_id::PosEventId;
-use crate::bio::ubio::{Ubio, UbioDir};
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
+use crate::include::pos_event_id::PosEventId;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
+use crate::mbr::mbr_info::{ArrayBootRecord, masterBootRecord};
 
 const MBR_CHUNKS : i32 = 1;
 const MBR_ADDRESS: u64 = 0;
@@ -130,6 +129,7 @@ impl DiskIoContext {
 mod tests {
     use std::fs;
     use std::path::PathBuf;
+
     use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::device_manager::DeviceManager;
