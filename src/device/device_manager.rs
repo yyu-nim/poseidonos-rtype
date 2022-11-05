@@ -52,11 +52,7 @@ pub struct DeviceManager {
 impl DeviceManager {
     pub fn new(config: Option<DeviceManagerConfig>) -> DeviceManager {
         let io_dispatcher_singleton = IODispatcherSingleton.borrow();
-        let config = if config.is_none() {
-            Default::default()
-        } else {
-            config.unwrap()
-        };
+        let config = config.unwrap_or(Default::default());
         DeviceManager {
             devices: vec![],
             ioDispatcher: io_dispatcher_singleton,
