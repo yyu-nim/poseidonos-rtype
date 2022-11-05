@@ -48,6 +48,10 @@ impl IIODispatcher for IODispatcher {
 
         SUCCESS
     }
+
+    fn AddIOWorker(&self) {
+        // TODO
+    }
 }
 
 pub fn RegisterRecoveryEventFactory(_recoveryEventFactory: IoRecoveryEventFactory) {
