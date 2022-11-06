@@ -4,12 +4,12 @@ use crate::device::base::ublock_device::UBlockDevice;
 use crate::include::i_array_device::IArrayDevice;
 
 // TODO: Callback needs to be generic (refer to Callback.cpp)
-type Callback = Box<dyn FnMut(&Vec<u8>)->()>;
+pub type CallbackClosure = Box<dyn FnMut(&Vec<u8>)->()>;
 
 pub struct Ubio {
     pub dir: UbioDir,
     pub dataBuffer: Option<Vec<u8>>,
-    pub callback: Callback,
+    pub callback: CallbackClosure,
     pub lba: u64,
     pub uBlock: Option<Box<dyn UBlockDevice>>,
     pub arrayDev: Option<Box<dyn IArrayDevice>>,
@@ -18,7 +18,7 @@ pub struct Ubio {
 }
 
 impl Ubio {
-    pub fn new(dir: UbioDir, lba: u64, dataBuffer: Vec<u8>, callback: Callback) -> Ubio {
+    pub fn new(dir: UbioDir, lba: u64, dataBuffer: Vec<u8>, callback: CallbackClosure) -> Ubio {
         Ubio {
             dir: dir,
             dataBuffer: Some(dataBuffer),
@@ -42,7 +42,7 @@ impl Debug for Ubio {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum UbioDir {
     Read,
     Write,

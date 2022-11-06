@@ -1,0 +1,2 @@
+pub const STRIPE_CHUNKS_SIZE: u64 = 256;
+pub const CHUNK_SIZE: u64 = STRIPE_CHUNKS_SIZE * 1024;
