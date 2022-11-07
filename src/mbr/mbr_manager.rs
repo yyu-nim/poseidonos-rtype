@@ -1,9 +1,10 @@
 use std::any::Any;
+use std::borrow::BorrowMut;
 use std::rc::Rc;
 use std::sync::Mutex;
 
 use crossbeam::sync::Parker;
-use log::warn;
+use log::{info, warn};
 
 use crate::array::meta::array_meta::ArrayMeta;
 use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
@@ -12,23 +13,41 @@ use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
-use crate::mbr::mbr_info::{ArrayBootRecord, masterBootRecord};
+use crate::mbr::mbr_info::{ArrayBootRecord, IntoVecOfU8, masterBootRecord};
 
 const MBR_CHUNKS : i32 = 1;
 const MBR_ADDRESS: u64 = 0;
+const MBR_SIZE: u64 = CHUNK_SIZE;
 
-pub struct MbrManager;
+pub struct MbrManager {
+    mbrBuffer: Mutex<Vec<u8>>,
+    systeminfo: masterBootRecord,
+}
 
 impl MbrManager {
     pub fn new() -> Self {
-        MbrManager
+        MbrManager {
+            mbrBuffer: Mutex::new(vec![0 as u8; CHUNK_SIZE as usize]),
+            systeminfo: Default::default(),
+        }
     }
 
     pub fn GetMbr(&self) -> masterBootRecord { todo!(); }
     pub fn LoadMbr(&self) -> Result<(), PosEventId> { todo!();  }
     pub fn SaveMbr(&self) -> Result<(), PosEventId> { todo!();  }
     pub fn ResetMbr(&self) -> Result<(), PosEventId> { todo!(); }
-    pub fn InitDisk(&self, /* dev: UblockSharedPtr*/ ) { todo!(); }
+
+    pub fn InitDisk(&self, dev: Box<dyn UBlockDevice>) {
+        let mut mbrBuffer = self.mbrBuffer.lock().unwrap(); //.borrow_mut();
+        mbrBuffer.clear();
+        let mut systeminfo = self.systeminfo.to_vec_u8();
+        mbrBuffer.append(&mut systeminfo);
+        self._SetParity(&mbrBuffer);
+        let diskIoCtxt = DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
+        self._DiskIo(dev, diskIoCtxt);
+        info!("the mbr has been initialized");
+    }
+
     pub fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> { todo!(); }
     pub fn DeleteAbr(&self, name: &String) -> Result<(), PosEventId> { todo!(); }
     pub fn GetAbr(&self, name: &String) -> Option<(ArrayBootRecord, u32)> { todo!(); }
@@ -109,6 +128,10 @@ impl MbrManager {
         // TODO
         true
     }
+
+    fn _SetParity(&self, mem: &Vec<u8>) {
+        // TODO
+    }
 }
 
 struct DiskIoContext {
@@ -128,6 +151,8 @@ impl DiskIoContext {
 #[cfg(test)]
 mod tests {
     use std::fs;
+    use std::fs::File;
+    use std::io::{Read, Seek, SeekFrom};
     use std::path::PathBuf;
 
     use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
@@ -169,5 +194,34 @@ mod tests {
         let expected = PATTERN.to_vec();
         let actual = mbr[0..PATTERN.len()].to_vec();
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_if_InitDisk_actually_writes_MBR_to_a_given_device() {
+        setup();
+        let test_ufile_ssd = "/tmp/test-ufile-ssd-initdisk";
+        fs::remove_file(PathBuf::from(test_ufile_ssd));
+
+        // Given: MBR manager with its MBR version filled with 123
+        let mut mbr_manager = MbrManager::new();
+        let mbr = &mut mbr_manager.systeminfo;
+        mbr.mbrVersion = 123;
+
+        let mut ublock_dev = UfileSsd::new(
+            PathBuf::from(test_ufile_ssd), 100*1024*1024)
+            .boxed();
+        ublock_dev.Open();
+
+        // When: MBR manager initializes a given UBlockDevice
+        mbr_manager.InitDisk(ublock_dev);
+
+        // Then: We should be able to see the expected MBR version 123 at byte offset 32 within the UfileSsd
+        let mut f = File::open(PathBuf::from(test_ufile_ssd)).unwrap();
+        let mbr_version_pos = 1 /* byte */ * 16 + 4 /* bytes */ * 4;
+        f.seek(SeekFrom::Start(mbr_version_pos));
+        let mut buf = [0 as u8; 4];
+        let bytes_read = f.read(&mut buf).unwrap();
+        assert_eq!(4, bytes_read);
+        assert_eq!(buf.to_vec(), 123_u32.to_le_bytes().to_vec());
     }
 }
