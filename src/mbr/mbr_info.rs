@@ -1,4 +1,5 @@
 use std::mem;
+use serde::{Serialize, Deserialize};
 
 pub const MAX_ARRAY_CNT: usize = 8;
 pub const MAX_ARRAY_DEVICE_CNT: usize = 128;
@@ -64,6 +65,10 @@ pub const MBR_PARITY_SIZE: usize = mem::size_of::<u32>();
 pub const MBR_RESERVED_NUM: usize = (MBR_SIZE - MBR_PARITY_SIZE - MBR_RESERVED_OFFSET) / mem::size_of::<u32>();
 pub const MBR_PARITY_OFFSET: usize = MBR_RESERVED_OFFSET + mem::size_of::<u32>() * MBR_RESERVED_NUM;
 
+pub trait IntoVecOfU8 {
+    fn to_vec_u8(&self) -> Vec<u8>;
+}
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct deviceInfo
 {
     pub deviceType: u32,
@@ -73,7 +78,24 @@ pub struct deviceInfo
     pub pad1: [u32; DEVICE_INFO_PADDING_1_NUM],
 }
 const_assert_eq!(mem::size_of::<deviceInfo>(), DEVICE_INFO_SIZE);
+impl Default for deviceInfo {
+    fn default() -> Self {
+        deviceInfo {
+            deviceType: 0,
+            pad0: [0; DEVICE_INFO_PADDING_0_NUM],
+            deviceUid: [0; DEVICE_UID_SIZE],
+            deviceState: 0,
+            pad1: [0; DEVICE_INFO_PADDING_1_NUM]
+        }
+    }
+}
+impl IntoVecOfU8 for deviceInfo {
+    fn to_vec_u8(&self) -> Vec<u8> {
+        bincode::serialize(&self).unwrap()
+    }
+}
 
+#[derive(Copy, Clone)]
 pub struct ArrayBootRecord
 {
     pub arrayName: [u8; ARRAY_NAME_SIZE],
@@ -94,6 +116,54 @@ pub struct ArrayBootRecord
     pub reserved: [u32; ABR_RESERVED_NUM],
 }
 const_assert_eq!(mem::size_of::<ArrayBootRecord>(), ABR_SIZE);
+impl Default for ArrayBootRecord {
+    fn default() -> Self {
+        ArrayBootRecord {
+            arrayName: [0; ARRAY_NAME_SIZE],
+            abrVersion: 0,
+            pad0: [0; ABR_PADDING_0_SIZE],
+            metaRaidType: [0; META_RAID_TYPE_SIZE],
+            dataRaidType: [0; DATA_RAID_TYPE_SIZE],
+            totalDevNum: 0,
+            nvmDevNum: 0,
+            dataDevNum: 0,
+            spareDevNum: 0,
+            mfsInit: 0,
+            createDatetime: [0; DATE_SIZE],
+            updateDatetime: [0; DATE_SIZE],
+            uniqueId: 0,
+            pad1: [0; ABR_PADDING_1_NUM],
+            devInfo: [Default::default(); MAX_ARRAY_DEVICE_CNT],
+            reserved: [0; ABR_RESERVED_NUM]
+        }
+    }
+}
+impl IntoVecOfU8 for ArrayBootRecord {
+    fn to_vec_u8(&self) -> Vec<u8> {
+        // bincode::serialize(&self).unwrap() // TODO => master boot record의 serialize()와 동일한 문제
+        // 일단은 수동으로 serialize
+        let mut v = Vec::new();
+        v.append( self.arrayName.to_vec().as_mut() );
+        v.append( self.abrVersion.to_le_bytes().to_vec().as_mut() );
+        v.append( &mut utils::transform_vec32_to_vec8( self.pad0.to_vec()) );
+        v.append( self.metaRaidType.to_vec().as_mut() );
+        v.append( self.dataRaidType.to_vec().as_mut() );
+        v.append( self.totalDevNum.to_le_bytes().to_vec().as_mut() );
+        v.append( self.nvmDevNum.to_le_bytes().to_vec().as_mut() );
+        v.append( self.dataDevNum.to_le_bytes().to_vec().as_mut() );
+        v.append( self.spareDevNum.to_le_bytes().to_vec().as_mut() );
+        v.append( self.mfsInit.to_le_bytes().to_vec().as_mut() );
+        v.append( self.createDatetime.to_vec().as_mut() );
+        v.append( self.updateDatetime.to_vec().as_mut() );
+        v.append( self.uniqueId.to_le_bytes().to_vec().as_mut() );
+        v.append( &mut utils::transform_vec32_to_vec8( self.pad1.to_vec()) );
+        for single_dev_info in self.devInfo.iter() {
+            v.append( &mut single_dev_info.to_vec_u8() );
+        }
+        v.append( &mut utils::transform_vec32_to_vec8( self.reserved.to_vec()) );
+        v
+    }
+}
 
 pub struct masterBootRecord
 {
@@ -113,6 +183,61 @@ pub struct masterBootRecord
     pub mbrParity: u32,
 }
 const_assert_eq!(mem::size_of::<masterBootRecord>(), MBR_SIZE);
+impl Default for masterBootRecord {
+    fn default() -> Self {
+        masterBootRecord {
+            posVersion: [0; POS_VERSION_SIZE],
+            pad0: [0; MBR_PADDING_0_NUM],
+            mbrVersion: 0,
+            pad1: [0; MBR_PADDING_1_NUM],
+            systemUuid: [0; SYSTEM_UUID_SIZE],
+            arrayNum: 0,
+            pad2: [0; MBR_PADDING_2_NUM],
+            arrayValidFlag: [0; MAX_ARRAY_CNT],
+            pad3: [0; MBR_PADDING_3_NUM],
+            arrayDevFlag: [0; MAX_ARRAY_DEVICE_CNT],
+            pad4: [0; MBR_PADDING_4_NUM],
+            arrayInfo: [Default::default(); MAX_ARRAY_CNT],
+            reserved: [0; MBR_RESERVED_NUM],
+            mbrParity: 0
+        }
+    }
+}
+impl IntoVecOfU8 for masterBootRecord {
+    fn to_vec_u8(&self) -> Vec<u8> {
+        // bincode::serialize(&self).unwrap() // TODO => not sure why we run into error[E0277]: the trait bound `[u32; 28671]: Deserialize<'_>` is not satisfied
+        // bincode 이슈를 해결하지 못해, 일단은 수동으로 serialize 함.
+        let mut v = Vec::with_capacity(mem::size_of::<masterBootRecord>());
+        v.append( self.posVersion.to_vec().as_mut() );
+        v.append( &mut utils::transform_vec32_to_vec8(self.pad0.to_vec()) );
+        v.append( self.mbrVersion.to_le_bytes().to_vec().as_mut() ); // TODO: need any support for big endian CPU?
+        v.append( &mut utils::transform_vec32_to_vec8(self.pad1.to_vec()) );
+        v.append( self.systemUuid.to_vec().as_mut() );
+        v.append( self.arrayNum.to_le_bytes().to_vec().as_mut() );
+        v.append( &mut utils::transform_vec32_to_vec8(self.pad2.to_vec()) );
+        v.append( &mut utils::transform_vec32_to_vec8(self.arrayValidFlag.to_vec()) );
+        v.append( &mut utils::transform_vec32_to_vec8(self.pad3.to_vec()) );
+        v.append( &mut utils::transform_vec32_to_vec8(self.arrayDevFlag.to_vec()) );
+        v.append( &mut utils::transform_vec32_to_vec8(self.pad4.to_vec()) );
+        for one_array_info in self.arrayInfo.iter() {
+            v.append( one_array_info.to_vec_u8().as_mut() );
+        }
+        v.append( &mut utils::transform_vec32_to_vec8(self.reserved.to_vec()) );
+        v.append( self.mbrParity.to_le_bytes().to_vec().as_mut() );
+        v
+    }
+
+}
+
+mod utils {
+    pub fn transform_vec32_to_vec8(from: Vec<u32>) -> Vec<u8> {
+        let mut accumulated = Vec::new();
+        for the_u32 in from.iter() {
+            accumulated.append( the_u32.to_le_bytes().to_vec().as_mut() );
+        }
+        accumulated
+    }
+}
 
 #[cfg(test)]
 mod tests {
