@@ -159,6 +159,7 @@ mod tests {
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::device_manager::DeviceManager;
     use crate::device::ufile::ufile_ssd::UfileSsd;
+    use crate::mbr::mbr_info::MBR_VERSION_OFFSET;
     use crate::mbr::mbr_manager::{DiskIoContext, MBR_ADDRESS, MbrManager};
 
     fn setup() {
@@ -217,8 +218,7 @@ mod tests {
 
         // Then: We should be able to see the expected MBR version 123 at byte offset 32 within the UfileSsd
         let mut f = File::open(PathBuf::from(test_ufile_ssd)).unwrap();
-        let mbr_version_pos = 1 /* byte */ * 16 + 4 /* bytes */ * 4;
-        f.seek(SeekFrom::Start(mbr_version_pos));
+        f.seek(SeekFrom::Start(MBR_VERSION_OFFSET as u64));
         let mut buf = [0 as u8; 4];
         let bytes_read = f.read(&mut buf).unwrap();
         assert_eq!(4, bytes_read);
