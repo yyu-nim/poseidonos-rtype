@@ -140,7 +140,7 @@ mod tests {
                     state: ArrayDeviceState::NORMAL,
                 },
                 DeviceMeta {
-                    uid: "data_0".to_string(),
+                    uid: "data_1".to_string(),
                     state: ArrayDeviceState::NORMAL,
                 },
             ],
