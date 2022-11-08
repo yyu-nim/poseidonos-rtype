@@ -13,41 +13,30 @@ struct MbrMapManager {
 impl MbrMapManager {
     pub fn InsertDevices(&mut self, meta: &ArrayMeta, arrayIndex: u32) -> Result<(), PosEventId> {
         let mut insertNum = 0;
-        for dev in &meta.devs.nvm {
-            self.arrayDeviceIndexMap
-                .insert(dev.uid.to_string(), arrayIndex);
-            debug!(
-                "[{}] Inserted {} to array {}",
-                PosEventId::MBR_DEBUG_MSG.to_string(),
-                dev.uid,
-                arrayIndex
-            );
-            insertNum += 1;
-        }
 
-        for dev in &meta.devs.data {
-            self.arrayDeviceIndexMap
-                .insert(dev.uid.to_string(), arrayIndex);
-            debug!(
-                "[{}] Inserted {} to array {}",
-                PosEventId::MBR_DEBUG_MSG.to_string(),
-                dev.uid,
-                arrayIndex
-            );
-            insertNum += 1;
-        }
+        let new_dev_uids = meta
+            .devs
+            .nvm
+            .iter()
+            .map(|dev| dev.uid.to_string())
+            .collect();
+        insertNum += self.add_to_array_device_index_map(new_dev_uids, arrayIndex);
 
-        for dev in &meta.devs.spares {
-            self.arrayDeviceIndexMap
-                .insert(dev.uid.to_string(), arrayIndex);
-            debug!(
-                "[{}] Inserted {} to array {}",
-                PosEventId::MBR_DEBUG_MSG.to_string(),
-                dev.uid,
-                arrayIndex
-            );
-            insertNum += 1;
-        }
+        let new_dev_uids = meta
+            .devs
+            .data
+            .iter()
+            .map(|dev| dev.uid.to_string())
+            .collect();
+        insertNum += self.add_to_array_device_index_map(new_dev_uids, arrayIndex);
+
+        let new_dev_uids = meta
+            .devs
+            .spares
+            .iter()
+            .map(|dev| dev.uid.to_string())
+            .collect();
+        insertNum += self.add_to_array_device_index_map(new_dev_uids, arrayIndex);
 
         debug!(
             "[{}] Inserted {} devices to arrayDeviceMap",
@@ -56,6 +45,23 @@ impl MbrMapManager {
         );
 
         Ok(())
+    }
+
+    fn add_to_array_device_index_map(&mut self, uids: Vec<String>, arrayIndex: u32) -> u32 {
+        let mut insertNum = 0;
+        uids.iter().for_each(|uid| {
+            self.arrayDeviceIndexMap.insert(uid.to_owned(), arrayIndex);
+
+            debug!(
+                "[{}] Inserted {} to array {}",
+                PosEventId::MBR_DEBUG_MSG.to_string(),
+                uid,
+                arrayIndex
+            );
+            insertNum += 1;
+        });
+
+        insertNum
     }
 
     pub fn InsertDevice(&mut self, deviceUid: &String, arrayIndex: u32) -> Result<(), PosEventId> {
@@ -86,7 +92,7 @@ impl MbrMapManager {
         Ok(())
     }
 
-    fn _CheckDevices(&self, devs: &Vec::<DeviceMeta>) -> Result<(), PosEventId> {
+    fn _CheckDevices(&self, devs: &Vec<DeviceMeta>) -> Result<(), PosEventId> {
         for dev in devs {
             if let Some(arrayIdx) = self.arrayDeviceIndexMap.get(&dev.uid.to_string()) {
                 let eventId = PosEventId::MBR_DEVICE_ALREADY_IN_ARRAY;
@@ -138,12 +144,10 @@ mod tests {
                     state: ArrayDeviceState::NORMAL,
                 },
             ],
-            spares: vec![
-                DeviceMeta {
-                    uid: "spare_0".to_string(),
-                    state: ArrayDeviceState::NORMAL,
-                }
-            ],
+            spares: vec![DeviceMeta {
+                uid: "spare_0".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
         };
         let meta = ArrayMeta {
             devs,
@@ -160,10 +164,22 @@ mod tests {
         let mut mbrMapManager = MbrMapManager::default();
         assert!(mbrMapManager.InsertDevices(&meta, arrayIndex).is_ok());
 
-        assert_eq!(mbrMapManager.FindArrayIndex(&meta.devs.nvm[0].uid), Ok(arrayIndex));
-        assert_eq!(mbrMapManager.FindArrayIndex(&meta.devs.data[0].uid), Ok(arrayIndex));
-        assert_eq!(mbrMapManager.FindArrayIndex(&meta.devs.data[1].uid), Ok(arrayIndex));
-        assert_eq!(mbrMapManager.FindArrayIndex(&meta.devs.spares[0].uid), Ok(arrayIndex));
+        assert_eq!(
+            mbrMapManager.FindArrayIndex(&meta.devs.nvm[0].uid),
+            Ok(arrayIndex)
+        );
+        assert_eq!(
+            mbrMapManager.FindArrayIndex(&meta.devs.data[0].uid),
+            Ok(arrayIndex)
+        );
+        assert_eq!(
+            mbrMapManager.FindArrayIndex(&meta.devs.data[1].uid),
+            Ok(arrayIndex)
+        );
+        assert_eq!(
+            mbrMapManager.FindArrayIndex(&meta.devs.spares[0].uid),
+            Ok(arrayIndex)
+        );
 
         assert_eq!(mbrMapManager.CheckAllDevices(&meta).is_err(), true);
 
