@@ -17,7 +17,7 @@ use crate::mbr::mbr_info::{ArrayBootRecord, MBR_ABR_OFFSET};
 impl AbrManager {
     pub fn new() -> Self {
         AbrManager {
-            mbrManager: MbrManager::new(),
+            mbrManager: MbrManager::new(None),
         }
     }
 

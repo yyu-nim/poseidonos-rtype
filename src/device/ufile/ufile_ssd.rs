@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
+use std::sync::{Mutex, Arc};
 use log::{info, warn};
 use crate::bio::ubio::{Ubio, UbioDir};
 use crate::device::base::ublock_device::UBlockDevice;
@@ -11,7 +12,7 @@ use crate::generated::bindings::spdk_new_thread_fn;
 pub struct UfileSsd {
     filePath: PathBuf,
     fileSize: usize,
-    file: Option<File>,
+    file: Arc<Mutex<Option<File>>>,
 }
 
 impl UBlockDevice for UfileSsd {
@@ -51,33 +52,31 @@ impl UBlockDevice for UfileSsd {
 
         file.set_len(self.fileSize as u64);
         info!("Opening a file {:?} and truncating to {} bytes", self.filePath, self.fileSize);
-        self.file = Some(file);
+        self.file = Arc::new(Mutex::new(Some(file)));
         true
     }
 
     fn Close(&self) -> u32 {
-        match &self.file {
+        let f = self.file.lock().unwrap();
+        match &*f {
+            Some(f_handle) => {
+                f_handle.sync_all().expect(
+                    format!("failed to sync_all for {:?}", self.filePath).as_str());
+            },
             None => {
                 warn!("Cannot close the non-open file! {:?}", self.filePath);
-            }
-            Some(f) => {
-                f.sync_all().expect(
-                    format!("failed to sync_all for {:?}", self.filePath).as_str());
-                info!("Closing {:?}", self.filePath);
-            }
-        }
+            },
+        };
+
         0
     }
 
     fn clone_box(&self) -> Box<dyn UBlockDevice> {
-        let mut new_ufile_ssd = UfileSsd {
+        let new_ufile_ssd = UfileSsd {
             filePath: self.filePath.clone(),
             fileSize: self.fileSize.clone(),
-            file: None,
+            file: self.file.clone(),
         };
-        if self.file.is_some() {
-            new_ufile_ssd.Open(); // TODO: 이런 방식의 Clone은 문제가 있을 지도. 동일 file을 각각 열어서 쓰면 consistency 문제가 있을 수 있으니.
-        }
         Box::new(new_ufile_ssd)
     }
 }
@@ -87,7 +86,7 @@ impl UfileSsd {
         UfileSsd {
             filePath,
             fileSize,
-            file: None,
+            file: Arc::new(Mutex::new(None)),
         }
     }
 
@@ -96,13 +95,15 @@ impl UfileSsd {
     }
 
     fn read(&self, lba: u64, buf: &mut Vec<u8>) {
-        let mut f = self.file.as_ref().unwrap();
+        let guard = self.file.lock().unwrap();
+        let mut f = (*guard).as_ref().unwrap();
         f.seek(SeekFrom::Start(lba * 512));
         f.read(buf);
     }
 
     fn write(&self, lba: u64, buf: &Vec<u8>) {
-        let mut f = self.file.as_ref().unwrap();
+        let guard = self.file.lock().unwrap();
+        let mut f = guard.as_ref().unwrap();
         f.seek(SeekFrom::Start(lba * 512));
         f.write(&buf);
     }

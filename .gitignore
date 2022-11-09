@@ -97,3 +97,4 @@ package/src/etc/pos/prometheus-data/*
 package/usr/local/bin/*
 package/usr/local/etc/*
 package/usr/local/lib/*
+target/
