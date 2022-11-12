@@ -1,5 +1,10 @@
 use std::mem;
+use std::mem::size_of;
+use log::error;
 use serde::{Serialize, Deserialize};
+extern crate byteorder;
+use byteorder::{ByteOrder, LittleEndian, WriteBytesExt};
+use crate::array::array::Array;
 
 pub const MAX_ARRAY_CNT: usize = 8;
 pub const MAX_ARRAY_DEVICE_CNT: usize = 128;
@@ -68,7 +73,7 @@ pub const MBR_PARITY_OFFSET: usize = MBR_RESERVED_OFFSET + mem::size_of::<u32>()
 pub trait IntoVecOfU8 {
     fn to_vec_u8(&self) -> Vec<u8>;
 }
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub struct deviceInfo
 {
     pub deviceType: u32,
@@ -94,8 +99,40 @@ impl IntoVecOfU8 for deviceInfo {
         bincode::serialize(&self).unwrap()
     }
 }
+impl deviceInfo {
+    fn from_vec_u8(vec_u8: Vec<u8>) -> deviceInfo {
+        let devInfo = deviceInfo {
+            deviceType: {
+                let from = DEVICE_TYPE_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            pad0: {
+                let from = DEVICE_INFO_PADDING_1_OFFSET;
+                let to = from + (mem::size_of::<u32>() * DEVICE_INFO_PADDING_1_NUM);
+                &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+            }.clone().try_into().unwrap(),
+            deviceUid: {
+                let from = DEVICE_UID_OFFSET;
+                let to = from + (mem::size_of::<u8>() * DEVICE_UID_SIZE);
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            deviceState: {
+                let from = DEVICE_STATE_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            pad1: {
+                let from = DEVICE_INFO_PADDING_1_OFFSET;
+                let to = from + (mem::size_of::<u32>() * DEVICE_INFO_PADDING_1_NUM);
+                &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+            }.clone().try_into().unwrap(),
+        };
+        devInfo
+    }
+}
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ArrayBootRecord
 {
     pub arrayName: [u8; ARRAY_NAME_SIZE],
@@ -164,6 +201,99 @@ impl IntoVecOfU8 for ArrayBootRecord {
         v
     }
 }
+impl ArrayBootRecord {
+    fn from_vec_u8(vec_u8: Vec<u8>) -> ArrayBootRecord {
+        let abr = ArrayBootRecord {
+            arrayName: {
+                let from = ARRAY_NAME_OFFSET;
+                let to = from + ARRAY_NAME_SIZE;
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            abrVersion: {
+                let from = ABR_VERSION_OFFSET;
+                let to = from + mem::size_of::<i32>();
+                LittleEndian::read_i32(&vec_u8[from..to])
+            },
+            pad0: {
+                let from = ABR_PADDING_0_OFFSET;
+                let to = from + (mem::size_of::<u32>() * ABR_PADDING_0_SIZE);
+                &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+            }.clone().try_into().unwrap(),
+            metaRaidType: {
+                let from = META_RAID_TYPE_OFFSET;
+                let to = from + (mem::size_of::<u8>() * META_RAID_TYPE_SIZE);
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            dataRaidType: {
+                let from = DATA_RAID_TYPE_OFFSET;
+                let to  = from + (mem::size_of::<u8>() * DATA_RAID_TYPE_SIZE);
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            totalDevNum: {
+                let from = TOTAL_DEV_NUM_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            nvmDevNum: {
+                let from = NVM_DEV_NUM_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            dataDevNum: {
+                let from = DATA_DEV_NUM_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            spareDevNum: {
+                let from = SPARE_DEV_NUM_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            mfsInit: {
+                let from = MFS_INIT_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            createDatetime: {
+                let from = CREATE_DATE_OFFSET;
+                let to = from + (mem::size_of::<u8>() * DATE_SIZE);
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            updateDatetime: {
+                let from = MODIFIED_DATE_OFFSET;
+                let to = from + (mem::size_of::<u8>() * DATE_SIZE);
+                &vec_u8[from..to]
+            }.clone().try_into().unwrap(),
+            uniqueId: {
+                let from = INSTANCE_ID_OFFSET;
+                let to = from + mem::size_of::<u32>();
+                LittleEndian::read_u32( &vec_u8[from..to] )
+            },
+            pad1: {
+                let from = ABR_PADDING_1_OFFSET;
+                let to = from + (mem::size_of::<u32>() * ABR_PADDING_1_NUM);
+                &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+            }.clone().try_into().unwrap(),
+            devInfo: {
+                let mut devInfoVec = Vec::new();
+                let from = ABR_DEVICE_INFO_OFFSET;
+                let to = from + (mem::size_of::<deviceInfo>() * MAX_ARRAY_DEVICE_CNT);
+                for chunk_boundary in (from..to).step_by( mem::size_of::<deviceInfo>() ) {
+                    let chunk = &vec_u8[chunk_boundary..(chunk_boundary+mem::size_of::<deviceInfo>())];
+                    let info = deviceInfo::from_vec_u8(chunk.to_vec());
+                    devInfoVec.push(info);
+                }
+                devInfoVec
+            }.try_into().unwrap(),
+            reserved: {
+                let from = ABR_RESERVED_OFFSET;
+                let to = from + (mem::size_of::<u32>() * ABR_RESERVED_NUM);
+                &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+            }.clone().try_into().unwrap(),
+        };
+        abr
+    }
+}
 
 pub struct masterBootRecord
 {
@@ -226,14 +356,111 @@ impl IntoVecOfU8 for masterBootRecord {
         v.append( self.mbrParity.to_le_bytes().to_vec().as_mut() );
         v
     }
+}
 
+impl masterBootRecord {
+    fn from_vec_u8(vec_u8: Vec<u8>) -> Option<masterBootRecord> {
+        if vec_u8.len() != MBR_SIZE {
+            error!("cannot deserialize MBR! expected = {}, actual = {}", MBR_SIZE, vec_u8.len());
+            return None
+        }
+        let mut mbr = masterBootRecord::default();
+        mbr.posVersion.copy_from_slice({
+            let from = POS_VERSION_OFFSET;
+            let to = from + (mem::size_of::<u8>() * POS_VERSION_SIZE);
+            &vec_u8[from..to]
+        });
+        mbr.pad0.copy_from_slice({
+            let from = MBR_PADDING_0_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_PADDING_0_NUM);
+            &utils::transform_vec8_to_vec32(&vec_u8[from..to])
+        });
+        mbr.mbrVersion = {
+            let from = MBR_VERSION_OFFSET;
+            let to = from + 4;
+            LittleEndian::read_u32( &vec_u8[from..to])
+        };
+        mbr.pad1.copy_from_slice({
+            let from = MBR_PADDING_1_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_PADDING_1_NUM);
+            &utils::transform_vec8_to_vec32(&vec_u8[from..to])
+        });
+        mbr.systemUuid.copy_from_slice({
+            let from = SYSTEM_UUID_OFFSET;
+            let to = from + (mem::size_of::<u8>() * SYSTEM_UUID_SIZE);
+            &vec_u8[from..to]
+        });
+        mbr.arrayNum = {
+            let from = ARRAY_NUM_OFFSET;
+            let to = from + mem::size_of::<u32>();
+            LittleEndian::read_u32( &vec_u8[from..to] )
+        };
+        mbr.pad2.copy_from_slice({
+            let from = MBR_PADDING_2_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_PADDING_2_NUM);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.arrayValidFlag.copy_from_slice({
+            let from = ARRAY_FLAG_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MAX_ARRAY_CNT);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.pad3.copy_from_slice({
+            let from = MBR_PADDING_3_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_PADDING_3_NUM);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.arrayDevFlag.copy_from_slice({
+            let from = ARRAY_DEVICE_FLAG_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MAX_ARRAY_DEVICE_CNT);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.pad4.copy_from_slice({
+            let from = MBR_PADDING_4_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_PADDING_4_NUM);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.arrayInfo = {
+            let mut abrVec = Vec::new();
+            let from = MBR_ABR_OFFSET;
+            let to = from + (mem::size_of::<ArrayBootRecord>() * MAX_ARRAY_CNT);
+            for chunk_boundary in (from..to).step_by( mem::size_of::<ArrayBootRecord>() ) {
+                let chunk = &vec_u8[chunk_boundary..(chunk_boundary + mem::size_of::<ArrayBootRecord>())];
+                let abr = ArrayBootRecord::from_vec_u8(chunk.to_vec());
+                abrVec.push(abr);
+            }
+            abrVec.try_into().unwrap()
+        };
+        mbr.reserved.copy_from_slice({
+            let from = MBR_RESERVED_OFFSET;
+            let to = from + (mem::size_of::<u32>() * MBR_RESERVED_NUM);
+            &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
+        });
+        mbr.mbrParity = {
+            let from = MBR_PARITY_OFFSET;
+            let to = from + MBR_PARITY_SIZE;
+            LittleEndian::read_u32( &vec_u8[from..to] )
+        };
+        Some(mbr)
+    }
 }
 
 mod utils {
+    use byteorder::{ByteOrder, LittleEndian};
+
     pub fn transform_vec32_to_vec8(from: Vec<u32>) -> Vec<u8> {
         let mut accumulated = Vec::new();
         for the_u32 in from.iter() {
             accumulated.append( the_u32.to_le_bytes().to_vec().as_mut() );
+        }
+        accumulated
+    }
+
+    pub fn transform_vec8_to_vec32(from: &[u8]) -> Vec<u32> {
+        let mut accumulated: Vec<u32> = Vec::new();
+        for byte_pos in (0..from.len()).step_by(4) {
+            // TODO: what if from isn't 4-bytes aligned?
+            accumulated.push( LittleEndian::read_u32(&from[byte_pos..]) );
         }
         accumulated
     }
@@ -258,5 +485,18 @@ mod tests {
 
         assert!(std::str::from_utf8(&array_name).unwrap().to_string().starts_with("TestArray"));
         assert_eq!(std::mem::size_of_val(&array_name), ARRAY_NAME_SIZE);
+    }
+
+    #[test]
+    fn test_transform_vec8_to_vec32() {
+        let mut v1: Vec<u8> = Vec::new();
+        v1.push(1);
+        v1.push(1);
+        v1.push(1);
+        v1.push(1);
+        let mut v2: Vec<u32> = Vec::new();
+        for i in (0..v1.len()).step_by(4) {
+            v2.push( LittleEndian::read_u32(&v1[i..]) );
+        }
     }
 }

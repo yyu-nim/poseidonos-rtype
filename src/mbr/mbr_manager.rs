@@ -3,7 +3,7 @@ use std::borrow::BorrowMut;
 use std::ops::{Deref, DerefMut};
 use std::rc::Rc;
 use std::str::FromStr;
-use std::sync::{Mutex, MutexGuard};
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use crossbeam::sync::Parker;
 use log::{info, warn};
@@ -16,6 +16,7 @@ use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
 use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
+use crate::include::pos_event_id::PosEventId::MBR_DATA_NOT_FOUND;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 use crate::master_context::version_provider::VersionProviderSingleton;
 use crate::mbr::mbr_info::{ArrayBootRecord, IntoVecOfU8, masterBootRecord};
@@ -25,7 +26,8 @@ const MBR_ADDRESS: u64 = 0;
 const MBR_SIZE: u64 = CHUNK_SIZE;
 
 pub struct MbrManager {
-    mbrBuffer: Mutex<Vec<u8>>,
+    mbrBuffer: Mutex<Vec<u8>>, // TODO: refactor to use "mbrLock" instead
+    mbrLock: Mutex<Option<u8>>,
     systeminfo: masterBootRecord,
     version: i32,
     systemUuid: String,
@@ -40,6 +42,7 @@ impl MbrManager {
 
         MbrManager {
             mbrBuffer: Mutex::new(vec![0 as u8; CHUNK_SIZE as usize]),
+            mbrLock: Mutex::new(None),
             systeminfo: Default::default(),
             version: 0,
             systemUuid: uuid.to_string(),
@@ -47,8 +50,16 @@ impl MbrManager {
         }
     }
 
-    pub fn GetMbr(&self) -> masterBootRecord { todo!(); }
-    pub fn LoadMbr(&self) -> Result<(), PosEventId> { todo!();  }
+    pub fn GetMbr(&self) -> &masterBootRecord {
+        &self.systeminfo
+    }
+
+    pub fn LoadMbr(&self) -> Result<(), PosEventId> {
+        let _mbrLock = self.mbrLock.lock().unwrap();
+
+
+        Ok(())
+    }
 
     pub fn SaveMbr(&mut self) -> Result<(), PosEventId> {
         let posVersion = VersionProviderSingleton.ver();
@@ -89,18 +100,18 @@ impl MbrManager {
     pub fn FindArrayWithDeviceSN(&self, devSN: String) -> String { String::new() }
     pub fn Serialize(&self) -> String { todo!(); }
 
-    fn _IterateReadFromDevices(&self, dev: Box<dyn UBlockDevice>, ctx: &mut Vec<Vec<u8>>/*Box<dyn Any>*/) {
+    fn _IterateReadFromDevices(dev: Box<dyn UBlockDevice>, ctx: &mut Vec<Vec<u8>>/*Box<dyn Any>*/) {
         // "ctx" is likely to be byte buffer, so can be refactored accordingly later.
         let mut mems = ctx;
         let mem = [0 as u8; CHUNK_SIZE as usize * MBR_CHUNKS as usize].to_vec();
         let diskIoCtxt = DiskIoContext::new(UbioDir::Read, mem);
         let result_buffer = MbrManager::_DiskIo(dev, Rc::new(diskIoCtxt))
             .expect("Failed to read MBR from a device"); // TODO: device id API 생기면 메시지에 추가
-        if !self._VerifyParity(&result_buffer) {
+        if !MbrManager::_VerifyParity(&result_buffer) {
             warn!("Failed to verify MBR parity");
             return;
         }
-        if !self._VerifySystemUuid(&result_buffer) {
+        if !MbrManager::_VerifySystemUuid(&result_buffer) {
             warn!("Failed to verify System UUID from MBR");
             return;
         }
@@ -152,12 +163,12 @@ impl MbrManager {
         }
     }
 
-    fn _VerifyParity(&self, mem: &Vec<u8>) -> bool {
+    fn _VerifyParity(mem: &Vec<u8>) -> bool {
         // TODO
         true
     }
 
-    fn _VerifySystemUuid(&self, mem: &Vec<u8>) -> bool {
+    fn _VerifySystemUuid(mem: &Vec<u8>) -> bool {
         // TODO
         true
     }
@@ -203,6 +214,34 @@ impl MbrManager {
                 Err(PosEventId::MBR_DEVICE_NOT_FOUND)
             }
         }
+    }
+
+    fn _ReadFromDevices(&self) -> Result<(), PosEventId> {
+        let mut mems = Arc::new(Mutex::new(Vec::<Vec<u8>>::new()));
+        let iterateReadFunc = {
+            let mut mems = mems.clone();
+            Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
+                let uBlock = uBlockDev.clone_box();
+                let mut mems = mems.lock().unwrap();
+                MbrManager::_IterateReadFromDevices(uBlock, &mut mems);
+            })
+        };
+
+        let result = self.devMgr.IterateDevicesAndDoFunc(iterateReadFunc);
+        if let Err(e) = result {
+            return Err(e);
+        }
+
+        let mbr_list = mems.lock().unwrap();
+        if mbr_list.len() == 0 {
+            warn!("[{}] mbr data not found", PosEventId::MBR_DATA_NOT_FOUND.to_string());
+            return Err(MBR_DATA_NOT_FOUND);
+        }
+
+        // Pick up the MBR of the majority & the highest version
+        // mbr_list.group_by( |mbr| )
+
+        Ok(())
     }
 }
 
@@ -264,7 +303,7 @@ mod tests {
         let mut ctx : Vec<Vec<u8>> = Vec::new();
 
         // When: MBR manager reads MBR from the device
-        mbr_manager._IterateReadFromDevices(ublock_dev, &mut ctx);
+        MbrManager::_IterateReadFromDevices(ublock_dev, &mut ctx);
 
         // Then: "ctx" should contain the pattern
         assert_eq!(1, ctx.len());
