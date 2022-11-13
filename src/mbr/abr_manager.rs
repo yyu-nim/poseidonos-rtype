@@ -146,7 +146,7 @@ impl AbrManager {
         self.mbrManager.ResetMbr()
     }
 
-    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>, PosEventId> {
+    pub fn GetAbrList(&mut self) -> Result<Vec::<ArrayBootRecord>, PosEventId> {
         self.mbrManager.LoadMbr()?;
         self.mbrManager.GetAbrList()
     }

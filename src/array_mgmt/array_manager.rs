@@ -82,7 +82,7 @@ impl ArrayManager {
         self.arrayList.get_mut(name)
     }
 
-    pub fn AbrExists(&self, name: &String) -> bool {
+    pub fn AbrExists(&mut self, name: &String) -> bool {
         let abrList = match self.GetAbrList() {
             Ok(list) => list,
             Err(e) => {
@@ -94,7 +94,7 @@ impl ArrayManager {
         abrList.iter().find(|&abr| &std::str::from_utf8(&abr.arrayName).unwrap() == name).is_some()
     }
 
-    pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>, PosEventId>{
+    pub fn GetAbrList(&mut self) -> Result<Vec::<ArrayBootRecord>, PosEventId>{
         self.abrManager.GetAbrList()
     }
 

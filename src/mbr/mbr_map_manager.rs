@@ -6,7 +6,7 @@ use log::{debug, warn};
 use std::collections::HashMap;
 
 #[derive(Default)]
-struct MbrMapManager {
+pub struct MbrMapManager {
     arrayDeviceIndexMap: HashMap<String, u32>,
 }
 

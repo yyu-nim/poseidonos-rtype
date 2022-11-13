@@ -108,8 +108,8 @@ impl deviceInfo {
                 LittleEndian::read_u32( &vec_u8[from..to] )
             },
             pad0: {
-                let from = DEVICE_INFO_PADDING_1_OFFSET;
-                let to = from + (mem::size_of::<u32>() * DEVICE_INFO_PADDING_1_NUM);
+                let from = DEVICE_INFO_PADDING_0_OFFSET;
+                let to = from + (mem::size_of::<u32>() * DEVICE_INFO_PADDING_0_NUM);
                 &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
             }.clone().try_into().unwrap(),
             deviceUid: {
@@ -359,12 +359,13 @@ impl IntoVecOfU8 for masterBootRecord {
 }
 
 impl masterBootRecord {
-    fn from_vec_u8(vec_u8: Vec<u8>) -> Option<masterBootRecord> {
+    pub fn from_vec_u8(vec_u8: Vec<u8>) -> Option<Box<masterBootRecord>> {
         if vec_u8.len() != MBR_SIZE {
             error!("cannot deserialize MBR! expected = {}, actual = {}", MBR_SIZE, vec_u8.len());
             return None
         }
-        let mut mbr = masterBootRecord::default();
+        // Box가 없으면, MBR을 local stack에 할당하다 overflow 발생함. Heap 사용해야 함.
+        let mut mbr = Box::new(masterBootRecord::default());
         mbr.posVersion.copy_from_slice({
             let from = POS_VERSION_OFFSET;
             let to = from + (mem::size_of::<u8>() * POS_VERSION_SIZE);
@@ -420,17 +421,17 @@ impl masterBootRecord {
             let to = from + (mem::size_of::<u32>() * MBR_PADDING_4_NUM);
             &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
         });
-        mbr.arrayInfo = {
-            let mut abrVec = Vec::new();
+        {
+            let mut arrayIdx = 0;
             let from = MBR_ABR_OFFSET;
             let to = from + (mem::size_of::<ArrayBootRecord>() * MAX_ARRAY_CNT);
             for chunk_boundary in (from..to).step_by( mem::size_of::<ArrayBootRecord>() ) {
                 let chunk = &vec_u8[chunk_boundary..(chunk_boundary + mem::size_of::<ArrayBootRecord>())];
                 let abr = ArrayBootRecord::from_vec_u8(chunk.to_vec());
-                abrVec.push(abr);
+                mbr.arrayInfo[arrayIdx] = abr;
+                arrayIdx += 1;
             }
-            abrVec.try_into().unwrap()
-        };
+        }
         mbr.reserved.copy_from_slice({
             let from = MBR_RESERVED_OFFSET;
             let to = from + (mem::size_of::<u32>() * MBR_RESERVED_NUM);
@@ -442,6 +443,33 @@ impl masterBootRecord {
             LittleEndian::read_u32( &vec_u8[from..to] )
         };
         Some(mbr)
+    }
+
+    pub fn to_string(&self) -> String {
+        let mut str_buf = String::new();
+        str_buf.push_str(format!("pos_version: {}",
+                                 String::from_utf8(self.posVersion.to_vec()).unwrap_or("not a string".to_string())).as_str());
+        str_buf.push_str(format!("mbr_version: {}", self.mbrVersion).as_str());
+        str_buf.push_str(format!("system_uuid: {}",
+                                 String::from_utf8(self.systemUuid.to_vec()).unwrap_or("not a string".to_string())).as_str());
+        str_buf.push_str(format!("num_of_array: {}", self.arrayNum).as_str());
+        let arrayInfo = &self.arrayInfo;
+        for i in 0..MAX_ARRAY_CNT {
+            if self.arrayValidFlag[i] != 1 {
+                continue;
+            }
+            let abr = &arrayInfo[i];
+            str_buf.push_str(format!("array_name: {}", String::from_utf8(abr.arrayName.to_vec()).unwrap()).as_str());
+            str_buf.push_str(format!("uniqueId: {}", abr.uniqueId).as_str());
+            str_buf.push_str(format!("abr_version: {}", abr.abrVersion).as_str());
+            str_buf.push_str(format!("total_dev_num: {}", abr.totalDevNum).as_str());
+            str_buf.push_str(format!("data_dev_num: {}", abr.dataDevNum).as_str());
+            str_buf.push_str(format!("spare_dev_num: {}", abr.spareDevNum).as_str());
+            str_buf.push_str(format!("create_datetime: {}", String::from_utf8(abr.createDatetime.to_vec()).unwrap()).as_str());
+            str_buf.push_str(format!("update_datetime: {}", String::from_utf8(abr.updateDatetime.to_vec()).unwrap()).as_str());
+        }
+
+        str_buf
     }
 }
 
@@ -485,18 +513,5 @@ mod tests {
 
         assert!(std::str::from_utf8(&array_name).unwrap().to_string().starts_with("TestArray"));
         assert_eq!(std::mem::size_of_val(&array_name), ARRAY_NAME_SIZE);
-    }
-
-    #[test]
-    fn test_transform_vec8_to_vec32() {
-        let mut v1: Vec<u8> = Vec::new();
-        v1.push(1);
-        v1.push(1);
-        v1.push(1);
-        v1.push(1);
-        let mut v2: Vec<u32> = Vec::new();
-        for i in (0..v1.len()).step_by(4) {
-            v2.push( LittleEndian::read_u32(&v1[i..]) );
-        }
     }
 }
