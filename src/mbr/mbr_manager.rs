@@ -236,7 +236,7 @@ impl MbrManager {
     }
 
     fn _ReadFromDevices(devMgr: &DeviceManager, version: &mut i32, systeminfo: &mut masterBootRecord) -> Result<(), PosEventId> {
-        let mut mems = Arc::new(Mutex::new(Vec::<Vec<u8>>::new()));
+        let mut mems = Rc::new(Mutex::new(Vec::<Vec<u8>>::new()));
         let iterateReadFunc = {
             let mut mems = mems.clone();
             Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
@@ -257,7 +257,7 @@ impl MbrManager {
             return Err(MBR_DATA_NOT_FOUND);
         }
 
-        // Pick up the MBR of the majority & the highest version
+        // Pick up the MBR of the highest version
         let mbr_latest = mbr_list
             .iter()
             .map(|mbrBytes| masterBootRecord::from_vec_u8(mbrBytes.clone()) )

@@ -202,7 +202,12 @@ impl IntoVecOfU8 for ArrayBootRecord {
     }
 }
 impl ArrayBootRecord {
-    fn from_vec_u8(vec_u8: Vec<u8>) -> ArrayBootRecord {
+    fn from_vec_u8(vec_u8: Vec<u8>) -> Option<ArrayBootRecord> {
+        if vec_u8.len() != ABR_SIZE {
+            error!("cannot deserialize ABR! expected = {}, actual = {}", ABR_SIZE, vec_u8.len());
+            return None
+        }
+
         let abr = ArrayBootRecord {
             arrayName: {
                 let from = ARRAY_NAME_OFFSET;
@@ -291,7 +296,7 @@ impl ArrayBootRecord {
                 &utils::transform_vec8_to_vec32( &vec_u8[from..to] )
             }.clone().try_into().unwrap(),
         };
-        abr
+        Some(abr)
     }
 }
 
@@ -428,7 +433,7 @@ impl masterBootRecord {
             for chunk_boundary in (from..to).step_by( mem::size_of::<ArrayBootRecord>() ) {
                 let chunk = &vec_u8[chunk_boundary..(chunk_boundary + mem::size_of::<ArrayBootRecord>())];
                 let abr = ArrayBootRecord::from_vec_u8(chunk.to_vec());
-                mbr.arrayInfo[arrayIdx] = abr;
+                mbr.arrayInfo[arrayIdx] = abr.unwrap();
                 arrayIdx += 1;
             }
         }
