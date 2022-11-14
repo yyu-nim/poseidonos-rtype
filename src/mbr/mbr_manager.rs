@@ -76,7 +76,7 @@ impl MbrManager {
         mbrBuffer.append(&mut systeminfo);
         self._SetParity(mbrBuffer.deref_mut());
         let diskIoCtxt = DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
-        MbrManager::_DiskIo(dev, Rc::new(diskIoCtxt));
+        MbrManager::_DiskIo(dev, diskIoCtxt);
         info!("the mbr has been initialized");
     }
 
@@ -94,7 +94,7 @@ impl MbrManager {
         let mut mems = ctx;
         let mem = [0 as u8; CHUNK_SIZE as usize * MBR_CHUNKS as usize].to_vec();
         let diskIoCtxt = DiskIoContext::new(UbioDir::Read, mem);
-        let result_buffer = MbrManager::_DiskIo(dev, Rc::new(diskIoCtxt))
+        let result_buffer = MbrManager::_DiskIo(dev, diskIoCtxt)
             .expect("Failed to read MBR from a device"); // TODO: device id API 생기면 메시지에 추가
         if !self._VerifyParity(&result_buffer) {
             warn!("Failed to verify MBR parity");
@@ -108,7 +108,7 @@ impl MbrManager {
     }
 
     // Unlike in pos-cpp, _DiskIo has become 'static' fn (i.e., without &self)
-    fn _DiskIo(dev: Box<dyn UBlockDevice>, ctx: Rc<DiskIoContext>) -> Option<Vec<u8>> {
+    fn _DiskIo(dev: Box<dyn UBlockDevice>, ctx: DiskIoContext) -> Option<Vec<u8>> {
         let result_buffer = Rc::new(Mutex::new(Vec::new()));
         let io_done_parker = Parker::new();
         let io_done_unparker = io_done_parker.unparker().clone();
@@ -134,9 +134,8 @@ impl MbrManager {
                 )
             },
         };
-
         let mut bio = Ubio::new(io_dir.clone(), MBR_ADDRESS,
-                                ctx.mem.clone() /* TODO: clone? */, callback);
+                                ctx.mem, callback);
         bio.uBlock = Some(dev);
 
         IODispatcherSingleton.lock().unwrap().Submit(bio, true /* not used */, false);
@@ -177,17 +176,15 @@ impl MbrManager {
         mbrBuffer.append(&mut systeminfo);
         self._SetParity(mbrBuffer.deref_mut());
 
-        let diskIoCtxt = {
-            let ctxt = DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
-            Rc::new(ctxt)
-        };
+        let diskIoCtxt =  DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
         let diskIoFunc = Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
             // 원래의 pos-cpp semantics 를 유지하려 굳이 이 구조 일단 사용함. 간단히 설명하면,
             // diskIoCtxt의 소유권은 FnMut closure에 넘겨주어, "여러번" clone() 할 수 있게 하고,
-            // MbrManager는 DeviceManager에세 UBlockDevice를 "빌려와서", diskIoCtxt를 보낸다.
+            // MbrManager는 DeviceManager에세 UBlockDevice를 "빌려와서", cloned diskIoCtxt를 보낸다.
             // uBlockDev의 clone_box() 비용은 굉장히 싸다. 내부적으로 arc mutex로 file handle의
             // reference만 복사하는 방식이기 때문.
-            MbrManager::_DiskIo(uBlockDev.clone_box(), diskIoCtxt.clone());
+            let diskIoFunc_cloned = diskIoCtxt.clone();
+            MbrManager::_DiskIo(uBlockDev.clone_box(), diskIoFunc_cloned);
         });
 
         let result = self.devMgr.IterateDevicesAndDoFunc(diskIoFunc);
@@ -216,6 +213,15 @@ impl DiskIoContext {
         DiskIoContext {
             ubioDir,
             mem
+        }
+    }
+}
+
+impl Clone for DiskIoContext {
+    fn clone(&self) -> Self {
+        DiskIoContext {
+            ubioDir: self.ubioDir.clone(),
+            mem: self.mem.clone(),
         }
     }
 }
