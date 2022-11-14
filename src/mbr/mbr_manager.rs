@@ -1,12 +1,14 @@
 use std::any::Any;
 use std::borrow::BorrowMut;
+use std::collections::HashMap;
 use std::ops::{Deref, DerefMut};
 use std::rc::Rc;
 use std::str::FromStr;
-use std::sync::{Mutex, MutexGuard};
+use std::string::FromUtf8Error;
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use crossbeam::sync::Parker;
-use log::{info, warn};
+use log::{error, info, warn};
 use uuid::Uuid;
 
 use crate::array::meta::array_meta::ArrayMeta;
@@ -16,20 +18,25 @@ use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
 use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
+use crate::include::pos_event_id::PosEventId::{MBR_DATA_NOT_FOUND, MBR_WRONG_ARRAY_INDEX_MAP};
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 use crate::master_context::version_provider::VersionProviderSingleton;
-use crate::mbr::mbr_info::{ArrayBootRecord, IntoVecOfU8, masterBootRecord};
+use crate::mbr::mbr_info::{ArrayBootRecord, DEVICE_UID_SIZE, deviceInfo, IntoVecOfU8, masterBootRecord, MAX_ARRAY_CNT, MAX_ARRAY_DEVICE_CNT};
+use crate::mbr::mbr_map_manager::MbrMapManager;
 
 const MBR_CHUNKS : i32 = 1;
 const MBR_ADDRESS: u64 = 0;
 const MBR_SIZE: u64 = CHUNK_SIZE;
 
 pub struct MbrManager {
-    mbrBuffer: Mutex<Vec<u8>>,
+    mbrBuffer: Mutex<Vec<u8>>, // TODO: refactor to use "mbrLock" instead
+    mbrLock: Mutex<Option<u8>>,
     systeminfo: masterBootRecord,
     version: i32,
     systemUuid: String,
     devMgr: DeviceManager,
+    arrayIndexMap: HashMap<String, u32>,
+    mapMgr: MbrMapManager,
 }
 
 impl MbrManager {
@@ -40,15 +47,38 @@ impl MbrManager {
 
         MbrManager {
             mbrBuffer: Mutex::new(vec![0 as u8; CHUNK_SIZE as usize]),
+            mbrLock: Mutex::new(None),
             systeminfo: Default::default(),
             version: 0,
             systemUuid: uuid.to_string(),
             devMgr,
+            arrayIndexMap: Default::default(),
+            mapMgr: Default::default()
         }
     }
 
-    pub fn GetMbr(&self) -> masterBootRecord { todo!(); }
-    pub fn LoadMbr(&self) -> Result<(), PosEventId> { todo!();  }
+    pub fn GetMbr(&self) -> &masterBootRecord {
+        &self.systeminfo
+    }
+
+    pub fn LoadMbr(&mut self) -> Result<(), PosEventId> {
+        let mut _mbrLock = self.mbrLock.lock().unwrap();
+        let ret = MbrManager::_ReadFromDevices(&self.devMgr, &mut self.version, &mut self.systeminfo);
+        if let Err(e) = ret {
+            error!("[{}] Failed to load MBR", e.to_string());
+            return Err(e);
+        }
+
+        info!("[{}] read mbr data done", PosEventId::MBR_READ_DONE.to_string());
+        MbrManager::_LoadIndexMap(&mut self.arrayIndexMap,
+                                  &mut self.mapMgr,
+                                  &mut self.systeminfo);
+        if self.systeminfo.arrayNum != self.arrayIndexMap.len() as u32 {
+            return Err(PosEventId::MBR_WRONG_ARRAY_INDEX_MAP);
+        }
+        info!("[{}] mbr_info: {}", PosEventId::POS_TRACE_MBR_LOADED.to_string(), self.systeminfo.to_string());
+        Ok(())
+    }
 
     pub fn SaveMbr(&mut self) -> Result<(), PosEventId> {
         let posVersion = VersionProviderSingleton.ver();
@@ -89,18 +119,18 @@ impl MbrManager {
     pub fn FindArrayWithDeviceSN(&self, devSN: String) -> String { String::new() }
     pub fn Serialize(&self) -> String { todo!(); }
 
-    fn _IterateReadFromDevices(&self, dev: Box<dyn UBlockDevice>, ctx: &mut Vec<Vec<u8>>/*Box<dyn Any>*/) {
+    fn _IterateReadFromDevices(dev: Box<dyn UBlockDevice>, ctx: &mut Vec<Vec<u8>>/*Box<dyn Any>*/) {
         // "ctx" is likely to be byte buffer, so can be refactored accordingly later.
         let mut mems = ctx;
         let mem = [0 as u8; CHUNK_SIZE as usize * MBR_CHUNKS as usize].to_vec();
         let diskIoCtxt = DiskIoContext::new(UbioDir::Read, mem);
         let result_buffer = MbrManager::_DiskIo(dev, diskIoCtxt)
             .expect("Failed to read MBR from a device"); // TODO: device id API 생기면 메시지에 추가
-        if !self._VerifyParity(&result_buffer) {
+        if !MbrManager::_VerifyParity(&result_buffer) {
             warn!("Failed to verify MBR parity");
             return;
         }
-        if !self._VerifySystemUuid(&result_buffer) {
+        if !MbrManager::_VerifySystemUuid(&result_buffer) {
             warn!("Failed to verify System UUID from MBR");
             return;
         }
@@ -151,12 +181,12 @@ impl MbrManager {
         }
     }
 
-    fn _VerifyParity(&self, mem: &Vec<u8>) -> bool {
+    fn _VerifyParity(mem: &Vec<u8>) -> bool {
         // TODO
         true
     }
 
-    fn _VerifySystemUuid(&self, mem: &Vec<u8>) -> bool {
+    fn _VerifySystemUuid(mem: &Vec<u8>) -> bool {
         // TODO
         true
     }
@@ -201,6 +231,79 @@ impl MbrManager {
             }
         }
     }
+
+    fn _ReadFromDevices(devMgr: &DeviceManager, version: &mut i32, systeminfo: &mut masterBootRecord) -> Result<(), PosEventId> {
+        let mut mems = Rc::new(Mutex::new(Vec::<Vec<u8>>::new()));
+        let iterateReadFunc = {
+            let mut mems = mems.clone();
+            Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
+                let uBlock = uBlockDev.clone_box();
+                let mut mems = mems.lock().unwrap();
+                MbrManager::_IterateReadFromDevices(uBlock, &mut mems);
+            })
+        };
+
+        let result = devMgr.IterateDevicesAndDoFunc(iterateReadFunc);
+        if let Err(e) = result {
+            return Err(e);
+        }
+
+        let mbr_list = mems.lock().unwrap();
+        if mbr_list.len() == 0 {
+            warn!("[{}] mbr data not found", PosEventId::MBR_DATA_NOT_FOUND.to_string());
+            return Err(MBR_DATA_NOT_FOUND);
+        }
+
+        // Pick up the MBR of the highest version
+        let mbr_latest = mbr_list
+            .iter()
+            .map(|mbrBytes| masterBootRecord::from_vec_u8(mbrBytes.clone()) )
+            .filter(|mbr| mbr.is_some())
+            .max_by_key(|mbr| mbr.as_ref().unwrap().mbrVersion);
+        if let Some(Some(mbr)) = mbr_latest {
+            // TODO: pos-cpp performs marjority voting on the MBRs with the latest version, which we don't do with rtype
+            *version = mbr.mbrVersion.clone() as i32;
+            *systeminfo = *mbr;
+        } else {
+            warn!("[{}] no mbr data has been extracted", PosEventId::MBR_DATA_NOT_FOUND.to_string());
+            return Err(MBR_DATA_NOT_FOUND);
+        }
+
+        Ok(())
+    }
+
+    fn _LoadIndexMap(arrayIndexMap: &mut HashMap<String, u32>,
+                     mapMgr: &mut MbrMapManager,
+                     systeminfo: &mut masterBootRecord) {
+        arrayIndexMap.clear();
+        mapMgr.ResetMap();
+
+        for i in 0..MAX_ARRAY_CNT {
+            if systeminfo.arrayValidFlag[i] != 1 {
+                continue;
+            }
+            let arrayName = String::from_utf8(
+                systeminfo.arrayInfo[i].arrayName.to_vec());
+            let arrayName = match arrayName {
+                Ok(n) => n,
+                Err(e) => {
+                    error!("Failed to parse array name: {}", e);
+                    continue;
+                }
+            };
+            if arrayIndexMap.get(&arrayName).is_none() {
+                arrayIndexMap.insert(arrayName, i as u32);
+                let total_dev_num = systeminfo.arrayInfo[i].totalDevNum;
+                for j in 0..total_dev_num {
+                    let deviceUid: [u8; DEVICE_UID_SIZE] =
+                        systeminfo.arrayInfo[i as usize].devInfo[j as usize].deviceUid;
+                    let deviceUidString
+                        = String::from_utf8(Vec::from(deviceUid)).unwrap();
+                    mapMgr.InsertDevice(&deviceUidString, i as u32);
+                }
+            }
+        }
+    }
 }
 
 struct DiskIoContext {
@@ -233,18 +336,28 @@ mod tests {
     use std::fs::File;
     use std::io::{Read, Seek, SeekFrom, Write};
     use std::path::PathBuf;
+    use log::info;
 
     use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
     use crate::device::ufile::ufile_ssd::UfileSsd;
-    use crate::mbr::mbr_info::MBR_VERSION_OFFSET;
+    use crate::mbr::mbr_info::{ArrayBootRecord, DEVICE_UID_SIZE, deviceInfo, MBR_VERSION_OFFSET};
     use crate::mbr::mbr_manager::{DiskIoContext, MBR_ADDRESS, MbrManager};
 
     fn setup() {
         // set up the logger for the test context
         set_var("RUST_LOG", "DEBUG");
         env_logger::builder().is_test(true).try_init();
+    }
+
+    fn cleanup(dm_config: &DeviceManagerConfig) {
+        for i in 0..dm_config.num_devices_to_create {
+            let test_ufile_ssd = format!("{}/{}.{}", dm_config.dir_to_lookup,
+                                         dm_config.device_prefix, i);
+            info!("Cleaning up {} for test init.", test_ufile_ssd);
+            fs::remove_file(PathBuf::from(test_ufile_ssd));
+        }
     }
 
     #[test]
@@ -270,7 +383,7 @@ mod tests {
         let mut ctx : Vec<Vec<u8>> = Vec::new();
 
         // When: MBR manager reads MBR from the device
-        mbr_manager._IterateReadFromDevices(ublock_dev, &mut ctx);
+        MbrManager::_IterateReadFromDevices(ublock_dev, &mut ctx);
 
         // Then: "ctx" should contain the pattern
         assert_eq!(1, ctx.len());
@@ -356,5 +469,127 @@ mod tests {
 
         assert_eq!(4, bytes_read);
         assert_eq!(buf.to_vec(), expected.to_le_bytes().to_vec());
+    }
+
+    #[test]
+    fn test_if_LoadMbr_succeeds_when_executed_with_uninitialized_devices_without_MBR_data() {
+        // Given: MbrManager with 4 devices created (and no SaveMbr invoked)
+        let DEVICE_PREFIX = "TestUfileSsdForLoadMbrOnUninitializedMBR.";
+        let NUM_DEVICES = 4;
+        let mut dm_config = DeviceManagerConfig::default();
+        dm_config.dir_to_lookup = "/tmp/";
+        dm_config.device_prefix = DEVICE_PREFIX;
+        dm_config.num_devices_to_create = NUM_DEVICES;
+        setup();
+        cleanup(&dm_config);
+
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+
+        // When: MbrManager loads MBR
+        let result = mbr_manager.LoadMbr();
+
+        // Then: MbrManager should return Ok() successfully, and the MBR should be in uninitialized state
+        // saying that 1) MBR version is set to 0, and 2) there's no known array
+        result.unwrap();
+        assert_eq!(0, mbr_manager.systeminfo.mbrVersion);
+        assert_eq!(0, mbr_manager.systeminfo.arrayNum);
+    }
+
+    #[test]
+    fn test_if_LoadMbr_extracts_MBR_written_by_SaveMbr() {
+
+        // Given: MbrManager with 4 devices created and perform 2 SaveMbr()
+        let DEVICE_PREFIX = "TestUfileSsdForLoadMbrOnInitializedMBR.";
+        let NUM_DEVICES = 4;
+        let mut dm_config = DeviceManagerConfig::default();
+        dm_config.dir_to_lookup = "/tmp/";
+        dm_config.device_prefix = DEVICE_PREFIX;
+        dm_config.num_devices_to_create = NUM_DEVICES;
+        setup();
+        cleanup(&dm_config);
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+
+        mbr_manager.systeminfo.mbrParity = 1212;
+        let result = mbr_manager.SaveMbr();
+        result.unwrap();
+
+        mbr_manager.systeminfo.mbrParity = 1213;
+        let result = mbr_manager.SaveMbr();
+        result.unwrap();
+
+        // When: MbrManager loads MBR
+        let result = mbr_manager.LoadMbr();
+
+        // Then: MbrManager should be able to see what has been written by 2 SaveMbr()
+        result.unwrap();
+        let mbr = &mbr_manager.systeminfo;
+        assert_eq!(2, mbr.mbrVersion);
+        assert_eq!(1213, mbr.mbrParity);
+    }
+
+    #[test]
+    fn test_if_LoadMbr_handles_MBR_with_existing_array_information() {
+        // Given: MbrManager with 4 devices in total with each of Uid set to its device offset (e.g., 0 for devInfo[0], and so on)
+        let DEVICE_PREFIX = "TestUfileSsdForLoadMbrOnMBRWithOneArray.";
+        let NUM_DEVICES = 4;
+        let mut dm_config = DeviceManagerConfig::default();
+        dm_config.dir_to_lookup = "/tmp/";
+        dm_config.device_prefix = DEVICE_PREFIX;
+        dm_config.num_devices_to_create = NUM_DEVICES;
+        setup();
+        cleanup(&dm_config);
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+
+        let ARRAY_NAME = "POSArray1";
+        mbr_manager.systeminfo.arrayValidFlag[0] = 1;
+        mbr_manager.systeminfo.arrayNum = 1;
+        let mut abr = ArrayBootRecord::default();
+        abr.abrVersion = 17;
+        abr.arrayName[..ARRAY_NAME.len()].copy_from_slice( ARRAY_NAME.as_bytes());
+        abr.totalDevNum = NUM_DEVICES;
+        abr.devInfo[0] = {
+            let mut devInfo = deviceInfo::default();
+            devInfo.deviceUid[0..4].copy_from_slice("dev0".as_bytes());
+            devInfo
+        };
+        abr.devInfo[1] = {
+            let mut devInfo = deviceInfo::default();
+            devInfo.deviceUid[0..4].copy_from_slice("dev1".as_bytes());
+            devInfo
+        };
+        abr.devInfo[2] = {
+            let mut devInfo = deviceInfo::default();
+            devInfo.deviceUid[0..4].copy_from_slice("dev2".as_bytes());
+            devInfo
+        };
+        abr.devInfo[3] = {
+            let mut devInfo = deviceInfo::default();
+            devInfo.deviceUid[0..4].copy_from_slice("dev3".as_bytes());
+            devInfo
+        };
+        mbr_manager.systeminfo.arrayInfo[0] = abr;
+
+        let result = mbr_manager.SaveMbr();
+        result.unwrap();
+
+        // When: MbrManager loads MBR
+        let result = mbr_manager.LoadMbr();
+
+        // Then: MbrManager should be able to see 1 array with 4 devices attached
+        result.unwrap();
+        assert_eq!(1, mbr_manager.systeminfo.mbrVersion);
+        let mut actual_array_name = String::from_utf8(mbr_manager.systeminfo.arrayInfo[0].arrayName.to_vec()).unwrap();
+        actual_array_name.truncate(ARRAY_NAME.len());
+        assert_eq!(ARRAY_NAME.to_string(), actual_array_name);
+        assert_eq!(1, mbr_manager.systeminfo.arrayNum);
+
+        // Then: MbrMapManager should also be able to find array indices for those 4 devices
+        for dev_num in 0..4 {
+            let mut actual_device_uid = [0; DEVICE_UID_SIZE];
+            actual_device_uid[0..4].copy_from_slice(format!("dev{}", dev_num).as_bytes());
+            let expected_array_idx = 0;
+            let actual_array_idx = mbr_manager.mapMgr.FindArrayIndex(&String::from_utf8(actual_device_uid.to_vec()).unwrap()).unwrap();
+            assert_eq!(expected_array_idx, actual_array_idx);
+        }
     }
 }
