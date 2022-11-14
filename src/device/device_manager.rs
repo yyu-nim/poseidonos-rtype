@@ -6,6 +6,7 @@ use log::{info, warn};
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::device::i_io_dispatcher::IIODispatcher;
 use crate::device::ufile::ufile_ssd::UfileSsd;
+use crate::include::pos_event_id::PosEventId;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 lazy_static!{
     pub static ref DeviceManagerSingleton: DeviceManager = {
@@ -15,10 +16,10 @@ lazy_static!{
 
 // TODO: config 파일에 넣어 명시적으로 알 수 있도록 하기
 pub struct DeviceManagerConfig {
-    dir_to_lookup: &'static str,
-    device_prefix: &'static str,
-    num_devices_to_create: u32,
-    device_size_bytes: usize,
+    pub dir_to_lookup: &'static str,
+    pub device_prefix: &'static str,
+    pub num_devices_to_create: u32,
+    pub device_size_bytes: usize,
 }
 
 impl Default for DeviceManagerConfig {
@@ -75,6 +76,27 @@ impl DeviceManager {
         } else {
             info!("# of devices was {}. Performing re-scan...", num_devices);
             self._Rescan();
+        }
+    }
+
+    pub fn IterateDevicesAndDoFunc(&self, mut func: Box<dyn FnMut(&Box<dyn UBlockDevice>)>) -> Result<(), PosEventId> {
+        // POS에서는 devicesLocal copy를 두어서 critical section을
+        // 줄였으나, rtype에서는 이 부분 리팩토링이 추후 예상되므로, 그 최적화는
+        // 넣지 않는다.
+        if self.devices.len() == 0 {
+            return Err(PosEventId::DEVICEMGR_DEVICE_NOT_FOUND)
+        }
+
+        for uBlockDev in self.devices.iter() {
+            func(uBlockDev);
+        }
+
+        Ok(())
+    }
+
+    pub fn Close(&self) {
+        for dev in self.devices.iter() {
+            dev.Close();
         }
     }
 

@@ -80,7 +80,7 @@ mod tests {
         // Given: a device written with a specific pattern
         let mut ublock_device = UfileSsd::new("/tmp/dev1".into(), 1024*1024);
         ublock_device.Open();
-        let mut ublock_device_cloned = ublock_device.clone_box(); // TODO: clone vs. arc<mutex> 고민해볼 것.
+        let ublock_device_cloned = ublock_device.clone_box(); // arc<mutex>로 구현
 
         let PATTERN = b"CerTAinUnIquePATteRn";
         let mut write_ubio = Ubio::new(UbioDir::Write, 0, PATTERN.to_vec(), Box::new(|_| {}));
