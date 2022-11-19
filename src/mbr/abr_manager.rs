@@ -142,7 +142,7 @@ impl AbrManager {
         self.mbrManager.DeleteAbr(name)
     }
 
-    pub fn ResetMbr(&self) -> Result<(), PosEventId> {
+    pub fn ResetMbr(&mut self) -> Result<(), PosEventId> {
         self.mbrManager.ResetMbr()
     }
 

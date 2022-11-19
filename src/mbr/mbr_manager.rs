@@ -19,7 +19,7 @@ use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
 use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
-use crate::include::pos_event_id::PosEventId::{MBR_ABR_ALREADY_EXIST, MBR_DATA_NOT_FOUND, MBR_MAX_ARRAY_CNT_EXCEED, MBR_WRONG_ARRAY_INDEX_MAP, MBR_WRONG_ARRAY_VALID_FLAG};
+use crate::include::pos_event_id::PosEventId::{MBR_ABR_ALREADY_EXIST, MBR_DATA_NOT_FOUND, MBR_DEVICE_NOT_FOUND, MBR_MAX_ARRAY_CNT_EXCEED, MBR_WRONG_ARRAY_INDEX_MAP, MBR_WRONG_ARRAY_VALID_FLAG};
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 use crate::master_context::version_provider::VersionProviderSingleton;
 use crate::mbr::mbr_info::{ArrayBootRecord, DEVICE_UID_SIZE, deviceInfo, IntoVecOfU8, masterBootRecord, MAX_ARRAY_CNT, MAX_ARRAY_DEVICE_CNT};
@@ -30,7 +30,7 @@ const MBR_ADDRESS: u64 = 0;
 const MBR_SIZE: u64 = CHUNK_SIZE;
 
 pub struct MbrManager {
-    mbrBuffer: Mutex<Vec<u8>>, // TODO: refactor to use "mbrLock" instead
+    mbrBuffer: Vec<u8>,
     mbrLock: Mutex<Option<u8>>,
     systeminfo: masterBootRecord,
     version: i32,
@@ -47,7 +47,7 @@ impl MbrManager {
         devMgr.ScanDevs();
 
         MbrManager {
-            mbrBuffer: Mutex::new(vec![0 as u8; CHUNK_SIZE as usize]),
+            mbrBuffer: MbrManager::_DefaultMbrBuffer(),
             mbrLock: Mutex::new(None),
             systeminfo: Default::default(),
             version: 0,
@@ -98,15 +98,48 @@ impl MbrManager {
             }
         }
     }
-    pub fn ResetMbr(&self) -> Result<(), PosEventId> { todo!(); }
 
-    pub fn InitDisk(&self, dev: Box<dyn UBlockDevice>) {
-        let mut mbrBuffer = self.mbrBuffer.lock().unwrap(); //.borrow_mut();
-        mbrBuffer.clear();
+    pub fn ResetMbr(&mut self) -> Result<(), PosEventId> {
+        info!("Resetting MBR...");
+        let _ = self.mbrLock.lock().unwrap();
+        info!("MBR version is set to 0...");
+        self.version = 0;
+        info!("In-memory MBR buffer is wiped out...");
+        self.mbrBuffer = MbrManager::_DefaultMbrBuffer();
+        info!("In-memory MBR is wiped out...");
+        self.systeminfo = masterBootRecord::default();
+        info!("Unsetting array valid flag...");
+        (0..MAX_ARRAY_CNT).for_each(|i| {
+            self.systeminfo.arrayValidFlag[i] = 0;
+        });
+        info!("Clearing arrayIndexMap...");
+        self.arrayIndexMap.clear();
+        info!("Resetting MbrMapManager...");
+        self.mapMgr.ResetMap();
+        info!("On-disk MBR is wiped out...");
+        let diskIoCtxt = DiskIoContext::new(UbioDir::Write, self.mbrBuffer.clone());
+        let diskIoFunc = Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
+            let diskIoFunc_cloned = diskIoCtxt.clone();
+            MbrManager::_DiskIo(uBlockDev.clone_box(), diskIoFunc_cloned);
+        });
+
+        let result = self.devMgr.IterateDevicesAndDoFunc(diskIoFunc);
+        if let Err(e) = result {
+            warn!("[{}] Failed to iterate devices and do func", e.to_string());
+            warn!("[{}] device not found", MBR_DEVICE_NOT_FOUND.to_string());
+            return Err(MBR_DEVICE_NOT_FOUND);
+        }
+
+        Ok(())
+    }
+
+    pub fn InitDisk(&mut self, dev: Box<dyn UBlockDevice>) {
+        let _ = self.mbrLock.lock().unwrap();
+        self.mbrBuffer.clear();
         let mut systeminfo = self.systeminfo.to_vec_u8();
-        mbrBuffer.append(&mut systeminfo);
-        self._SetParity(mbrBuffer.deref_mut());
-        let diskIoCtxt = DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
+        self.mbrBuffer.append(&mut systeminfo);
+        self._SetParity();
+        let diskIoCtxt = DiskIoContext::new(UbioDir::Write, self.mbrBuffer.clone());
         MbrManager::_DiskIo(dev, diskIoCtxt);
         info!("the mbr has been initialized");
     }
@@ -236,22 +269,20 @@ impl MbrManager {
         true
     }
 
-    fn _SetParity(&self, mem: &mut Vec<u8>) {
-        // TODO
+    fn _SetParity(&mut self) {
+        // TODO: do something with self.mbrBuffer
+
     }
 
     fn _WriteToDevices(&mut self) -> Result<(), PosEventId> {
         self.version = self.version + 1;
         self.systeminfo.mbrVersion = self.version as u32;
-        let mut mbrBuffer = {
-            self.mbrBuffer.lock().unwrap()
-        };
-        mbrBuffer.clear();
+        self.mbrBuffer.clear();
         let mut systeminfo = self.systeminfo.to_vec_u8();
-        mbrBuffer.append(&mut systeminfo);
-        self._SetParity(mbrBuffer.deref_mut());
+        self.mbrBuffer.append(&mut systeminfo);
+        self._SetParity();
 
-        let diskIoCtxt =  DiskIoContext::new(UbioDir::Write, mbrBuffer.clone());
+        let diskIoCtxt =  DiskIoContext::new(UbioDir::Write, self.mbrBuffer.clone());
         let diskIoFunc = Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
             // 원래의 pos-cpp semantics 를 유지하려 굳이 이 구조 일단 사용함. 간단히 설명하면,
             // diskIoCtxt의 소유권은 FnMut closure에 넘겨주어, "여러번" clone() 할 수 있게 하고,
@@ -348,6 +379,10 @@ impl MbrManager {
                 }
             }
         }
+    }
+
+    fn _DefaultMbrBuffer() -> Vec<u8> {
+        vec![0 as u8; CHUNK_SIZE as usize]
     }
 }
 
@@ -656,21 +691,7 @@ mod tests {
         let mut mbr_manager = MbrManager::new(Some(dm_config));
 
         // When 1: we create ABR for the first time,
-        let devs = DeviceSet {
-            nvm: vec![DeviceMeta {
-                uid: "nvm1".to_string(),
-                state: ArrayDeviceState::NORMAL
-            }
-            ],
-            data: vec![DeviceMeta {
-                uid: "data1".to_string(),
-                state: ArrayDeviceState::NORMAL,
-            }],
-            spares: vec![DeviceMeta {
-                uid: "spare1".to_string(),
-                state: ArrayDeviceState::NORMAL,
-            }],
-        };
+        let devs = get_default_device_set();
         let unique_id = 1213;
         let mut array_meta = ArrayMeta::new("array1".to_string(),
                                             devs, "RAID10".to_string(),
@@ -717,21 +738,7 @@ mod tests {
         mbr.arrayValidFlag[4] = 1;
         mbr.arrayNum = 4;
 
-        let devs = DeviceSet {
-            nvm: vec![DeviceMeta {
-                uid: "nvm1".to_string(),
-                state: ArrayDeviceState::NORMAL
-            }
-            ],
-            data: vec![DeviceMeta {
-                uid: "data1".to_string(),
-                state: ArrayDeviceState::NORMAL,
-            }],
-            spares: vec![DeviceMeta {
-                uid: "spare1".to_string(),
-                state: ArrayDeviceState::NORMAL,
-            }],
-        };
+        let devs = get_default_device_set();
         let unique_id = 1213;
         let array_meta = ArrayMeta::new("mynewarray".to_string(),
                                             devs, "RAID10".to_string(),
@@ -747,5 +754,51 @@ mod tests {
         assert_eq!(1, mbr.arrayValidFlag[actual_array_idx]);
         assert_eq!("mynewarray".as_bytes(), &mbr.arrayInfo[actual_array_idx].arrayName[0..10]);
         assert_eq!(5, mbr.arrayNum);
+    }
+
+    #[test]
+    fn test_if_ResetMbr_clears_out_all_array_information() {
+        let mut dm_config = DeviceManagerConfig::default();
+        setup();
+        cleanup(&dm_config);
+
+        // Given: MbrManager with a single array created
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+        let unique_id = 1213;
+        let devs = get_default_device_set();
+        let array_meta = ArrayMeta::new("array1".to_string(), devs,
+                                        "RAID10".to_string(),
+                                        "RAID5".to_string(), unique_id);
+        let ret = mbr_manager.CreateAbr(array_meta);
+        ret.unwrap();
+        assert_eq!(1, mbr_manager.systeminfo.arrayNum);
+        assert_eq!(1, mbr_manager.systeminfo.arrayValidFlag[0]);
+
+        // When: MbrManager Resets MBR
+        let ret = mbr_manager.ResetMbr();
+
+        // Then: MbrManager should not have array information any more
+        ret.unwrap();
+        assert_eq!(0, mbr_manager.systeminfo.arrayNum);
+        assert_eq!(0, mbr_manager.systeminfo.arrayValidFlag[0]);
+    }
+
+    fn get_default_device_set() -> DeviceSet<DeviceMeta> {
+        let devs = DeviceSet {
+            nvm: vec![DeviceMeta {
+                uid: "nvm1".to_string(),
+                state: ArrayDeviceState::NORMAL
+            }
+            ],
+            data: vec![DeviceMeta {
+                uid: "data1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+            spares: vec![DeviceMeta {
+                uid: "spare1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+        };
+        devs
     }
 }
