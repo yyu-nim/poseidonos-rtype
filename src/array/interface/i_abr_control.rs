@@ -2,7 +2,7 @@ use crate::array::meta::array_meta::ArrayMeta;
 use crate::include::pos_event_id::PosEventId;
 
 pub trait IAbrControl : Sync + Send {
-    fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId>;
+    fn CreateAbr(&self, meta: ArrayMeta) -> Result<u32 /* array idx */, PosEventId>;
     fn DeleteAbr(&self, arrayName: String) -> Result<(), PosEventId>;
     fn LoadAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId>;
     fn SaveAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId>;

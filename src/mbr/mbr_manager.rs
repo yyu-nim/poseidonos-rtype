@@ -11,6 +11,7 @@ use crossbeam::sync::Parker;
 use log::{error, info, warn};
 use uuid::Uuid;
 
+use crate::array::array_name_policy;
 use crate::array::meta::array_meta::ArrayMeta;
 use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
 use crate::device::base::ublock_device::UBlockDevice;
@@ -18,7 +19,7 @@ use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
 use crate::event_scheduler::callback::Callback;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
-use crate::include::pos_event_id::PosEventId::{MBR_DATA_NOT_FOUND, MBR_WRONG_ARRAY_INDEX_MAP};
+use crate::include::pos_event_id::PosEventId::{MBR_ABR_ALREADY_EXIST, MBR_DATA_NOT_FOUND, MBR_MAX_ARRAY_CNT_EXCEED, MBR_WRONG_ARRAY_INDEX_MAP, MBR_WRONG_ARRAY_VALID_FLAG};
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 use crate::master_context::version_provider::VersionProviderSingleton;
 use crate::mbr::mbr_info::{ArrayBootRecord, DEVICE_UID_SIZE, deviceInfo, IntoVecOfU8, masterBootRecord, MAX_ARRAY_CNT, MAX_ARRAY_DEVICE_CNT};
@@ -110,7 +111,51 @@ impl MbrManager {
         info!("the mbr has been initialized");
     }
 
-    pub fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> { todo!(); }
+    pub fn CreateAbr(&mut self, meta: ArrayMeta) -> Result<u32 /* array idx */, PosEventId> {
+
+        let name_validation = array_name_policy::CheckArrayName(&meta.arrayName);
+        if let Err(e) = name_validation {
+            error!("Array name double check failed: {}", meta.arrayName);
+            return Err(e);
+        }
+
+        if self.systeminfo.arrayNum > MAX_ARRAY_CNT as u32 {
+            return Err(MBR_MAX_ARRAY_CNT_EXCEED);
+        }
+
+        let _ = self.mbrLock.lock().unwrap();
+        if self.arrayIndexMap.contains_key(&meta.arrayName) {
+            return Err(MBR_ABR_ALREADY_EXIST);
+        }
+
+        let ret = self.mapMgr.CheckAllDevices(&meta);
+        if let Err(e) = ret {
+            error!("CheckAllDevices has failed.");
+            return Err(e);
+        }
+
+        for i in 0..MAX_ARRAY_CNT {
+            if self.systeminfo.arrayValidFlag[i] == 0 {
+                if let Some(existing_val) = self.arrayIndexMap.insert(meta.arrayName.clone(), i as u32) {
+                    error!("{}", MBR_WRONG_ARRAY_INDEX_MAP.to_string());
+                }
+
+                self.mapMgr.InsertDevices(&meta, i as u32);
+                self.systeminfo.arrayValidFlag[i] = 1;
+                self.systeminfo.arrayNum += 1;
+                self.systeminfo.arrayInfo[i].update_array_name(&meta.arrayName);
+                self.systeminfo.arrayInfo[i].update_createTime();
+                self.systeminfo.arrayInfo[i].update_updateTime();
+                self.systeminfo.arrayInfo[i].uniqueId = meta.unique_id;
+                info!("ArrayBootRecord for Array {} has been created", i);
+                return Ok(i as u32)
+            }
+        }
+
+        Err(MBR_WRONG_ARRAY_VALID_FLAG)
+    }
+
+
     pub fn DeleteAbr(&self, name: &String) -> Result<(), PosEventId> { todo!(); }
     pub fn GetAbr(&self, name: &String) -> Option<(ArrayBootRecord, u32)> { todo!(); }
     pub fn GetAbrList(&self) -> Result<Vec::<ArrayBootRecord>, PosEventId> { todo!(); }
@@ -336,12 +381,20 @@ mod tests {
     use std::fs::File;
     use std::io::{Read, Seek, SeekFrom, Write};
     use std::path::PathBuf;
+
     use log::info;
 
+    use crate::array::meta::array_meta::ArrayMeta;
+    use crate::array::meta::device_meta::DeviceMeta;
+    use crate::array_models::dto::device_set::DeviceSet;
     use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
     use crate::device::ufile::ufile_ssd::UfileSsd;
+    use crate::include::array_device_state::ArrayDeviceState;
+    use crate::include::pos_event_id::PosEventId;
+    use crate::include::pos_event_id::PosEventId::MBR_DEVICE_ALREADY_IN_ARRAY;
+    use crate::include::raid_type::RaidTypeEnum::RAID10;
     use crate::mbr::mbr_info::{ArrayBootRecord, DEVICE_UID_SIZE, deviceInfo, MBR_VERSION_OFFSET};
     use crate::mbr::mbr_manager::{DiskIoContext, MBR_ADDRESS, MbrManager};
 
@@ -591,5 +644,108 @@ mod tests {
             let actual_array_idx = mbr_manager.mapMgr.FindArrayIndex(&String::from_utf8(actual_device_uid.to_vec()).unwrap()).unwrap();
             assert_eq!(expected_array_idx, actual_array_idx);
         }
+    }
+
+    #[test]
+    fn test_if_CreateAbr_returns_newly_allocated_array_idx_and_rejects_if_the_same_device_is_used_by_other_array() {
+        let mut dm_config = DeviceManagerConfig::default();
+        setup();
+        cleanup(&dm_config);
+
+        // Given 1: MbrManager with 0 ABR (i.e., POS has never been used)
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+
+        // When 1: we create ABR for the first time,
+        let devs = DeviceSet {
+            nvm: vec![DeviceMeta {
+                uid: "nvm1".to_string(),
+                state: ArrayDeviceState::NORMAL
+            }
+            ],
+            data: vec![DeviceMeta {
+                uid: "data1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+            spares: vec![DeviceMeta {
+                uid: "spare1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+        };
+        let unique_id = 1213;
+        let mut array_meta = ArrayMeta::new("array1".to_string(),
+                                            devs, "RAID10".to_string(),
+                                            "RAID5".to_string(), unique_id);
+
+        let ret = mbr_manager.CreateAbr(array_meta.clone());
+
+        // Then 1: the allocated array index should be 0 and its name be "array1"
+        let actual_array_idx = ret.unwrap() as usize;
+        assert_eq!(0, actual_array_idx);
+        let mbr = &mut mbr_manager.systeminfo;
+        assert_eq!(1, mbr.arrayNum);
+        assert_eq!("array1".as_bytes(), &mbr.arrayInfo[actual_array_idx].arrayName[0..6]);
+        assert_eq!(1, mbr.arrayValidFlag[actual_array_idx]);
+
+        // When 2: we try to allocate a new array with the same devices
+        array_meta.arrayName = "somenewarray".to_string();
+        let ret = mbr_manager.CreateAbr(array_meta.clone());
+
+        // Then 2: we should see an error saying that the devices are already part of other array
+        match ret {
+            Ok(_array_idx) => {
+                assert!(false);
+            }
+            Err(e) => {
+                assert_eq!(MBR_DEVICE_ALREADY_IN_ARRAY, e);
+            }
+        }
+    }
+
+    #[test]
+    fn test_if_CreateAbr_allocates_an_empty_array_index_when_there_are_existing_arrays() {
+        let mut dm_config = DeviceManagerConfig::default();
+        setup();
+        cleanup(&dm_config);
+
+        // Given: Array index 0, 1, 2, 4 have been already allocated,
+        let mut mbr_manager = MbrManager::new(Some(dm_config));
+        let mbr = &mut mbr_manager.systeminfo;
+        mbr.arrayValidFlag[0] = 1;
+        mbr.arrayValidFlag[1] = 1;
+        mbr.arrayValidFlag[2] = 1;
+        mbr.arrayValidFlag[3] = 0;
+        mbr.arrayValidFlag[4] = 1;
+        mbr.arrayNum = 4;
+
+        let devs = DeviceSet {
+            nvm: vec![DeviceMeta {
+                uid: "nvm1".to_string(),
+                state: ArrayDeviceState::NORMAL
+            }
+            ],
+            data: vec![DeviceMeta {
+                uid: "data1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+            spares: vec![DeviceMeta {
+                uid: "spare1".to_string(),
+                state: ArrayDeviceState::NORMAL,
+            }],
+        };
+        let unique_id = 1213;
+        let array_meta = ArrayMeta::new("mynewarray".to_string(),
+                                            devs, "RAID10".to_string(),
+                                            "RAID5".to_string(), unique_id);
+
+        // When: we create ABR for a new array "mynewarray"
+        let ret = mbr_manager.CreateAbr(array_meta);
+
+        // Then: The newly allocated array index should be 3 and its name be "mynewarray"
+        let mbr = &mut mbr_manager.systeminfo;
+        let actual_array_idx = ret.unwrap() as usize;
+        assert_eq!(3, actual_array_idx);
+        assert_eq!(1, mbr.arrayValidFlag[actual_array_idx]);
+        assert_eq!("mynewarray".as_bytes(), &mbr.arrayInfo[actual_array_idx].arrayName[0..10]);
+        assert_eq!(5, mbr.arrayNum);
     }
 }

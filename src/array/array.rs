@@ -107,15 +107,18 @@ impl Array {
         };
 
         let devs = self.devMgr_.ExportToMeta();
-        let meta = ArrayMeta::new(info.name.clone(),
-                                  devs, info.metaRaidType.clone(),
-                                  info.dataRaidType.clone(),
-                                  info.uniqueId);
+        let mut meta = ArrayMeta::new(info.name.clone(),
+                                      devs, info.metaRaidType.clone(),
+                                      info.dataRaidType.clone(),
+                                      info.uniqueId);
 
         self.info = Some(info);
 
         match self.abrControl.CreateAbr(meta.clone()) {
-            Ok(()) => { self.index = meta.id; },
+            Ok(array_idx) => {
+                meta.id = array_idx;
+                self.index = array_idx;
+            },
             Err(e) => {
                 error!("[{}] Unable to create array({})", e.to_string(), &name);
                 self._CleanupAfterError();

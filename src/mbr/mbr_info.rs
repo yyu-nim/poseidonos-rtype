@@ -4,6 +4,7 @@ use log::error;
 use serde::{Serialize, Deserialize};
 extern crate byteorder;
 use byteorder::{ByteOrder, LittleEndian, WriteBytesExt};
+use chrono::Utc;
 use crate::array::array::Array;
 
 pub const MAX_ARRAY_CNT: usize = 8;
@@ -297,6 +298,29 @@ impl ArrayBootRecord {
             }.clone().try_into().unwrap(),
         };
         Some(abr)
+    }
+
+    pub fn update_array_name(&mut self, array_name: &str) {
+        for i in 0..self.arrayName.len() {
+            self.arrayName[i] = 0;
+        }
+        self.arrayName[0..array_name.len()].copy_from_slice(array_name.as_bytes());
+    }
+
+    pub fn update_createTime(&mut self) {
+        for i in 0..self.createDatetime.len() {
+            self.createDatetime[i] = 0;
+        }
+        let dateStr = Utc::now().to_string();
+        self.createDatetime[0..dateStr.len()].copy_from_slice(dateStr.as_bytes());
+    }
+
+    pub fn update_updateTime(&mut self) {
+        for i in 0..self.updateDatetime.len() {
+            self.updateDatetime[i] = 0;
+        }
+        let dateStr = Utc::now().to_string();
+        self.updateDatetime[0..dateStr.len()].copy_from_slice(dateStr.as_bytes());
     }
 }
 

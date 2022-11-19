@@ -134,7 +134,7 @@ impl AbrManager {
         self.mbrManager.SaveMbr()
     }
 
-    pub fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
+    pub fn CreateAbr(&mut self, meta: ArrayMeta) -> Result<u32 /* array idx */, PosEventId> {
         self.mbrManager.CreateAbr(meta)
     }
 
