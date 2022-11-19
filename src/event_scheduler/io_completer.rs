@@ -12,6 +12,10 @@ lazy_static!{
 
 impl IoCompleter {
 
+    pub fn CompleteUbioWithoutRecovery(&self, errorType: IOErrorType, executeCallback: bool) {
+
+    }
+
 }
 
 pub fn RegisterRecoveryEventFactory(_recoveryEventFactory: IoRecoveryEventFactory) {

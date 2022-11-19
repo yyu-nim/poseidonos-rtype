@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use crate::bio::volume_io::VolumeIo;
 lazy_static!{
     pub static ref QosManagerSingleton : QosManager = {
         QosManager
@@ -16,4 +17,13 @@ impl QosManager {
         // TODO
     }
 
+    pub fn IsFeQosEnabled(&self) -> bool {
+        // TODO
+        false
+    }
+
+    pub fn HandlePosIoSubmission(&self, /*aioSubmission*/ volumeIo: VolumeIo) {
+        // TODO
+
+    }
 }
