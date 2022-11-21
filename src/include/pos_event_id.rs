@@ -37,6 +37,7 @@ pub enum PosEventId {
 
     MBR_WRITE_ERROR,
 
+    ARRAY_EVENT_DEV_STATE_CHANGED,
 }
 
 #[cfg(test)]
@@ -46,6 +47,9 @@ mod tests {
     #[test]
     fn test_enum_to_string() {
         assert_eq!("SUCCESS".to_string(), PosEventId::SUCCESS.to_string());
-        assert_eq!("POS_TRACE_STARTED".to_string(), PosEventId::POS_TRACE_STARTED.to_string());
+        assert_eq!(
+            "POS_TRACE_STARTED".to_string(),
+            PosEventId::POS_TRACE_STARTED.to_string()
+        );
     }
 }

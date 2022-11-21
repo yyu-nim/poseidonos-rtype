@@ -1,4 +1,6 @@
-#[derive(Eq, PartialEq, Clone)]
+use strum_macros::Display;
+
+#[derive(Display, Eq, PartialEq, Clone)]
 pub enum ArrayDeviceState {
     NORMAL = 0,
     FAULT,
@@ -11,7 +13,9 @@ impl From<u32> for ArrayDeviceState {
             0 => ArrayDeviceState::NORMAL,
             1 => ArrayDeviceState::FAULT,
             2 => ArrayDeviceState::REBUILD,
-            _ => { panic!("Invalid array device state provided"); }
+            _ => {
+                panic!("Invalid array device state provided");
+            }
         }
     }
 }
