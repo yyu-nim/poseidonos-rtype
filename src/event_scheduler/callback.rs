@@ -20,7 +20,7 @@ pub trait Callback : Event {
                 self._PreCallExecuteCallee();
                 let mut done = false;
                 if self.GetEventType() != BackendEvent_UserdataRebuild {
-                    done = callee.Execute();
+                    done = Callback::Execute(&mut *callee);
                     if done {
                         return;
                     }
@@ -42,7 +42,7 @@ pub trait Callback : Event {
     }
 
     // pure function to implement
-    fn _DoSpecificJob(&self) -> bool;
+    fn _DoSpecificJob(&mut self) -> bool;
 
     // 아래 두개는, trait이 member variable을 못가지기 때문에, member getter/setter를
     // pure function으로 두어 개발자에게 맡기도록 함; abstract struct 같은게 있었으면 좋을듯;
@@ -71,9 +71,13 @@ mod tests {
             fn GetEventType(&self) -> BackendEvent {
                 BackendEvent_Unknown
             }
+
+            fn Execute(&mut self) -> bool {
+                todo!()
+            }
         }
         impl Callback for MyCallback {
-            fn _DoSpecificJob(&self) -> bool {
+            fn _DoSpecificJob(&mut self) -> bool {
                 println!("I'm doing something great: {}", self.name);
                 true
             }
@@ -102,7 +106,7 @@ mod tests {
         };
 
         // When: callback1 is executed,
-        callback1.Execute();
+        Callback::Execute(&mut callback1);
 
         // Then: callback1 and callback2 should be executed
         assert_eq!(true, *callback1.executed.lock().unwrap());

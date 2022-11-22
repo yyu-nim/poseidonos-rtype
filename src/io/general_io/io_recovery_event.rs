@@ -9,6 +9,10 @@ impl Event for IoRecoveryEvent {
     fn GetEventType(&self) -> BackendEvent {
         todo!()
     }
+
+    fn Execute(&mut self) -> bool {
+        todo!()
+    }
 }
 
 impl IoRecoveryEvent {
