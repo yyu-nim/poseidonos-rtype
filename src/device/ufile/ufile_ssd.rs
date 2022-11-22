@@ -1,18 +1,20 @@
+use crate::bio::ubio::{Ubio, UbioDir};
+use crate::device::base::device_property::{DeviceClass, DeviceProperty, DeviceType};
+use crate::device::base::ublock_device::UBlockDevice;
+use crate::generated::bindings::spdk_new_thread_fn;
+use log::{info, warn};
 use std::borrow::{Borrow, BorrowMut};
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
-use std::sync::{Mutex, Arc};
-use log::{info, warn};
-use crate::bio::ubio::{Ubio, UbioDir};
-use crate::device::base::ublock_device::UBlockDevice;
-use crate::generated::bindings::spdk_new_thread_fn;
+use std::sync::{Arc, Mutex};
 
 pub struct UfileSsd {
     filePath: PathBuf,
     fileSize: usize,
     file: Arc<Mutex<Option<File>>>,
+    property: DeviceProperty,
 }
 
 impl UBlockDevice for UfileSsd {
@@ -21,12 +23,18 @@ impl UBlockDevice for UfileSsd {
         let lba = bio.lba;
         match bio.dir {
             UbioDir::Read => {
-                let mut buf = bio.dataBuffer.as_mut().expect("Ubio must have a read buffer!");
+                let mut buf = bio
+                    .dataBuffer
+                    .as_mut()
+                    .expect("Ubio must have a read buffer!");
                 self.read(lba, &mut buf);
                 bio.dataBuffer = Some(buf.clone()); // could be expensive
             }
             UbioDir::Write => {
-                let buf = bio.dataBuffer.as_ref().expect("Ubio must have a write buffer!");
+                let buf = bio
+                    .dataBuffer
+                    .as_ref()
+                    .expect("Ubio must have a write buffer!");
                 self.write(lba, buf);
             }
         }
@@ -51,7 +59,10 @@ impl UBlockDevice for UfileSsd {
             .expect(format!("Failed to create a device file {:?}", self.filePath).as_str());
 
         file.set_len(self.fileSize as u64);
-        info!("Opening a file {:?} and truncating to {} bytes", self.filePath, self.fileSize);
+        info!(
+            "Opening a file {:?} and truncating to {} bytes",
+            self.filePath, self.fileSize
+        );
         self.file = Arc::new(Mutex::new(Some(file)));
         true
     }
@@ -60,12 +71,13 @@ impl UBlockDevice for UfileSsd {
         let f = self.file.lock().unwrap();
         match &*f {
             Some(f_handle) => {
-                f_handle.sync_all().expect(
-                    format!("failed to sync_all for {:?}", self.filePath).as_str());
-            },
+                f_handle
+                    .sync_all()
+                    .expect(format!("failed to sync_all for {:?}", self.filePath).as_str());
+            }
             None => {
                 warn!("Cannot close the non-open file! {:?}", self.filePath);
-            },
+            }
         };
 
         0
@@ -76,17 +88,38 @@ impl UBlockDevice for UfileSsd {
             filePath: self.filePath.clone(),
             fileSize: self.fileSize.clone(),
             file: self.file.clone(),
+            property: self.property.clone(),
         };
         Box::new(new_ufile_ssd)
+    }
+
+    fn GetName(&self) -> String {
+        self.property.name.clone()
+    }
+
+    fn GetSN(&self) -> String {
+        self.property.sn.clone()
+    }
+
+    fn SetClass(&mut self, class: DeviceClass) {
+        self.property.deviceClass = Some(class);
     }
 }
 
 impl UfileSsd {
     pub fn new(filePath: PathBuf, fileSize: usize) -> UfileSsd {
+        let device_name = filePath
+            .file_name()
+            .unwrap()
+            .to_owned()
+            .to_str()
+            .unwrap()
+            .to_owned();
         UfileSsd {
             filePath,
             fileSize,
             file: Arc::new(Mutex::new(None)),
+            property: DeviceProperty::new(DeviceType::SSD, device_name, fileSize),
         }
     }
 
@@ -111,16 +144,17 @@ impl UfileSsd {
 
 #[cfg(test)]
 mod tests {
-    use std::fs;
-    use std::path::PathBuf;
-    use log::info;
     use crate::bio::ubio::{Ubio, UbioDir};
+    use crate::device::base::device_property::DeviceClass;
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::ufile::ufile_ssd::UfileSsd;
+    use log::info;
+    use std::fs;
+    use std::path::PathBuf;
 
     #[test]
     fn create_open_close_ufile_ssd() {
-        let mut ssd = UfileSsd::new("/tmp/dev1".into(), 1024*1024);
+        let mut ssd = UfileSsd::new("/tmp/dev1".into(), 1024 * 1024);
         assert_eq!(true, ssd.Open());
         ssd.Close();
 
@@ -130,22 +164,32 @@ mod tests {
 
     #[test]
     fn open_write_read_ufile_ssd() {
-        let mut ssd = UfileSsd::new("/tmp/dev2".into(), 1024*1024);
+        let mut ssd = UfileSsd::new("/tmp/dev2".into(), 1024 * 1024);
         ssd.Open();
         let lba_locations = vec![0, 500, 1000];
         let expected_pattern = vec![0, 1, 2, 3, 4, 5, 6, 7];
         for lba in &lba_locations {
-            let buf : Vec<u8> = expected_pattern.clone(); // 8 bytes signature
+            let buf: Vec<u8> = expected_pattern.clone(); // 8 bytes signature
             let mut ubio = Ubio::new(UbioDir::Write, lba.clone(), buf, Box::new(|_| {}));
             ssd.SubmitAsyncIO(&mut ubio);
         }
 
         for lba in &lba_locations {
-            let buf : Vec<u8> = vec![0; 8]; // 8 bytes buffer
+            let buf: Vec<u8> = vec![0; 8]; // 8 bytes buffer
             let mut ubio = Ubio::new(UbioDir::Read, lba.clone(), buf, Box::new(|_| {}));
             ssd.SubmitAsyncIO(&mut ubio);
             assert_eq!(expected_pattern, ubio.dataBuffer.unwrap());
         }
         ssd.Close();
+    }
+
+    #[test]
+    fn set_and_get_property() {
+        let mut ssd = UfileSsd::new("/tmp/dev3".into(), 1024 * 1024);
+        assert_eq!(ssd.GetName(), "dev3".to_string());
+        assert_eq!(ssd.property.GetClass(), "".to_string());
+
+        ssd.SetClass(DeviceClass::ARRAY);
+        assert_eq!(ssd.property.GetClass(), DeviceClass::ARRAY.to_string());
     }
 }
