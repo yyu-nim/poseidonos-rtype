@@ -770,7 +770,7 @@ mod tests {
                                         "RAID10".to_string(),
                                         "RAID5".to_string(), unique_id);
         let ret = mbr_manager.CreateAbr(array_meta);
-        ret.unwrap();
+        assert_eq!(0, ret.unwrap());
         assert_eq!(1, mbr_manager.systeminfo.arrayNum);
         assert_eq!(1, mbr_manager.systeminfo.arrayValidFlag[0]);
 
