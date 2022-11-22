@@ -30,9 +30,9 @@ impl ArrayComponents {
     pub fn new() -> ArrayComponents {
         struct MockAbrControl;
         impl IAbrControl for MockAbrControl {
-            fn CreateAbr(&self, meta: ArrayMeta) -> Result<(), PosEventId> {
+            fn CreateAbr(&self, meta: ArrayMeta) -> Result<u32, PosEventId> {
                 // TODO
-                Ok(())
+                Ok(0)
             }
 
             fn DeleteAbr(&self, arrayName: String) -> Result<(), PosEventId> {
