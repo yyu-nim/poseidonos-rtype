@@ -6,6 +6,8 @@ extern crate byteorder;
 use byteorder::{ByteOrder, LittleEndian, WriteBytesExt};
 use chrono::Utc;
 use crate::array::array::Array;
+use crate::include::pos_event_id::PosEventId;
+use crate::include::pos_event_id::PosEventId::{CREATE_ARRAY_NAME_TOO_LONG, UPDATE_ARRAY_NAME_TOO_LONG, UPDATE_CREATION_DATE_TOO_LONG, UPDATE_MODIFIED_DATE_TOO_LONG};
 
 pub const MAX_ARRAY_CNT: usize = 8;
 pub const MAX_ARRAY_DEVICE_CNT: usize = 128;
@@ -300,27 +302,43 @@ impl ArrayBootRecord {
         Some(abr)
     }
 
-    pub fn update_array_name(&mut self, array_name: &str) {
+    pub fn update_array_name(&mut self, array_name: &str) -> Result<(), PosEventId> {
+        if array_name.len() >= ARRAY_NAME_SIZE {
+            return Err(UPDATE_ARRAY_NAME_TOO_LONG);
+        }
         for i in 0..self.arrayName.len() {
             self.arrayName[i] = 0;
         }
         self.arrayName[0..array_name.len()].copy_from_slice(array_name.as_bytes());
+        Ok(())
     }
 
-    pub fn update_createTime(&mut self) {
+    pub fn update_createTime(&mut self) -> Result<(), PosEventId> {
         for i in 0..self.createDatetime.len() {
             self.createDatetime[i] = 0;
         }
-        let dateStr = Utc::now().to_string();
-        self.createDatetime[0..dateStr.len()].copy_from_slice(dateStr.as_bytes());
+        let date_str = Utc::now().to_string();
+        let date_bytes = date_str.as_bytes();
+        let date_bytes_len = date_bytes.len();
+        if date_bytes_len >= DATE_SIZE {
+            return Err(UPDATE_CREATION_DATE_TOO_LONG);
+        }
+        self.createDatetime[0..date_bytes_len].copy_from_slice(date_bytes);
+        Ok(())
     }
 
-    pub fn update_updateTime(&mut self) {
+    pub fn update_updateTime(&mut self) -> Result<(), PosEventId>{
         for i in 0..self.updateDatetime.len() {
             self.updateDatetime[i] = 0;
         }
-        let dateStr = Utc::now().to_string();
-        self.updateDatetime[0..dateStr.len()].copy_from_slice(dateStr.as_bytes());
+        let date_str = Utc::now().to_string();
+        let date_bytes = date_str.as_bytes();
+        let date_bytes_len = date_bytes.len();
+        if date_bytes_len >= DATE_SIZE {
+            return Err(UPDATE_MODIFIED_DATE_TOO_LONG);
+        }
+        self.updateDatetime[0..date_bytes_len].copy_from_slice(date_bytes);
+        Ok(())
     }
 }
 

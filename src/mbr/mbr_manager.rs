@@ -123,7 +123,7 @@ impl MbrManager {
             return Err(MBR_MAX_ARRAY_CNT_EXCEED);
         }
 
-        let _ = self.mbrLock.lock().unwrap();
+        let _lock = self.mbrLock.lock().unwrap();
         if self.arrayIndexMap.contains_key(&meta.arrayName) {
             return Err(MBR_ABR_ALREADY_EXIST);
         }
@@ -137,15 +137,16 @@ impl MbrManager {
         for i in 0..MAX_ARRAY_CNT {
             if self.systeminfo.arrayValidFlag[i] == 0 {
                 if let Some(existing_val) = self.arrayIndexMap.insert(meta.arrayName.clone(), i as u32) {
-                    error!("{}", MBR_WRONG_ARRAY_INDEX_MAP.to_string());
+                    error!("[{}] Skipping the index {}", MBR_WRONG_ARRAY_INDEX_MAP.to_string(), i);
+                    continue;
                 }
 
                 self.mapMgr.InsertDevices(&meta, i as u32);
                 self.systeminfo.arrayValidFlag[i] = 1;
                 self.systeminfo.arrayNum += 1;
-                self.systeminfo.arrayInfo[i].update_array_name(&meta.arrayName);
-                self.systeminfo.arrayInfo[i].update_createTime();
-                self.systeminfo.arrayInfo[i].update_updateTime();
+                self.systeminfo.arrayInfo[i].update_array_name(&meta.arrayName).unwrap();
+                self.systeminfo.arrayInfo[i].update_createTime().unwrap();
+                self.systeminfo.arrayInfo[i].update_updateTime().unwrap();
                 self.systeminfo.arrayInfo[i].uniqueId = meta.unique_id;
                 info!("ArrayBootRecord for Array {} has been created", i);
                 return Ok(i as u32)
