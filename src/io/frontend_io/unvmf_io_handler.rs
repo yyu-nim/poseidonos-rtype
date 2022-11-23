@@ -80,6 +80,7 @@ pub extern "C" fn UNVMfSubmitHandler(io: *mut pos_io) -> u32 {
         }
     }
 
+    // "io"가 null pointer로 온 경우, error인 경우, 성공인 경우 모두 항상 SUCCESS return 하는 것이 pos-cpp의 구현.
     return POS_IO_STATUS_SUCCESS;
 }
 
