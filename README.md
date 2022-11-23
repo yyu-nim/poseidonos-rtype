@@ -12,7 +12,7 @@ Production에서의 사용을 권하지 않는다. PR 환영!
 살펴보면 될 것 같고, `NVMe` 디바이스의 경우에는, fake 구현을 해볼 생각이다.
 
 
-### 실행하는 법
+### 실행하는 법 1 (Local)
 
 ```bash
 $ cargo run --bin poseidonos
@@ -57,3 +57,7 @@ $ cargo run --bin poseidonos
 [2022-10-20T11:01:21Z INFO  poseidonos_rtype::allocator::allocator] Creating Allocator for POSArray
 [2022-10-20T11:01:21Z INFO  poseidonos_rtype::journal_manager::journal_manager] Creating JournalManager for POSArray
 ```
+
+### 실행하는 법 2 (Codespaces)
+repo 첫페이지에 "Code" 녹색 버튼 누른 뒤, "Codespaces" 실행하면 곧바로 vscode web 버전으로 컴파일 및 실행 가능
+![image](https://github.com/yyu-nim/poseidonos-rtype/blob/main/codespaces%20-%20rtype.png)

@@ -33,6 +33,10 @@ pub enum PosEventId {
     CREATE_ARRAY_NOT_SUPPORTED_RAIDTYPE,
     CREATE_ARRAY_RAID_DOES_NOT_SUPPORT_SPARE_DEV,
 
+    UPDATE_ARRAY_NAME_TOO_LONG,
+    UPDATE_CREATION_DATE_TOO_LONG,
+    UPDATE_MODIFIED_DATE_TOO_LONG,
+
     DELETE_ARRAY_ARRAY_NAME_DOES_NOT_EXIST,
     DEVICEMGR_DEVICE_NOT_FOUND,
 
@@ -45,6 +49,7 @@ pub enum PosEventId {
     SCHEDAPI_WRONG_BUFFER,
 
     BLKHDLR_WRONG_IO_DIRECTION,
+    ARRAY_EVENT_DEV_STATE_CHANGED,
 }
 
 #[cfg(test)]
@@ -54,6 +59,9 @@ mod tests {
     #[test]
     fn test_enum_to_string() {
         assert_eq!("SUCCESS".to_string(), PosEventId::SUCCESS.to_string());
-        assert_eq!("POS_TRACE_STARTED".to_string(), PosEventId::POS_TRACE_STARTED.to_string());
+        assert_eq!(
+            "POS_TRACE_STARTED".to_string(),
+            PosEventId::POS_TRACE_STARTED.to_string()
+        );
     }
 }
