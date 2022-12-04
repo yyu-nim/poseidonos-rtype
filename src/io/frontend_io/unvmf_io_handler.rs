@@ -218,7 +218,6 @@ mod tests {
     fn test_five_writesubmissions_to_completion() {
         // Given: a completion reactor thread running, and five write I/Os
         setup_loglevel();
-        spin_up_completion_reactor();
         let mut array_name = "posarray".to_string();
         let mut posIo1 = pos_io {
             ioType: IO_TYPE_WRITE as c_int,
@@ -242,7 +241,6 @@ mod tests {
         posIo5.offset = 1024;
 
         // When: we (as initiator) submit those five writes through UNVMfSubmitHandler
-        // NOTE: submit 도중에 completion 이 돌게 되면 queue length가 기대하는 대로 5가 안나올 수도... (TODO)
         let ret = UNVMfSubmitHandler(&mut posIo1);
         let ret = UNVMfSubmitHandler(&mut posIo2);
         let ret = UNVMfSubmitHandler(&mut posIo3);
@@ -250,8 +248,11 @@ mod tests {
         let ret = UNVMfSubmitHandler(&mut posIo5);
         let actual_queue_len = EventFrameworkApiSingleton.GetEventSingleQueueSize();
         assert_eq!(5, actual_queue_len);
+        // 일부러 submit 5개가 모두 끝난 시점에 spin_up_completion_reactor() 를 호출함.
+        // 그래야 actual_queue_len이 기대하는 대로 5로 나올 수 있으므로.
+        spin_up_completion_reactor();
 
-        // Then: we should be able to see a single completion event
+        // Then: we should be able to see five completion events
         thread::sleep(Duration::from_secs(1)); // enough time to handle the completion
         let actual_queue_len = EventFrameworkApiSingleton.GetEventSingleQueueSize();
         assert_eq!(0, actual_queue_len);

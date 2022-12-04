@@ -105,10 +105,6 @@ impl Event for AioCompletion {
     fn Execute(&mut self) -> bool {
         todo!()
     }
-
-    // fn Execute(&self) -> bool {
-    //     todo!()
-    // }
 }
 
 impl Callback for AioCompletion {

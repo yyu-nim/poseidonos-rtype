@@ -3,7 +3,7 @@ use crate::event_scheduler::event::Event;
 use crate::include::pos_event_id::PosEventId::EVENTFRAMEWORK_INVALID_EVENT;
 use crate::spdk_wrapper::event_framework_api::{EventFrameworkApi, EventFrameworkApiSingleton};
 
-pub fn ExecuteOrScheduleEvent(_core: u32, mut event: Box<dyn Event>) {
+pub fn ExecuteOrScheduleEvent(_core: Option<u32>, mut event: Box<dyn Event>) {
     let done = event.Execute();
     if !done {
         SendSpdkEvent(Some(event));
@@ -13,7 +13,7 @@ pub fn ExecuteOrScheduleEvent(_core: u32, mut event: Box<dyn Event>) {
 pub fn SendSpdkEvent(event: Option<Box<dyn Event>>) -> bool {
     if let Some(event) = event {
         let event_closure = Box::new(||{
-            ExecuteOrScheduleEvent(0 /* not used */, event);
+            ExecuteOrScheduleEvent(None, event);
         });
         EventFrameworkApiSingleton.SendSpdkEvent(event_closure);
         return true;
