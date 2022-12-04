@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 use lazy_static::lazy_static;
 use std::sync::{Mutex, Arc};
-use log::error;
+use log::{error, info};
 use crate::bio::ubio::Ubio;
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::device::i_io_dispatcher::IIODispatcher;
@@ -56,6 +56,11 @@ impl IIODispatcher for IODispatcher {
 
 pub fn RegisterRecoveryEventFactory(_recoveryEventFactory: IoRecoveryEventFactory) {
     // Not meaningful. Instead, use "recoveryEventFactory" as above.
+}
+
+pub fn CompleteForThreadLocalDeviceList() {
+    // TODO
+    // info!("CompleteForThreadLocalDeviceList() isn't supported yet...");
 }
 
 #[cfg(test)]
