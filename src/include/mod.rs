@@ -8,3 +8,5 @@ pub mod backend_event;
 pub mod raid_type;
 pub mod meta_const;
 pub mod memory;
+pub mod address_type;
+pub mod array_config;

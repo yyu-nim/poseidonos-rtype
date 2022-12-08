@@ -7,7 +7,7 @@ use std::str::FromStr;
 use std::string::FromUtf8Error;
 use std::sync::{Arc, Mutex, MutexGuard};
 
-use crossbeam::sync::Parker;
+use crossbeam::sync::{Parker, Unparker};
 use log::{error, info, warn};
 use uuid::Uuid;
 
@@ -17,6 +17,8 @@ use crate::bio::ubio::{CallbackClosure, Ubio, UbioDir};
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
 use crate::event_scheduler::callback::Callback;
+use crate::event_scheduler::event::Event;
+use crate::include::backend_event::BackendEvent;
 use crate::include::meta_const::CHUNK_SIZE;
 use crate::include::pos_event_id::PosEventId;
 use crate::include::pos_event_id::PosEventId::{MBR_ABR_ALREADY_EXIST, MBR_DATA_NOT_FOUND, MBR_DEVICE_NOT_FOUND, MBR_MAX_ARRAY_CNT_EXCEED, MBR_WRONG_ARRAY_INDEX_MAP, MBR_WRONG_ARRAY_VALID_FLAG};
@@ -218,41 +220,57 @@ impl MbrManager {
 
     // Unlike in pos-cpp, _DiskIo has become 'static' fn (i.e., without &self)
     fn _DiskIo(dev: Box<dyn UBlockDevice>, ctx: DiskIoContext) -> Option<Vec<u8>> {
-        let result_buffer = Rc::new(Mutex::new(Vec::new()));
         let io_done_parker = Parker::new();
         let io_done_unparker = io_done_parker.unparker().clone();
         let io_dir = ctx.ubioDir.clone();
-        let callback: CallbackClosure = match io_dir {
-            UbioDir::Read => {
-                let mut result_buffer = result_buffer.clone();
-                Box::new(
-                    move |read_buffer: &Vec<u8>| {
-                        let mut result_buffer = result_buffer.lock().unwrap();
-                        for the_byte in read_buffer {
-                            result_buffer.push(the_byte.clone());
-                        }
-                        io_done_unparker.unpark();
-                    }
-                )
-            },
-            UbioDir::Write => {
-                Box::new(
-                    move |_: &Vec<u8>| {
-                        io_done_unparker.unpark();
-                    }
-                )
-            },
-        };
-        let mut bio = Ubio::new(io_dir.clone(), MBR_ADDRESS,
-                                ctx.mem, callback);
-        bio.uBlock = Some(dev);
+        let io_buffer = Arc::new(Mutex::new(ctx.mem));
+        let diskio_callback = {
+            struct diskio_callback {
+                io_done: bool,
+                io_done_unparker: Unparker,
+                io_buffer: Arc<Mutex<Vec<u8>>>,
+            };
+            impl Callback for diskio_callback {
+                fn _DoSpecificJob(&mut self) -> bool {
+                    self.io_done_unparker.unpark();
+                    true
+                }
 
-        IODispatcherSingleton.lock().unwrap().Submit(bio, true /* not used */, false);
+                fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>> {
+                    None
+                }
+
+                fn _MarkExecutedDone(&mut self) {
+                    self.io_done = true;
+                }
+            }
+            impl Event for diskio_callback {
+                fn GetEventType(&self) -> BackendEvent {
+                    todo!()
+                }
+
+                fn Execute(&mut self) -> bool {
+                    todo!()
+                }
+            }
+            Box::new(diskio_callback {
+                io_done: false,
+                io_done_unparker,
+                io_buffer: (&io_buffer).clone(),
+            })
+        };
+        let mut bio = Ubio::new(Some(io_buffer.clone()), Some(diskio_callback), 0);
+        bio.uBlock = Some(dev);
+        bio.dir = io_dir.clone();
+        bio.lba = MBR_ADDRESS;
+
+        IODispatcherSingleton.lock().unwrap().Submit(Arc::new(Mutex::new(bio)),
+                                                     true /* not used */, false);
 
         io_done_parker.park(); // block synchronously here until we get "unparked"
         match io_dir {
             UbioDir::Read => {
-                Some(result_buffer.lock().unwrap().clone())
+                Some(io_buffer.lock().unwrap().clone())
             }
             UbioDir::Write => {
                 None
@@ -417,6 +435,7 @@ mod tests {
     use std::fs::File;
     use std::io::{Read, Seek, SeekFrom, Write};
     use std::path::PathBuf;
+    use std::sync::{Arc, Mutex};
 
     use log::info;
 
@@ -427,7 +446,10 @@ mod tests {
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::device_manager::{DeviceManager, DeviceManagerConfig};
     use crate::device::ufile::ufile_ssd::UfileSsd;
+    use crate::event_scheduler::callback::{Callback, tests};
+    use crate::event_scheduler::event::Event;
     use crate::include::array_device_state::ArrayDeviceState;
+    use crate::include::backend_event::BackendEvent;
     use crate::include::pos_event_id::PosEventId;
     use crate::include::pos_event_id::PosEventId::MBR_DEVICE_ALREADY_IN_ARRAY;
     use crate::include::raid_type::RaidTypeEnum::RAID10;
@@ -458,13 +480,19 @@ mod tests {
 
         // Given: a UBlockDevice with its MBR filled with a specific pattern
         let PATTERN = vec![0, 2, 4, 6, 1, 3, 5, 7];
-        let empty_callback = Box::new(move |_: &Vec<u8>| {});
-        let mut ubio = Ubio::new(UbioDir::Write, MBR_ADDRESS, PATTERN.clone(), empty_callback);
+        let write_buffer = Arc::new(Mutex::new(PATTERN.clone()));
+        let ubio = {
+            let mut ubio = Ubio::new(Some(write_buffer),
+                                 None /* no callback */, 0);
+            ubio.lba = MBR_ADDRESS;
+            ubio.dir = UbioDir::Write;
+            Arc::new(Mutex::new(ubio))
+        };
         let mut ublock_dev = UfileSsd::new(
             PathBuf::from(test_ufile_ssd), 100*1024*1024)
             .boxed();
         ublock_dev.Open();
-        ublock_dev.SubmitAsyncIO(&mut ubio);
+        ublock_dev.SubmitAsyncIO(ubio.clone());
 
         let mut dm_config = DeviceManagerConfig::default();
         dm_config.num_devices_to_create = 0; // ublock_dev를 수동으로 만들기 때문에, 여기서 자동 생성하지 말자.
@@ -518,7 +546,7 @@ mod tests {
         setup();
 
         // Given: MbrManager with 4 devices created
-        let DEVICE_PREFIX = "TestUfileSsdForSaveMbr";
+        let DEVICE_PREFIX = "TestUfileSsdForSaveMbr.";
         let NUM_DEVICES = 4;
         let mut dm_config = DeviceManagerConfig::default();
         dm_config.dir_to_lookup = "/tmp/";
@@ -534,7 +562,7 @@ mod tests {
         // Then 1: The MBR version of all devices should be equal to 1
         res.unwrap();
         for i in 0..NUM_DEVICES {
-            let test_ufile_ssd = format!("/tmp/{}.{}", DEVICE_PREFIX, i);
+            let test_ufile_ssd = format!("/tmp/{}{}", DEVICE_PREFIX, i);
             verify_MBR_version(test_ufile_ssd.as_str(), 1);
         }
 
@@ -544,7 +572,7 @@ mod tests {
         // Then 2: The MBR version of all devices should be equal to 2
         res.unwrap();
         for i in 0..NUM_DEVICES {
-            let test_ufile_ssd = format!("/tmp/{}.{}", DEVICE_PREFIX, i);
+            let test_ufile_ssd = format!("/tmp/{}{}", DEVICE_PREFIX, i);
             verify_MBR_version(test_ufile_ssd.as_str(), 2);
         }
     }

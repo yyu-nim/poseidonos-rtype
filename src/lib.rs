@@ -27,6 +27,12 @@ pub mod mbr;
 pub mod metadata;
 pub mod allocator;
 pub mod journal_manager;
+pub mod gc;
+pub mod allocator_service;
+
+// This is to avoid ambiguity due to src/lib.rs
+#[path="./lib/mod.rs"]
+pub mod lib;
 
 // FFI bindings for SPDK
 pub mod generated;

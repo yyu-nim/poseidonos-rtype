@@ -51,13 +51,37 @@ pub trait Callback : Event {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use std::ops::Deref;
     use std::sync::{Arc, Mutex};
     use crate::event_scheduler::callback::Callback;
     use crate::event_scheduler::event::Event;
     use crate::include::backend_event::BackendEvent;
     use crate::include::backend_event::BackendEvent::BackendEvent_Unknown;
+
+    /*pub struct MOCK_UBIO_CALLBACK;
+    impl Event for MOCK_UBIO_CALLBACK {
+        fn GetEventType(&self) -> BackendEvent {
+            todo!()
+        }
+
+        fn Execute(&mut self) -> bool {
+            todo!()
+        }
+    }
+    impl Callback for MOCK_UBIO_CALLBACK {
+        fn _DoSpecificJob(&mut self) -> bool {
+            true
+        }
+
+        fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>> {
+            None
+        }
+
+        fn _MarkExecutedDone(&mut self) {
+
+        }
+    }*/
 
     #[test]
     fn test_define_my_callback() {

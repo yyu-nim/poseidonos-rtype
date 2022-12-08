@@ -19,9 +19,9 @@ impl IODispatcherSubmission {
     }
 
     pub fn SubmitIO(&self, ublock: Box<dyn UBlockDevice>,
-                    mut ubio: Ubio,
+                    mut ubio: Arc<Mutex<Ubio>>,
                     _dispatcherPolicy: Option<DispatcherPolicy>) {
-        ublock.SubmitAsyncIO(&mut ubio);
+        ublock.SubmitAsyncIO(ubio);
     }
 
 }

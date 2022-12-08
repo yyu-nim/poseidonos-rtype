@@ -9,6 +9,8 @@ use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
+use crate::bio::data_buffer::DataBuffer;
+use crate::event_scheduler::callback::Callback;
 
 pub struct UfileSsd {
     filePath: PathBuf,
@@ -18,28 +20,25 @@ pub struct UfileSsd {
 }
 
 impl UBlockDevice for UfileSsd {
-    fn SubmitAsyncIO(&self, bio: &mut Ubio) -> i32 {
+    fn SubmitAsyncIO(&self, bio: Arc<Mutex<Ubio>>) -> i32 {
         // 사실은 SyncIO의 구현...
+        let mut bio = bio.lock().unwrap();
         let lba = bio.lba;
         match bio.dir {
             UbioDir::Read => {
-                let mut buf = bio
-                    .dataBuffer
-                    .as_mut()
-                    .expect("Ubio must have a read buffer!");
-                self.read(lba, &mut buf);
-                bio.dataBuffer = Some(buf.clone()); // could be expensive
+                let mut read_buffer= bio.dataBuffer.as_ref().unwrap().buffer.lock().unwrap();
+                self.read(lba, &mut read_buffer);
             }
             UbioDir::Write => {
-                let buf = bio
-                    .dataBuffer
-                    .as_ref()
-                    .expect("Ubio must have a write buffer!");
-                self.write(lba, buf);
+                let mut write_buffer = bio.dataBuffer.as_ref().unwrap().buffer.lock().unwrap();
+                self.write(lba, &write_buffer);
             }
         }
-        let callback_closure = bio.callback.as_mut();
-        callback_closure(bio.dataBuffer.as_ref().unwrap());
+
+        if bio.callback.is_some() {
+            let callback_closure = bio.callback.as_deref_mut().unwrap();
+            Callback::Execute(callback_closure);
+        }
 
         0
     }
@@ -151,6 +150,10 @@ mod tests {
     use log::info;
     use std::fs;
     use std::path::PathBuf;
+    use std::sync::{Arc, Mutex};
+    use crossbeam::sync::Parker;
+    use crate::event_scheduler::callback::Callback;
+    use crate::io_scheduler::io_dispatcher::tests::WaitReadDone;
 
     #[test]
     fn create_open_close_ufile_ssd() {
@@ -169,16 +172,43 @@ mod tests {
         let lba_locations = vec![0, 500, 1000];
         let expected_pattern = vec![0, 1, 2, 3, 4, 5, 6, 7];
         for lba in &lba_locations {
-            let buf: Vec<u8> = expected_pattern.clone(); // 8 bytes signature
-            let mut ubio = Ubio::new(UbioDir::Write, lba.clone(), buf, Box::new(|_| {}));
-            ssd.SubmitAsyncIO(&mut ubio);
+            let buf: Arc<Mutex<Vec<u8>>> = {
+                let p = expected_pattern.clone(); // 8 bytes signature
+                Arc::new(Mutex::new(p))
+            };
+            let mut ubio = Ubio::new(Some(buf), None /* no callback */,
+                                     0);
+            ubio.lba = lba.clone();
+            ubio.dir = UbioDir::Write;
+            ssd.SubmitAsyncIO(Arc::new(Mutex::new(ubio)));
         }
 
         for lba in &lba_locations {
-            let buf: Vec<u8> = vec![0; 8]; // 8 bytes buffer
-            let mut ubio = Ubio::new(UbioDir::Read, lba.clone(), buf, Box::new(|_| {}));
-            ssd.SubmitAsyncIO(&mut ubio);
-            assert_eq!(expected_pattern, ubio.dataBuffer.unwrap());
+            let buf: Arc<Mutex<Vec<u8>>> = {
+                let p = vec![0; 8];
+                Arc::new(Mutex::new(p))
+            }; // 8 bytes buffer
+            let parker = crossbeam::sync::Parker::new();
+            let unparker = parker.unparker().clone();
+            let read_callback: Box<dyn Callback> = Box::new(WaitReadDone{
+                unparker: unparker,
+                done: false
+            });
+            let mut ubio = Ubio::new(Some(buf),
+                                     Some(read_callback),
+                                     0);
+            ubio.lba = lba.clone();
+            ubio.dir = UbioDir::Read;
+            let ubio = Arc::new(Mutex::new(ubio));
+            ssd.SubmitAsyncIO(ubio.clone());
+            let actual_pattern = {
+                let inner_ubio = ubio.lock().unwrap();
+                let bytes = inner_ubio
+                    .dataBuffer.as_ref().unwrap().buffer.lock().unwrap();
+                bytes.clone()
+            };
+
+            assert_eq!(expected_pattern, actual_pattern);
         }
         ssd.Close();
     }

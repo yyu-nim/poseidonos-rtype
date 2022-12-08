@@ -1,6 +1,7 @@
 use log::info;
 use crate::device::base::ublock_device::UBlockDevice;
 use crate::include::array_device_state::ArrayDeviceState;
+use crate::include::i_array_device::IArrayDevice;
 use crate::include::pos_event_id::PosEventId;
 
 pub struct ArrayDevice {
@@ -53,8 +54,19 @@ impl ArrayDevice {
     }
 }
 
+impl IArrayDevice for ArrayDevice {
+    fn GetUblock(&self) -> Box<dyn UBlockDevice> {
+        self.uBlock.clone_box()
+    }
+
+    fn SetUblock(&mut self, uBlock: Box<dyn UBlockDevice>) {
+        self.uBlock = uBlock;
+    }
+}
+
 #[cfg(test)]
 mod tests {
+    use std::sync::{Arc, Mutex};
     use crate::bio::ubio::Ubio;
     use crate::device::base::device_property::DeviceClass;
     use super::*;
@@ -65,7 +77,7 @@ mod tests {
         sn: String,
     }
     impl UBlockDevice for MockDevice {
-        fn SubmitAsyncIO(&self, bio: &mut Ubio) -> i32 { 0 }
+        fn SubmitAsyncIO(&self, bio: Arc<Mutex<Ubio>>) -> i32 { 0 }
         fn CompleteIOs(&self) -> i32 { 0 }
         fn Close(&self) -> u32 { 0 }
         fn Open(&mut self) -> bool { true }

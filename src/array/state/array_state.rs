@@ -1,6 +1,7 @@
 use log::info;
 use crate::include::array_state_type::ArrayStateEnum;
 use crate::state::interface::i_state_control::IStateControl;
+use crate::state::state_context::StateContext;
 
 pub struct ArrayState;
 
@@ -25,5 +26,7 @@ impl ArrayState {
 }
 
 impl IStateControl for ArrayState {
-
+    fn GetState(&self) -> StateContext {
+        todo!()
+    }
 }
