@@ -85,7 +85,7 @@ impl Array {
 ## Naming Rule
 Class 이름과 Method 이름은 cpp의 naming rule 그대로 camel case를 따릅니다. `Array` class는 `Array` struct로, `_LoadImpl` 함수 또한 그대로 `_LoadImpl` 함수로 변환합니다.
 
-Method 내 local variable은 표준 rust naming 방식 대로 snake case로 정합니다. `isWireThrough`는 `is_write_through`로 변환합니다. 
+Method 내 local variable은 표준 rust naming 방식 대로 snake case로 정합니다. `isWriteThrough`는 `is_write_through`로 변환합니다. 
 
 ## 테스트 - main 동작 확인
 Poseidon OS R-type은 [main-rust.rs](src/main-rust.rs) 에서 시작됩니다. 현재는 시작 시 CLI Server로 `CreateArray` 메시지를 보내고 있습니다. 코드 수정 후 [README.md](README.md)과 동일한 출력이 나오는지 확인합니다.
