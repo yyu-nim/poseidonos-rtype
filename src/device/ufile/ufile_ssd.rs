@@ -4,7 +4,7 @@ use crate::device::base::ublock_device::UBlockDevice;
 use crate::generated::bindings::spdk_new_thread_fn;
 use log::{info, warn};
 use std::borrow::{Borrow, BorrowMut};
-use std::fs::File;
+use std::fs::{File, OpenOptions};
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
@@ -51,14 +51,14 @@ impl UBlockDevice for UfileSsd {
     }
 
     fn Open(&mut self) -> bool {
-        let mut file = File::options()
+        let file = OpenOptions::new()
             .create(true)
             .read(true)
             .write(true)
             .open(self.filePath.clone())
             .expect(format!("Failed to create a device file {:?}", self.filePath).as_str());
 
-        file.set_len(self.fileSize as u64);
+        file.set_len(self.fileSize as u64).unwrap();
         info!(
             "Opening a file {:?} and truncating to {} bytes",
             self.filePath, self.fileSize
@@ -130,15 +130,15 @@ impl UfileSsd {
     fn read(&self, lba: u64, buf: &mut Vec<u8>) {
         let guard = self.file.lock().unwrap();
         let mut f = (*guard).as_ref().unwrap();
-        f.seek(SeekFrom::Start(lba * 512));
-        f.read(buf);
+        f.seek(SeekFrom::Start(lba * 512)).unwrap();
+        f.read(buf).unwrap();
     }
 
     fn write(&self, lba: u64, buf: &Vec<u8>) {
         let guard = self.file.lock().unwrap();
         let mut f = guard.as_ref().unwrap();
-        f.seek(SeekFrom::Start(lba * 512));
-        f.write(&buf);
+        f.seek(SeekFrom::Start(lba * 512)).unwrap();
+        f.write(&buf).unwrap();
     }
 }
 

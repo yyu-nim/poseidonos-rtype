@@ -265,6 +265,6 @@ mod tests {
     fn setup_loglevel() {
         // set up the logger for the test context
         set_var("RUST_LOG", "DEBUG");
-        env_logger::builder().is_test(true).try_init();
+        env_logger::builder().is_test(true).try_init().unwrap();
     }
 }

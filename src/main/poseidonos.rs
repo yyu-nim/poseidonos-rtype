@@ -59,7 +59,7 @@ impl Poseidonos {
                         DeviceSet<String> /* nvm, data, spare */,
                         String /* meta raid */,
                         String /* data raid */),
-        };
+        }
         let (tx, rx) = mpsc::channel();
         let cli_server = thread::spawn(move || {
             info!("CLI server is up...");
@@ -76,7 +76,7 @@ impl Poseidonos {
                         match ArrayManagerSingleton.lock().unwrap().Create(array_name.clone(), device_set, meta_raid, data_raid) {
                             Ok(()) => {},
                             Err(e) => {
-                                error!("Failed to create array {array_name}, reason: {e}");
+                                error!("Failed to create array {}, reason: {}", array_name, e);
                             }
                         }
 
@@ -99,7 +99,7 @@ impl Poseidonos {
         tx.send(CliMsg::CreateArray("POSArray".into(),
                                     device_set,
                                     "RAID0".into(),
-                                    "RAID5".into()));
+                                    "RAID5".into())).unwrap();
 
         info!("Waiting CLI server to terminate...");
         cli_server.join();

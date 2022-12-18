@@ -21,24 +21,23 @@ fn main() {
     PreventDualExecution(1);
     let ret = CheckPrivileges();
     match ret {
-        0 => { /* has enough privileges */ },
+        0 => { /* has enough privileges */ }
         error_code => {
             std::process::exit(error_code);
-        },
+        }
     };
     let pos = Poseidonos;
     let ret = pos.Init(Vec::new());
     match ret {
-        PosEventId::SUCCESS => {},
+        PosEventId::SUCCESS => {}
         error_code => {
             eprintln!("failed to initialize pos {:?}", error_code);
             std::process::exit(6 /*ENXIO*/);
-        },
+        }
     };
 
     pos.Run();
     pos.Terminate();
-
 }
 
 fn PreventDualExecution(_nrProc: u32) {

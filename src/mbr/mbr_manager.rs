@@ -174,7 +174,7 @@ impl MbrManager {
                     continue;
                 }
 
-                self.mapMgr.InsertDevices(&meta, i as u32);
+                self.mapMgr.InsertDevices(&meta, i as u32).unwrap();
                 self.systeminfo.arrayValidFlag[i] = 1;
                 self.systeminfo.arrayNum += 1;
                 self.systeminfo.arrayInfo[i].update_array_name(&meta.arrayName).unwrap();
@@ -310,9 +310,9 @@ impl MbrManager {
     }
 
     fn _ReadFromDevices(devMgr: &DeviceManager, version: &mut i32, systeminfo: &mut masterBootRecord) -> Result<(), PosEventId> {
-        let mut mems = Rc::new(Mutex::new(Vec::<Vec<u8>>::new()));
+        let mems = Rc::new(Mutex::new(Vec::<Vec<u8>>::new()));
         let iterateReadFunc = {
-            let mut mems = mems.clone();
+            let mems = mems.clone();
             Box::new(move |uBlockDev: &Box<dyn UBlockDevice>| {
                 let uBlock = uBlockDev.clone_box();
                 let mut mems = mems.lock().unwrap();
@@ -376,7 +376,7 @@ impl MbrManager {
                         systeminfo.arrayInfo[i as usize].devInfo[j as usize].deviceUid;
                     let deviceUidString
                         = String::from_utf8(Vec::from(deviceUid)).unwrap();
-                    mapMgr.InsertDevice(&deviceUidString, i as u32);
+                    mapMgr.InsertDevice(&deviceUidString, i as u32).unwrap();
                 }
             }
         }

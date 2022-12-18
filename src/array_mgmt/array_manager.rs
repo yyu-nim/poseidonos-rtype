@@ -37,7 +37,7 @@ impl ArrayManager {
 
         if self._FindArray(&name).is_some() == true {
             let eventId = PosEventId::CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS;
-            warn!("[{}] name duplicated: {name}", eventId.to_string());
+            warn!("[{}] name duplicated: {}", eventId.to_string(), name);
             return Err(eventId);
         }
 
@@ -45,7 +45,7 @@ impl ArrayManager {
             let len = self.arrayList.len();
 
             let eventId = PosEventId::CREATE_ARRAY_EXCEED_MAX_NUM_OF_ARRAYS;
-            warn!("[{}] Current num of arrays: {len}", eventId.to_string());
+            warn!("[{}] Current num of arrays: {}", eventId.to_string(), len);
 
             return Err(eventId);
         }
@@ -63,11 +63,11 @@ impl ArrayManager {
             Some(a) => a,
             None => {
                 if self.AbrExists(&name) {
-                    self._DeleteFaultArray(&name);
+                    self._DeleteFaultArray(&name).unwrap();
                 }
 
                 let eventId = PosEventId::DELETE_ARRAY_ARRAY_NAME_DOES_NOT_EXIST;
-                warn!("[{}] array_name: {name}", eventId.to_string());
+                warn!("[{}] array_name: {}", eventId.to_string(), name);
                 return Err(eventId);
             }
         };
@@ -86,7 +86,7 @@ impl ArrayManager {
         let abrList = match self.GetAbrList() {
             Ok(list) => list,
             Err(e) => {
-                error!("Failed to get abr list, {e}");
+                error!("Failed to get abr list, {}", e);
                 return false;
             }
         };
