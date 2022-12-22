@@ -38,8 +38,8 @@ impl ConfigManager {
                 self.config = toml::from_str(&config_string).expect("Failed to parse toml");
             },
             Err(e) => {
-                error!("Failed to read config file {file_path}");
-                panic!("Failed to read config file {file_path}");
+                error!("Failed to read config file {}", file_path);
+                panic!("Failed to read config file {}", file_path);
             }
         };
     }

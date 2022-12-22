@@ -130,7 +130,7 @@ impl Array {
             Ok(()) => {},
             Err(e) => {
                 error!("[{}] failed to flush array metadata!", e.to_string());
-                self.abrControl.DeleteAbr(name.clone());
+                self.abrControl.DeleteAbr(name.clone()).unwrap();
                 self._CleanupAfterError();
                 return Err(e);
             }
@@ -140,7 +140,7 @@ impl Array {
             Ok(()) => {},
             Err(e) => {
                 error!("[{}] failed to create new partitions!", e.to_string());
-                self.abrControl.DeleteAbr(name.clone());
+                self.abrControl.DeleteAbr(name.clone()).unwrap();
                 self._CleanupAfterError();
                 return Err(e);
             }

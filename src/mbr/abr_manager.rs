@@ -156,7 +156,7 @@ impl AbrManager {
             Some((a, i)) => (a, i),
             None => {
                 let eventId = PosEventId::MBR_ABR_NOT_FOUND;
-                warn!("[{}] Cannot get Abr for {arrayName}", eventId.to_string());
+                warn!("[{}] Cannot get Abr for {}", eventId.to_string(), arrayName);
                 return Err(eventId);
             }
         };
@@ -170,7 +170,7 @@ impl AbrManager {
             Some((a, i)) => (a, i),
             None => {
                 let eventId = PosEventId::MBR_ABR_NOT_FOUND;
-                warn!("[{}] Cannot get Abr for {arrayName}", eventId.to_string());
+                warn!("[{}] Cannot get Abr for {}", eventId.to_string(), arrayName);
                 return Err(eventId);
             }
         };
