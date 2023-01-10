@@ -10,3 +10,4 @@ pub mod meta_const;
 pub mod memory;
 pub mod address_type;
 pub mod array_config;
+pub mod partition_type;

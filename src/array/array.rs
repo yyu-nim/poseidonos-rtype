@@ -1,4 +1,5 @@
 use std::borrow::BorrowMut;
+use std::collections::HashMap;
 use lazy_static::lazy_static;
 use log::{error, info, warn};
 use crate::array::device::array_device_manager::ArrayDeviceManager;
@@ -103,6 +104,7 @@ impl Array {
             metaRaidType: metaFt.clone(),
             dataRaidType: dataFt.clone(),
             uniqueId,
+            partitionSizInfo: HashMap::new(),
             isWriteThroughEnabled: false, // TODO
         };
 
