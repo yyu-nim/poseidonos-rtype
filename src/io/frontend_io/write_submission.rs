@@ -105,12 +105,12 @@ impl WriteSubmission {
             let target_vsa_range: VirtualBlks = virtual_blks;
 
             if address_type::IsUnMapVsa(&target_vsa_range.start_vsa) {
+                println!("No free space in write buffer");
                 let array_id = {
                     self.volume_io.ubio.as_ref().unwrap().lock().unwrap().arrayId.clone() as u32
                 };
                 let state_control = StateManagerSingleton.lock().unwrap().GetStateControl(array_id);
                 if state_control.GetStateEnum() == StateEnum::STOP {
-                //if state_control.GetState().ToStateType() == StateType::new(StateEnum::STOP) {
                     let event_id = WRHDLR_FAIL_BY_SYSTEM_STOP;
                     error!("[{}] System Stop incurs write fail", event_id.to_string());
                     if !self.i_block_allocator.Unlock(volume_id.unwrap()) {
