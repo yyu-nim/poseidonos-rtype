@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use crate::include::pos_event_id::PosEventId;
 
 pub struct RBAStateManager {
 
@@ -25,12 +26,13 @@ impl RBAStateManager {
 
     }
 
-    pub fn BulkAcquireOwnership(&self, volume_id: u32, start_rba: u64, i: u32) -> bool {
+    pub fn BulkAcquireOwnership(&self, volume_id: u32, start_rba: u64, i: u32) -> Result<bool, PosEventId> {
         // TODO
-        true
+        Ok(true)
     }
 
-    pub fn BulkReleaseOwnership(&self, volume_id: u32, start_rba: u64, i: u32) {
-
+    pub fn BulkReleaseOwnership(&self, volume_id: u32, start_rba: u64, i: u32) -> Result<(), PosEventId> {
+        // TODO
+        Ok(())
     }
 }

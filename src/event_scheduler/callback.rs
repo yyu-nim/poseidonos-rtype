@@ -59,30 +59,6 @@ pub mod tests {
     use crate::include::backend_event::BackendEvent;
     use crate::include::backend_event::BackendEvent::BackendEvent_Unknown;
 
-    /*pub struct MOCK_UBIO_CALLBACK;
-    impl Event for MOCK_UBIO_CALLBACK {
-        fn GetEventType(&self) -> BackendEvent {
-            todo!()
-        }
-
-        fn Execute(&mut self) -> bool {
-            todo!()
-        }
-    }
-    impl Callback for MOCK_UBIO_CALLBACK {
-        fn _DoSpecificJob(&mut self) -> bool {
-            true
-        }
-
-        fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>> {
-            None
-        }
-
-        fn _MarkExecutedDone(&mut self) {
-
-        }
-    }*/
-
     #[test]
     fn test_define_my_callback() {
         // Given: a chain of callbacks (callback1 -> callback2)

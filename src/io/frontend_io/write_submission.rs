@@ -26,7 +26,7 @@ use crate::io::general_io::rba_state_manager::RBAStateManagerSingleton;
 use crate::io::general_io::translator::Translator;
 use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 use crate::lib::block_alignment::BlockAlignment;
-use crate::state::include::state_type::{StateEnum, StateType};
+use crate::state::include::state_type::StateEnum;
 use crate::state::state_manager::StateManagerSingleton;
 
 pub struct WriteSubmission {
@@ -74,14 +74,14 @@ impl WriteSubmission {
         }
     }
 
-    fn _ProcessOwnedWrite(&mut self) -> bool {
+    fn _ProcessOwnedWrite(&mut self) -> Result<bool, PosEventId> {
         self._AllocateFreeWriteBuffer();
 
         if self.block_count > self.allocated_block_count {
-            return false;
+            return Ok(false);
         }
 
-        self._PrepareBlockAlignment();
+        self._PrepareBlockAlignment()?;
         if self.processed_block_count == 0
             && self.allocated_block_count == 1 {
             self._WriteSingleBlock();
@@ -89,7 +89,7 @@ impl WriteSubmission {
             self._WriteMultipleBlocks();
         }
 
-        true
+        Ok(true)
     }
 
     fn _AllocateFreeWriteBuffer(&mut self) -> Result<(), PosEventId> {
@@ -109,7 +109,8 @@ impl WriteSubmission {
                     self.volume_io.ubio.as_ref().unwrap().lock().unwrap().arrayId.clone() as u32
                 };
                 let state_control = StateManagerSingleton.lock().unwrap().GetStateControl(array_id);
-                if state_control.GetState().ToStateType() == StateType::new(StateEnum::STOP) {
+                if state_control.GetStateEnum() == StateEnum::STOP {
+                //if state_control.GetState().ToStateType() == StateType::new(StateEnum::STOP) {
                     let event_id = WRHDLR_FAIL_BY_SYSTEM_STOP;
                     error!("[{}] System Stop incurs write fail", event_id.to_string());
                     if !self.i_block_allocator.Unlock(volume_id.unwrap()) {
@@ -159,14 +160,16 @@ impl WriteSubmission {
         self.allocated_virtual_blks.push( virtual_blks );
     }
 
-    fn _PrepareBlockAlignment(&mut self) {
+    fn _PrepareBlockAlignment(&mut self) -> Result<(), PosEventId> {
         if self.block_alignment.HasHead() {
-            self._ReadOldHeadBlock();
+            self._ReadOldHeadBlock()?;
         }
 
         if self.block_alignment.HasTail() {
-            self._ReadOldTailBlock();
+            self._ReadOldTailBlock()?;
         }
+
+        Ok(())
     }
 
     fn _WriteSingleBlock(&mut self) {
@@ -188,21 +191,23 @@ impl WriteSubmission {
         self._SubmitVolumeIo();
     }
 
-    fn _ReadOldHeadBlock(&mut self) {
-        let head_rba = self.block_alignment.GetHeadBlock();
+    fn _ReadOldHeadBlock(&mut self) -> Result<(), PosEventId> {
+        let head_rba = self.block_alignment.GetHeadBlock()?;
         let vsa = self._PopHeadVsa();
         self._ReadOldBlock(head_rba, vsa, false);
+        Ok(())
     }
 
-    fn _ReadOldTailBlock(&mut self) {
+    fn _ReadOldTailBlock(&mut self) -> Result<(), PosEventId> {
         if self.processed_block_count == self.block_count {
-            return;
+            return Ok(());
         }
 
-        let tail_rba = self.block_alignment.GetTailBlock();
+        let tail_rba = self.block_alignment.GetTailBlock()?;
         let vsa = self._PopTailVsa();
 
         self._ReadOldBlock(tail_rba, vsa, true);
+        Ok(())
     }
 
     fn _PopHeadVsa(&mut self) -> (VirtualBlkAddr, StripeId) {
@@ -411,6 +416,31 @@ impl WriteSubmission {
         let sectors_to_increment = ChangeBlockToSector(vsa_range.num_blks as u64);
         pba.IncrementsLbaBy(sectors_to_increment);
     }
+
+    fn execute_or_throw_exception(&mut self) -> Result<bool, PosEventId> {
+        let flow_control = self.flow_control.lock().unwrap();
+        let token = flow_control.GetToken(FlowControlType::USER, self.block_count as i32)?;
+        if token <= 0 {
+            return Ok(false);
+        }
+        let start_rba = self.block_alignment.GetHeadBlock()?;
+        let volume_id = self.volume_io.vol_id;
+        let ownership_acquired = RBAStateManagerSingleton.BulkAcquireOwnership(volume_id.unwrap(), start_rba, self.block_count)?;
+        if !ownership_acquired {
+            if token > 0 {
+                flow_control.ReturnToken(FlowControlType::USER, token)?;
+            }
+            return Ok(false);
+        }
+        std::mem::drop(flow_control); // flow_control로 인해 self가 immutable borrow가 되어 self._ProcessOwnedWrite() 컴파일이 안되므로, 강제로 drop
+        let done = self._ProcessOwnedWrite()?;
+        if !done {
+            RBAStateManagerSingleton.BulkReleaseOwnership(volume_id.unwrap(), start_rba, self.block_count)?;
+        } else {
+            //let _array_id = self.volume_io.ubio.unwrap().lock().unwrap().arrayId;
+        }
+        Ok(done)
+    }
 }
 
 impl Event for WriteSubmission {
@@ -419,27 +449,22 @@ impl Event for WriteSubmission {
     }
 
     fn Execute(&mut self) -> bool {
-        let flow_control = self.flow_control.lock().unwrap();
-        let token = flow_control.GetToken(FlowControlType::USER, self.block_count as i32);
-        if token <= 0 {
-            return false;
-        }
-        let start_rba = self.block_alignment.GetHeadBlock();
-        let volume_id = self.volume_io.vol_id;
-        let ownership_acquired = RBAStateManagerSingleton.BulkAcquireOwnership(volume_id.unwrap(), start_rba, self.block_count);
-        if !ownership_acquired {
-            if token > 0 {
-                flow_control.ReturnToken(FlowControlType::USER, token);
+        match self.execute_or_throw_exception() {
+            Ok(is_successful) => {
+                return is_successful
+            },
+            Err(e) => {
+                // corresponds to pos-cpp's "catch (...) {}"
+                println!("[{}] the exception is thrown", e.to_string());
+                if self.volume_io.vol_id.is_some() {
+                    let io_completer = IoCompleter {};
+                    io_completer.CompleteUbioWithoutRecovery(IOErrorType::GENERIC_ERROR, true);
+                }
+                // TODO: refactor VolumeIo for Option<VolumeIo> for self
+                self.volume_io = VolumeIo::new(None, 0, 0);
+                true
             }
-            return false;
         }
-        std::mem::drop(flow_control); // flow_control로 인해 self가 immutable borrow가 되어 self._ProcessOwnedWrite() 컴파일이 안되므로, 강제로 drop
-        let done = self._ProcessOwnedWrite();
-        if !done {
-            RBAStateManagerSingleton.BulkReleaseOwnership(volume_id.unwrap(), start_rba, self.block_count);
-        } else {
-            //let _array_id = self.volume_io.ubio.unwrap().lock().unwrap().arrayId;
-        }
-        done
     }
+
 }

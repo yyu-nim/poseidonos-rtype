@@ -25,7 +25,7 @@ impl AIO {
     pub fn SubmitAsyncIO(&self, volumeIo: VolumeIo) {
         let ubio_dir = {
             let ubio_dir = volumeIo.ubio.as_ref().unwrap().lock().unwrap();
-            ubio_dir.dir.clone()
+            ubio_dir.dir
         };
         match ubio_dir {
             UbioDir::Write => {

@@ -201,6 +201,7 @@ mod tests {
             ubio.dir = UbioDir::Read;
             let ubio = Arc::new(Mutex::new(ubio));
             ssd.SubmitAsyncIO(ubio.clone());
+            parker.park();
             let actual_pattern = {
                 let inner_ubio = ubio.lock().unwrap();
                 let bytes = inner_ubio

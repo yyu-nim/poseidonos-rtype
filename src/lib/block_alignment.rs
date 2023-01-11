@@ -1,4 +1,5 @@
 use crate::include::memory;
+use crate::include::pos_event_id::PosEventId;
 
 pub struct BlockAlignment {
     start_address: u64,
@@ -46,8 +47,8 @@ impl BlockAlignment {
         self.block_count
     }
 
-    pub fn GetHeadBlock(&self) -> u64 {
-        memory::ChangeByteToSector(self.start_address)
+    pub fn GetHeadBlock(&self) -> Result<u64, PosEventId> {
+        Ok(memory::ChangeByteToSector(self.start_address))
     }
 
     pub fn HasHead(&self) -> bool {
@@ -70,7 +71,7 @@ impl BlockAlignment {
         self.head_position
     }
 
-    pub fn GetTailBlock(&self) -> u64 {
-        return self.GetHeadBlock() + self.block_count as u64 - 1;
+    pub fn GetTailBlock(&self) -> Result<u64, PosEventId> {
+        return Ok(self.GetHeadBlock()? + self.block_count as u64 - 1);
     }
 }

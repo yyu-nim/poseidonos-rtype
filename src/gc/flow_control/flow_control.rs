@@ -1,5 +1,6 @@
 use std::sync::{Arc, Mutex};
 use lazy_static::lazy_static;
+use crate::include::pos_event_id::PosEventId;
 
 pub struct FlowControl;
 
@@ -20,13 +21,14 @@ impl FlowControl {
         FlowControl
     }
 
-    pub fn GetToken(&self, fc_type: FlowControlType, token: i32) -> i32 {
+    pub fn GetToken(&self, fc_type: FlowControlType, token: i32) -> Result<i32, PosEventId> {
         // TODO
-        1
+        Ok(1)
     }
 
-    pub fn ReturnToken(&self, fc_type: FlowControlType, token: i32) {
+    pub fn ReturnToken(&self, fc_type: FlowControlType, token: i32) -> Result<(), PosEventId>{
         // TODO
+        Ok(())
     }
 
 }

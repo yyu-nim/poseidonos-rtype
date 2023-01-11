@@ -10,10 +10,8 @@ use crate::include::backend_event::BackendEvent;
 use crate::include::i_array_device::IArrayDevice;
 use crate::include::memory::{BLOCK_SIZE, SECTOR_SIZE};
 
-// TODO: Callback needs to be generic (refer to Callback.cpp)
 pub type CallbackClosure = Box<dyn FnMut(&Vec<u8>)->()>;
 
-//#[derive(Copy, Clone)]
 pub struct Ubio {
     pub dir: UbioDir,
     pub dataBuffer: Option<DataBuffer>,
@@ -71,7 +69,7 @@ impl Debug for Ubio {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum UbioDir {
     Read,
     Write,

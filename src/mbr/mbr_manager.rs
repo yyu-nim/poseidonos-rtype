@@ -261,7 +261,7 @@ impl MbrManager {
         };
         let mut bio = Ubio::new(Some(io_buffer.clone()), Some(diskio_callback), 0);
         bio.uBlock = Some(dev);
-        bio.dir = io_dir.clone();
+        bio.dir = io_dir;
         bio.lba = MBR_ADDRESS;
 
         IODispatcherSingleton.lock().unwrap().Submit(Arc::new(Mutex::new(bio)),
