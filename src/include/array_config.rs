@@ -1,0 +1,1 @@
+pub const BLOCKS_PER_CHUNK: u32 = 64;

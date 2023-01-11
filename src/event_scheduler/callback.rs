@@ -51,7 +51,7 @@ pub trait Callback : Event {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use std::ops::Deref;
     use std::sync::{Arc, Mutex};
     use crate::event_scheduler::callback::Callback;

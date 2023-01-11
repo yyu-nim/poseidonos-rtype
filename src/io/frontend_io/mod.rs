@@ -4,3 +4,6 @@ pub mod aio;
 pub mod aio_submission_adapter;
 pub mod write_submission;
 pub mod read_submission;
+pub mod block_map_update_request;
+pub mod read_completion_for_partial_write;
+pub mod write_for_parity;

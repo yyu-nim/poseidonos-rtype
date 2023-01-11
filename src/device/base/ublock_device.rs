@@ -2,9 +2,10 @@ use crate::bio::ubio::Ubio;
 use crate::device::base::device_property::DeviceClass;
 use std::any::Any;
 use std::fmt::{Debug, Formatter};
+use std::sync::{Arc, Mutex};
 
 pub trait UBlockDevice: Sync + Send {
-    fn SubmitAsyncIO(&self, bio: &mut Ubio) -> i32;
+    fn SubmitAsyncIO(&self, bio: Arc<Mutex<Ubio>>) -> i32;
     fn CompleteIOs(&self) -> i32;
     fn Close(&self) -> u32;
     fn Open(&mut self) -> bool;

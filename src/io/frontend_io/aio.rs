@@ -10,7 +10,7 @@ use crate::event_scheduler::spdk_event_scheduler;
 use crate::generated::bindings::{IO_TYPE_FLUSH, pos_io, POS_IO_STATUS_SUCCESS};
 use crate::include::backend_event::BackendEvent;
 use crate::include::backend_event::BackendEvent::BackendEvent_FrontendIO;
-use crate::include::memory::ChangeByteToSector;
+use crate::include::memory::{ChangeByteToSector, SECTOR_SIZE};
 use crate::include::pos_event_id::PosEventId;
 use crate::include::pos_event_id::PosEventId::{AIO_FLUSH_END, BLKHDLR_WRONG_IO_DIRECTION};
 use crate::io::frontend_io::read_submission::ReadSubmission;
@@ -23,7 +23,11 @@ pub struct AIO;
 
 impl AIO {
     pub fn SubmitAsyncIO(&self, volumeIo: VolumeIo) {
-        match volumeIo.dir {
+        let ubio_dir = {
+            let ubio_dir = volumeIo.ubio.as_ref().unwrap().lock().unwrap();
+            ubio_dir.dir
+        };
+        match ubio_dir {
             UbioDir::Write => {
                 let w_event = Box::new(WriteSubmission::new(volumeIo));
                 //pos-cpp => spdk_event_scheduler::ExecuteOrScheduleEvent( 0, w_event );
@@ -84,10 +88,19 @@ impl AIO {
         let event_type = BackendEvent_FrontendIO;
 
         let mut aioCompletion = AioCompletion::new(posIo.clone()).to_callback();
-        let v = VolumeIo::new(array_id,volume_id,
-                              sector_rba, sector_size,
-                              volume_io_dir, vec![],
-                              aioCompletion);
+        let buffer_size = sector_size * (SECTOR_SIZE as u64);
+        let io_buffer = Arc::new(Mutex::new(vec![0u8; buffer_size as usize]));
+        let mut v = VolumeIo::new(Some(io_buffer), sector_size as u32, array_id);
+        v.vol_id = Some(volume_id);
+        v.sector_rba = Some(sector_rba);
+        {
+            let mut ubio = v.ubio.as_ref().unwrap().lock().unwrap();
+            ubio.eventIoType = event_type;
+            ubio.dir = volume_io_dir;
+
+            // TODO: should we add "lba" and "dataBuffer" to ubio here?
+        }
+
         Ok(v)
     }
 }

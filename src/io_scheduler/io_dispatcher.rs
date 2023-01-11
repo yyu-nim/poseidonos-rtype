@@ -32,19 +32,21 @@ impl IODispatcher {
 }
 
 impl IIODispatcher for IODispatcher {
-    fn Submit(&self, mut ubio: Ubio, _sync: bool, _ioRecoveryNeeded: bool) -> PosEventId {
+    fn Submit(&self, mut ubio: Arc<Mutex<Ubio>>, _sync: bool, _ioRecoveryNeeded: bool) -> PosEventId {
+        let uBlock_cloned = {
+            let ubio_locked = ubio.lock().unwrap();
+            let uBlock;
+            if let Some(u) = ubio_locked.uBlock.as_ref() {
+                uBlock = u;
+            } else {
+                error!("The ubio does not have its UBlockDevice: {:?}. Cannot submit I/O", ubio_locked);
+                return UBIO_WITHOUT_UBLOCKDEV;
+            }
+            uBlock.clone_box()
+        };
 
-        let uBlock;
-        if let Some(u) = ubio.uBlock.as_ref() {
-            uBlock = u;
-        } else {
-            error!("The ubio does not have its UBlockDevice: {:?}. Cannot submit I/O", ubio);
-            return UBIO_WITHOUT_UBLOCKDEV;
-        }
-
-        let uBlock_cloned = uBlock.clone_box();
         IODispatcherSubmissionSingleton.lock().unwrap().SubmitIO(
-            uBlock_cloned, ubio, None);
+            uBlock_cloned, ubio.clone(), None);
 
         SUCCESS
     }
@@ -65,17 +67,45 @@ pub fn CompleteForThreadLocalDeviceList() {
 
 #[cfg(test)]
 #[allow(non_snake_case)]
-mod tests {
+pub mod tests {
     use std::sync::{Arc, Mutex};
     use std::sync::mpsc::channel;
+    use crossbeam::sync::{Parker, Unparker};
     use log::{debug, info};
     use crate::bio::ubio::{Ubio, UbioDir};
     use crate::device::base::ublock_device::UBlockDevice;
     use crate::device::ufile::ufile_ssd::UfileSsd;
+    use crate::event_scheduler::callback::{Callback, tests};
+    use crate::event_scheduler::event::Event;
+    use crate::include::backend_event::BackendEvent;
     use crate::io_scheduler::io_dispatcher::IODispatcherSingleton;
 
     fn init() {
         let _ = env_logger::builder().is_test(true).try_init();
+    }
+
+    pub struct WaitReadDone {
+        pub unparker: Unparker,
+        pub done: bool,
+    }
+    impl Event for WaitReadDone {
+        fn GetEventType(&self) -> BackendEvent { todo!() }
+
+        fn Execute(&mut self) -> bool { todo!() }
+    }
+    impl Callback for WaitReadDone {
+        fn _DoSpecificJob(&mut self) -> bool {
+            self.unparker.unpark();
+            true
+        }
+
+        fn _TakeCallee(&mut self) -> Option<Box<dyn Callback>> {
+            None
+        }
+
+        fn _MarkExecutedDone(&mut self) {
+            self.done = true;
+        }
     }
 
     #[test]
@@ -88,35 +118,34 @@ mod tests {
         let ublock_device_cloned = ublock_device.clone_box(); // arc<mutex>로 구현
 
         let PATTERN = b"CerTAinUnIquePATteRn";
-        let mut write_ubio = Ubio::new(UbioDir::Write, 0, PATTERN.to_vec(), Box::new(|_| {}));
-        write_ubio.uBlock = Some(ublock_device.boxed()); // TODO: move to constructor param
-
+        let write_buffer = Arc::new(Mutex::new(PATTERN.to_vec()));
+        let mut write_ubio = Ubio::new(Some(write_buffer), None /* no callback */, 0);
+        write_ubio.lba = 0;
+        write_ubio.dir = UbioDir::Write;
+        write_ubio.uBlock = Some(ublock_device.boxed());
+        let write_ubio = Arc::new(Mutex::new(write_ubio));
         IODispatcherSingleton.lock().unwrap().Submit(write_ubio, false, false);
 
         // When: we read a block where the pattern was written to
-        let result_to_copy_to = Arc::new(Mutex::new(Vec::new()));
-        let read_callback = {
-            let result_to_copy_to = result_to_copy_to.clone();
-            Box::new(move |read_buffer: &Vec<u8>| {
-                // "FnMut" closure to capture "a result buffer" and modify it by pushing bytes
-                // TODO: 사실 Arc, Mutex, move 를 쓰게되면서 FnMut을 쓴 의미가 퇴색되었고,
-                // 대신 FnOnce closure로 더 제한하는게 맞아보이는데,
-                // ubio 혹은 그 안에 담긴 member들을 move out하는 것이, callstack 여러 부분의 signature를 바꿔야 하는 것 같고,
-                // 이 경우, original pos (cpp) 코드와 차이가 벌어지게 만들 수 있어서, 일단은 현재의 fn signature를
-                // 유지하고자 Arc, Mutex, move를 써서 구현함. Callback.cpp 포팅/리팩토링이 끝난 이후 이 부분 다시 검토해 볼 것.
-                let mut result_to_copy_to = result_to_copy_to.lock().unwrap();
-                for &each_byte in read_buffer {
-                    result_to_copy_to.push(each_byte);
-                }
-            })
-        };
-        let mut read_buffer = vec![0; PATTERN.len()];
-        let mut read_ubio = Ubio::new(UbioDir::Read, 0, read_buffer, read_callback);
+        let parker = Parker::new();
+        let unparker = parker.unparker().clone();
+        let mut read_buffer = Arc::new(Mutex::new(vec![0; PATTERN.len()]));
+        let read_callback: Box<dyn Callback> = Box::new(
+            WaitReadDone {
+                unparker: unparker,
+                done: false
+            }
+        );
+        let mut read_ubio = Ubio::new(Some(read_buffer.clone()), Some(read_callback), 0);
+        read_ubio.lba = 0;
+        read_ubio.dir = UbioDir::Read;
         read_ubio.uBlock = Some(ublock_device_cloned);
+        let read_ubio = Arc::new(Mutex::new(read_ubio));
         IODispatcherSingleton.lock().unwrap().Submit(read_ubio, false, false);
+        parker.park(); // read i/o가 끝날때까지 synchronous하게 기다려 주는 역할.
 
         // Then: we should see the same pattern
-        let actual = result_to_copy_to.lock().unwrap();
+        let actual = read_buffer.lock().unwrap();
         assert_eq!(PATTERN.to_vec(), actual.to_vec());
     }
 }
