@@ -1,5 +1,6 @@
 use crate::include::i_array_device::IArrayDevice;
 
+pub type SegmentId = u32;
 pub type StripeId = u32;
 pub type BlkOffset = u64;
 pub type BlkAddr = u64;
@@ -67,4 +68,8 @@ impl PhysicalEntry {
 
 pub fn IsUnMapVsa(vsa: &VirtualBlkAddr) -> bool {
     (vsa.stripe_id == UNMAP_STRIPE) && (vsa.offset == UNMAP_OFFSET)
+}
+
+pub fn IsUnMapStripe(stripe_id: StripeId) -> bool {
+    stripe_id == UNMAP_STRIPE
 }

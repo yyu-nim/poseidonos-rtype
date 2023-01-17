@@ -26,4 +26,8 @@ impl QosManager {
         // TODO
 
     }
+
+    pub fn IncreaseUsedStripeCnt(&self, array_id: u32) {
+        // TODO
+    }
 }
