@@ -12,7 +12,15 @@ pub struct Map {
 }
 
 impl Map {
-    pub fn new(num_mpages: u64, mpage_size: u64) -> Self {
+    pub fn new() -> Self {
+        Self {
+            mpage_arr: Vec::new(),
+            page_size: 0,
+            num_pages: 0,
+        }
+    }
+
+    pub fn Init(&mut self, num_mpages: u64, mpage_size: u64) {
         let mut mPageArr = Vec::new();
         for mpage in 0..num_mpages {
             mPageArr.push(Mpage {
@@ -21,11 +29,9 @@ impl Map {
             })
         }
 
-        Self {
-            mpage_arr: mPageArr,
-            page_size: mpage_size,
-            num_pages: num_mpages,
-        }
+        self.mpage_arr = mPageArr;
+        self.page_size = mpage_size;
+        self.num_pages = num_mpages;
     }
 
     pub fn AllocateMpage(&mut self, page_num: u64) -> Option<&mut Vec<u8>> {
@@ -64,7 +70,8 @@ mod tests {
 
     #[test]
     fn test_allocating_new_mpage() {
-        let mut map = Map::new(10, 4032);
+        let mut map = Map::new();
+        map.Init(10, 4032);
         assert!(map.AllocateMpage(3).is_some());
         assert!(map.AllocateMpage(3).is_none()); // cannot allocate again
 
@@ -74,7 +81,8 @@ mod tests {
 
     #[test]
     fn test_updating_mpage() {
-        let mut map = Map::new(10, 4032);
+        let mut map = Map::new();
+        map.Init(10, 4032);
         let mpage = map.AllocateMpage(2).unwrap();
 
         // Update mpage

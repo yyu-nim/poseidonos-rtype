@@ -2,11 +2,13 @@ use crate::{
     array_models::interface::i_array_info::ArrayInfo, include::partition_type::PartitionType,
 };
 
+#[derive(Clone)]
 pub struct MapperAddressInfo {
     pub maxVsid: u32,
     pub blksPerStripe: u32,
     pub numWbStripes: u32,
     pub mpageSize: u32,
+    pub arrayId: u32,
 }
 
 impl MapperAddressInfo {
@@ -25,6 +27,7 @@ impl MapperAddressInfo {
             blksPerStripe: user_partition_size.blksPerStripe,
             numWbStripes: wb_partition_size.totalStripes,
             mpageSize,
+            arrayId: arrayInfo.index,
         }
     }
 }

@@ -1,7 +1,10 @@
 use bit_vec::BitVec;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use crate::include::memory;
+use crate::include::{
+    address_type::{IsUnMapVsa, VirtualBlkAddr},
+    memory,
+};
 
 struct MpageInfo {
     pub num_valid_mpages: u64,
@@ -10,7 +13,7 @@ struct MpageInfo {
     pub age: u64,
 }
 
-struct MapHeader {
+pub struct MapHeader {
     age: u64,
     size: u64,
     num_used_blks: AtomicU64,
@@ -58,15 +61,16 @@ impl MapHeader {
     pub fn GetMpageMap(&mut self) -> &BitVec {
         &self.mpage_map
     }
-    pub fn SetMapAllocated(&mut self, page_num: i32) {
+    pub fn SetMapAllocated(&mut self, page_num: u64) {
         self.mpage_map.set(page_num as usize, true);
     }
     pub fn GetTouchedMpages(&mut self) -> &BitVec {
         &self.touched_mpages
     }
-    pub fn UpdateNumUsedBlks(&mut self /*, vsa: VirtualBlkAddr*/) {
-        // TODO: if vsa is not unmap
-        self.num_used_blks.fetch_add(1, Ordering::SeqCst);
+    pub fn UpdateNumUsedBlks(&mut self, vsa: VirtualBlkAddr) {
+        if IsUnMapVsa(&vsa) {
+            self.num_used_blks.fetch_add(1, Ordering::SeqCst);
+        }
     }
     pub fn GetNumUsedBlks(&self) -> u64 {
         self.num_used_blks.load(Ordering::SeqCst)
@@ -87,7 +91,7 @@ impl MapHeader {
 
 #[cfg(test)]
 mod tests {
-    use crate::include::memory::Align;
+    use crate::include::{address_type::UNMAP_VSA, memory::Align};
 
     use super::*;
 
@@ -132,8 +136,8 @@ mod tests {
         let mut header = MapHeader::new();
         header.Init(100, 4032);
 
-        header.UpdateNumUsedBlks();
-        header.UpdateNumUsedBlks();
+        header.UpdateNumUsedBlks(UNMAP_VSA);
+        header.UpdateNumUsedBlks(UNMAP_VSA);
 
         assert_eq!(header.GetNumUsedBlks(), 2);
     }
