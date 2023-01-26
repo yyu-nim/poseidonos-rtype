@@ -13,7 +13,7 @@ pub struct MapContent {
     file_name: String,
     file_type: MetaFileType,
     map_id: u32,
-    pub entriesPerPage: u64,
+    entries_per_page: u64,
     addr_info: MapperAddressInfo,
     is_initialized: bool,
 }
@@ -31,7 +31,7 @@ impl MapContent {
             file_name: fileName,
             file_type: fileType,
             map_id: mapId,
-            entriesPerPage: 0,
+            entries_per_page: 0,
             addr_info: addrInfo.clone(),
             is_initialized: false,
         }
@@ -41,8 +41,8 @@ impl MapContent {
         if self.is_initialized == false {
             self.is_initialized = true;
 
-            self.entriesPerPage = mpage_size / entry_size;
-            let numMpages = DivideUp(num_entries, self.entriesPerPage);
+            self.entries_per_page = mpage_size / entry_size;
+            let numMpages = DivideUp(num_entries, self.entries_per_page);
             self.map.Init(numMpages, mpage_size);
             self.map_header.Init(numMpages, mpage_size);
         }
@@ -67,5 +67,9 @@ impl MapContent {
     }
     pub fn GetMapHeaderMut(&mut self) -> &mut MapHeader {
         &mut self.map_header
+    }
+
+    pub fn GetEntriesPerPage(&self) -> u64 {
+        self.entries_per_page
     }
 }

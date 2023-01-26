@@ -38,7 +38,7 @@ impl VSAMapContent {
     }
 
     pub fn GetEntry(&mut self, rba: BlkAddr) -> VirtualBlkAddr {
-        let entries_per_page = self.map_content.entriesPerPage;
+        let entries_per_page = self.map_content.GetEntriesPerPage();
         let map = self.map_content.GetMapMut();
 
         let page_num = rba / entries_per_page;
@@ -55,7 +55,7 @@ impl VSAMapContent {
     }
 
     pub fn SetEntry(&mut self, rba: BlkAddr, vsa: VirtualBlkAddr) -> Result<(), PosEventId> {
-        let entries_per_page = self.map_content.entriesPerPage;
+        let entries_per_page = self.map_content.GetEntriesPerPage();
         let page_num = rba / entries_per_page;
 
         let old_vsa = {
@@ -101,7 +101,7 @@ impl VSAMapContent {
     }
 
     pub fn GetDirtyPages(&self, start: u64, num_entries: u64) -> MpageList {
-        let entries_per_page = self.map_content.entriesPerPage;
+        let entries_per_page = self.map_content.GetEntriesPerPage();
         let start_page_num = start / entries_per_page;
         let end_page_num = (start + num_entries) / entries_per_page;
         let end_offset = (start + num_entries) % entries_per_page;
