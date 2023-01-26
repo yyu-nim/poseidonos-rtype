@@ -39,13 +39,13 @@ pub struct VirtualBlks {
     pub num_blks: u32,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct StripeAddr {
     pub stripe_loc: StripeLoc,
     pub stripe_id: StripeId,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum StripeLoc {
     IN_USER_AREA,
     IN_WRITE_BUFFER_AREA,

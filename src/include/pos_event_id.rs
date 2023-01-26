@@ -60,6 +60,7 @@ pub enum PosEventId {
     WRITE_FOR_PARITY_FAILED,
 
     VSAMAP_SET_FAILURE,
+    STRIPEMAP_SET_FAILURE,
 }
 
 #[cfg(test)]
