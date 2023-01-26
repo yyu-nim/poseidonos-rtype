@@ -23,6 +23,7 @@ pub mod array;
 pub mod state;
 pub mod volume;
 pub mod sys_event;
+pub mod mapper;
 pub mod mbr;
 pub mod metadata;
 pub mod allocator;

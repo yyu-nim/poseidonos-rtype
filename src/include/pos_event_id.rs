@@ -58,6 +58,8 @@ pub enum PosEventId {
     WRHDLR_FAIL_BY_SYSTEM_STOP,
 
     WRITE_FOR_PARITY_FAILED,
+
+    VSAMAP_SET_FAILURE,
 }
 
 #[cfg(test)]

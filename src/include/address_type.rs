@@ -8,8 +8,12 @@ pub const STRIPE_ID_BIT_LEN: u32 = 30;
 pub const BLOCK_OFFSET_BIT_LEN: u32 = 33;
 pub const UNMAP_STRIPE: StripeId = (1 << STRIPE_ID_BIT_LEN) - 1;
 pub const UNMAP_OFFSET: BlkOffset = (1 << BLOCK_OFFSET_BIT_LEN) - 1;
+pub const UNMAP_VSA: VirtualBlkAddr = VirtualBlkAddr {
+    stripe_id: UNMAP_STRIPE,
+    offset: UNMAP_OFFSET,
+};
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct VirtualBlkAddr {
     pub stripe_id: StripeId,
     pub offset: BlkOffset,

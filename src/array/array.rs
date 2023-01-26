@@ -1,4 +1,5 @@
 use std::borrow::BorrowMut;
+use std::collections::HashMap;
 use lazy_static::lazy_static;
 use log::{error, info, warn};
 use crate::array::device::array_device_manager::ArrayDeviceManager;
@@ -100,17 +101,18 @@ impl Array {
         let info = ArrayInfo {
             name: name.clone(),
             index,
-            metaRaidType: metaFt.clone(),
-            dataRaidType: dataFt.clone(),
-            uniqueId,
-            isWriteThroughEnabled: false, // TODO
+            meta_raid_type: metaFt.clone(),
+            data_raid_type: dataFt.clone(),
+            unique_id: uniqueId,
+            partition_size_info: HashMap::new(),
+            is_write_through_enabled: false, // TODO
         };
 
         let devs = self.devMgr_.ExportToMeta();
         let mut meta = ArrayMeta::new(info.name.clone(),
-                                      devs, info.metaRaidType.clone(),
-                                      info.dataRaidType.clone(),
-                                      info.uniqueId);
+                                      devs, info.meta_raid_type.clone(),
+                                      info.data_raid_type.clone(),
+                                      info.unique_id);
 
         self.info = Some(info);
 

@@ -23,3 +23,11 @@ pub fn ChangeBlockToSector(b: u64) -> u64 {
 pub fn ChangeSectorToByte(s: u64) -> u64 {
     s << SECTOR_SIZE_SHIFT
 }
+
+pub fn DivideUp(v: u64, a: u64) -> u64 {
+    (v + a - 1) / a
+}
+
+pub fn Align(v: u64, u: u64) -> u64 {
+    u * DivideUp(v, u)
+}
