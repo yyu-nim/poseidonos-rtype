@@ -7,11 +7,11 @@ use crate::{include::partition_type::PartitionType, array_models::dto::partition
 pub struct ArrayInfo {
     pub name: String,
     pub index: u32,
-    pub metaRaidType: String,
-    pub dataRaidType: String,
-    pub uniqueId: u32,
-    pub partitionSizInfo: HashMap<PartitionType, PartitionLogicalSize>,
-    pub isWriteThroughEnabled: bool,
+    pub meta_raid_type: String,
+    pub data_raid_type: String,
+    pub unique_id: u32,
+    pub partition_size_info: HashMap<PartitionType, PartitionLogicalSize>,
+    pub is_write_through_enabled: bool,
 }
 
 impl std::fmt::Display for ArrayInfo {

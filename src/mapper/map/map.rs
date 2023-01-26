@@ -41,7 +41,7 @@ impl Map {
             return None;
         }
 
-        let new_mpage = vec![0xF; self.page_size as usize];
+        let new_mpage = vec![0xFF; self.page_size as usize];
         self.mpage_arr[page_num as usize].data = new_mpage;
 
         Some(&mut self.mpage_arr[page_num as usize].data)
@@ -77,6 +77,7 @@ mod tests {
 
         let mpage = map.GetMpage(3);
         assert!(mpage.is_some());
+        assert_eq!(mpage.unwrap(), &mut vec![0xFF; 4032]);
     }
 
     #[test]

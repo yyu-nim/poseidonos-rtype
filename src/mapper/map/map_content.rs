@@ -7,15 +7,15 @@ use super::map::Map;
 use super::map_header::MapHeader;
 
 pub struct MapContent {
-    mapHeader: MapHeader,
+    map_header: MapHeader,
     map: Map,
     // TODO add mapIoHandler
-    fileName: String,
-    fileType: MetaFileType,
-    mapId: u32,
+    file_name: String,
+    file_type: MetaFileType,
+    map_id: u32,
     pub entriesPerPage: u64,
-    addrInfo: MapperAddressInfo,
-    isInitialized: bool,
+    addr_info: MapperAddressInfo,
+    is_initialized: bool,
 }
 
 impl MapContent {
@@ -26,30 +26,30 @@ impl MapContent {
         fileType: MetaFileType,
     ) -> Self {
         Self {
-            mapHeader: MapHeader::new(),
+            map_header: MapHeader::new(),
             map: Map::new(),
-            fileName,
-            fileType,
-            mapId,
+            file_name: fileName,
+            file_type: fileType,
+            map_id: mapId,
             entriesPerPage: 0,
-            addrInfo: addrInfo.clone(),
-            isInitialized: false,
+            addr_info: addrInfo.clone(),
+            is_initialized: false,
         }
     }
 
-    pub fn Init(&mut self, numEntires: u64, entrySize: u64, mpageSize: u64) {
-        if self.isInitialized == false {
-            self.isInitialized = true;
+    pub fn Init(&mut self, num_entries: u64, entry_size: u64, mpage_size: u64) {
+        if self.is_initialized == false {
+            self.is_initialized = true;
 
-            self.entriesPerPage = mpageSize / entrySize;
-            let numMpages = DivideUp(numEntires, self.entriesPerPage);
-            self.map.Init(numMpages, mpageSize);
-            self.mapHeader.Init(numMpages, mpageSize);
+            self.entriesPerPage = mpage_size / entry_size;
+            let numMpages = DivideUp(num_entries, self.entriesPerPage);
+            self.map.Init(numMpages, mpage_size);
+            self.map_header.Init(numMpages, mpage_size);
         }
     }
 
     pub fn Dispose(&mut self) {
-        self.isInitialized = false;
+        self.is_initialized = false;
     }
 
     pub fn OpenMapFile(&mut self) -> Result<(), PosEventId> {
@@ -60,12 +60,12 @@ impl MapContent {
         &self.map
     }
     pub fn GetMapHeader(&self) -> &MapHeader {
-        &self.mapHeader
+        &self.map_header
     }
-    pub fn GetMutMap(&mut self) -> &mut Map {
+    pub fn GetMapMut(&mut self) -> &mut Map {
         &mut self.map
     }
-    pub fn GetMutMapHeader(&mut self) -> &mut MapHeader {
-        &mut self.mapHeader
+    pub fn GetMapHeaderMut(&mut self) -> &mut MapHeader {
+        &mut self.map_header
     }
 }
