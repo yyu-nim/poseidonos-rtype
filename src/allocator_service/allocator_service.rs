@@ -23,7 +23,7 @@ impl Clone for AllocatorService {
 }
 
 impl IBlockAllocator for AllocatorService {
-    fn AllocateWriteBufferBlks(&self, volume_id: u32, num_blks: u32) -> (VirtualBlks, StripeId) {
+    fn AllocateWriteBufferBlks(&mut self, volume_id: u32, num_blks: u32) -> Option<(VirtualBlks, StripeId)> {
         todo!()
     }
 

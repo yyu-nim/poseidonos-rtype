@@ -6,3 +6,4 @@ pub enum VolumeIoType
     MaxVolumeIoTypeCnt
 }
 
+pub const MAX_VOLUME_COUNT: usize = 256;

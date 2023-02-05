@@ -101,10 +101,8 @@ impl WriteSubmission {
         let is_wt_enabled = true; // Write-back isn't considered at the moment
         let mut remain_block_count = self.block_count - self.allocated_block_count;
         while remain_block_count > 0 {
-            let (virtual_blks, stripe_id) = self.i_block_allocator.AllocateWriteBufferBlks(volume_id.unwrap(), remain_block_count);
-            let target_vsa_range: VirtualBlks = virtual_blks;
-
-            if address_type::IsUnMapVsa(&target_vsa_range.start_vsa) {
+            let allocated = self.i_block_allocator.AllocateWriteBufferBlks(volume_id.unwrap(), remain_block_count);
+            if allocated.is_none() {
                 println!("No free space in write buffer");
                 let array_id = {
                     self.volume_io.ubio.as_ref().unwrap().lock().unwrap().arrayId.clone() as u32
@@ -122,6 +120,8 @@ impl WriteSubmission {
                 }
                 break;
             }
+            let (virtual_blks, stripe_id) = allocated.unwrap();
+            let target_vsa_range: VirtualBlks = virtual_blks;
 
             if is_wt_enabled {
                 let mut start_vsa = target_vsa_range.start_vsa;
