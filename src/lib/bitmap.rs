@@ -1,6 +1,8 @@
 use std::sync::Mutex;
 use bit_vec::BitVec;
+use bitvec::{bitarr, bitvec};
 use crate::include::address_type::StripeId;
+use bitvec::prelude::*;
 
 const BITMAP_ENTRY_BITS: usize = 64;
 const BITMAP_ENTRY_SIZE: usize = 8;
@@ -18,11 +20,10 @@ impl Default for BitMapMutex {
 }
 
 pub struct BitMap {
-    map: BitVec,
+    map: bitvec::prelude::BitVec<u8> /* do not get confused with bit-vec's BitVec */,
     lastSetPosition: u64,
     numBits: u64,
     numBitsSet: u64,
-    numEntry: u64,
 }
 
 impl Default for BitMap {
@@ -32,7 +33,6 @@ impl Default for BitMap {
             lastSetPosition: 0,
             numBits: 0,
             numBitsSet: 0,
-            numEntry: 0
         }
     }
 }
@@ -71,7 +71,7 @@ impl BitMap {
     pub fn new(num_bits: u64) -> BitMap {
         let mut bitmap = BitMap::default();
         bitmap.numBits = num_bits;
-        bitmap.map = BitVec::from_elem(num_bits as usize, false);
+        bitmap.map = bitvec![u8, Lsb0; 0; num_bits as usize];
         bitmap
     }
 
@@ -129,36 +129,22 @@ impl BitMap {
             return self.numBits;
         }
 
-        // TODO: find a quick way something similar to "ffzl" in pos-cpp
-        let mut offset = begin;
-        loop {
-            //if offset >= self.numEntry { // pos-cpp
-            if offset >= self.numBits {   // pos-rtype
+        let (_left, right) = self.map.split_at(begin as usize);
+        let relative_first_zero = right.first_zero();
+        match relative_first_zero {
+            None => {
                 return self.numBits;
             }
-            let the_value = self.map.get(offset as usize);
-            if the_value.is_none() {
-                break;
+            Some(pos) => {
+                let absolute_pos = begin + pos as u64;
+                return absolute_pos;
             }
-            let the_value_inner = the_value.unwrap();
-            if !the_value_inner {
-                // found the first zero
-                break;
-            } else {
-                offset += 1;
-            }
-        }
-
-        if self.IsValidBit(offset) {
-            return offset;
-        } else {
-            return self.numBits;
         }
     }
 
     pub fn IsSetBit(&self, bit_offset: u64) -> bool {
         if let Some(v) = self.map.get(bit_offset as usize) {
-            v
+            *v
         } else {
             false
         }
@@ -167,5 +153,70 @@ impl BitMap {
     pub fn SetNumBitsSet(&mut self, num_bits: u64) -> bool {
         self.numBitsSet = num_bits;
         true
+    }
+}
+
+mod tests {
+    use bitvec::prelude::*;
+    use crate::lib::bitmap::BitMap;
+
+    #[test]
+    fn test_bitvec_first_zero_functionalities() {
+        // Given: a bitmap of 0000111100, and the last_set_position was at offset 5
+        let mut arr = bitvec![u8, Lsb0; 0; 10];
+        arr.set(4, true);
+        arr.set(5, true);
+        arr.set(6, true);
+        arr.set(7, true);
+        let last_set_position = 5;
+        let (_left, right) = arr.split_at(last_set_position); // left: 00001, right: 11100
+
+        // When: first_zero() is called on the right split
+        let rel_pos = right.first_zero().unwrap();
+
+        // Then
+        assert_eq!(8, rel_pos + last_set_position);
+    }
+
+    #[test]
+    fn test_BitMap_FindFirstZero_functionality() {
+        // Given: a bitmap of 0000111100, and the last_set_position of 5
+        let mut bitmap = BitMap::new(10);
+        bitmap.SetBit(4);
+        bitmap.SetBit(5);
+        bitmap.SetBit(6);
+        bitmap.SetBit(7);
+        let last_set_position = 5;
+
+        // When: FindFirstZero() is called
+        let actual = bitmap.FindFirstZero(last_set_position);
+
+        // Then
+        assert_eq!(8, actual);
+    }
+
+    #[test]
+    fn test_BitMap_FindNextZero_functionality() {
+        // Given: an initialized bitmap of 00000000
+        let mut bitmap = BitMap::new(10);
+
+        // When1: FindNextZero() is called
+        let actual = bitmap.FindNextZero();
+
+        // Then1
+        assert_eq!(1, actual); // Note: pos-cpp 현 구현상 0 아닌 1 부터 할당을 시작하는 것 같은데, 일단 그대로 두기로 함.
+
+        // When2: FindNextZero() is called again
+        let actual = bitmap.FindNextZero();
+
+        // Then2: we should get the same bit offset as before (because we haven't set the bit yet)
+        assert_eq!(1, actual);
+
+        // When3: we set the bit and call FindNextZero() again
+        bitmap.SetBit(actual);
+        let actual = bitmap.FindNextZero();
+
+        // Then3: we should get the next bit offset, i.e., 2
+        assert_eq!(2, actual);
     }
 }

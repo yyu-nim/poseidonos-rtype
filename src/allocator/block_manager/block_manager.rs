@@ -122,7 +122,7 @@ impl BlockManager {
     }
 
     fn _AllocateSsdStripeForUser(&mut self, volume_id: u32) -> Option<StripeId> {
-        let alloc_ctx_lock = self.allocCtx.allocCtxLock.clone();
+        let alloc_ctx_lock = self.allocCtx.GetCtxLock().clone();
         alloc_ctx_lock.lock().unwrap();
 
         let ssd_lsid = self.allocCtx.GetCurrentSsdLsid() + 1;

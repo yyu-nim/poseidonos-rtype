@@ -13,7 +13,7 @@ pub struct AllocatorCtx {
     activeStripeTail: HashMap::<u32, VirtualBlkAddr>,
     allocWbLsidBitmap: BitMapMutex,
     currentSsdLsid: StripeId,
-    pub(crate) allocCtxLock: Arc<Mutex<u32>>,
+    allocCtxLock: Arc<Mutex<u32>>,
     activeStripeTailLock: HashMap::<u32, Arc<Mutex<u32>>>,
     ctxStoredVersion: AtomicU64,
     ctxDirtyVersion: AtomicU64,
