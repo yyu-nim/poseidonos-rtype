@@ -67,7 +67,9 @@ impl BlockManager {
 
     fn _AllocateBlks(&mut self, as_tail_array_idx: u32, num_blks: u32) -> Option<(VirtualBlks, StripeId)> {
         assert_ne!(num_blks, 0);
-        //TODO //std::unique_lock<std::mutex> volLock(allocCtx->GetActiveStripeTailLock(asTailArrayIdx));
+        let tail_lock = self.allocCtx.GetActiveStripeTailLock(as_tail_array_idx);
+        tail_lock.lock().unwrap();
+
         let cur_vsa = self.allocCtx.GetActiveStripeTail(as_tail_array_idx);
         let allocated_user_stripe_id;
         if cur_vsa.is_none() || self._IsStripeFull(cur_vsa.unwrap()) { // || IsUnMapStripe(cur_vsa.stripe_id) {
@@ -110,7 +112,6 @@ impl BlockManager {
                 };
                 self.allocCtx.SetActiveStripeTail(as_tail_array_idx, cur_vsa);
                 return Some((wb_lsid, user_lsid));
-                //return (Some(wb_lsid), Some(user_lsid));
             } else {
                 self.allocCtx.ReleaseWbStripe(wb_lsid);
                 return None;
@@ -120,8 +121,10 @@ impl BlockManager {
         }
     }
 
-    fn _AllocateSsdStripeForUser(&self, volume_id: u32) -> Option<StripeId> {
-        // std::lock_guard<std::mutex> lock(allocCtx->GetCtxLock());
+    fn _AllocateSsdStripeForUser(&mut self, volume_id: u32) -> Option<StripeId> {
+        let alloc_ctx_lock = self.allocCtx.GetCtxLock().clone();
+        alloc_ctx_lock.lock().unwrap();
+
         let ssd_lsid = self.allocCtx.GetCurrentSsdLsid() + 1;
         let mut opt_ssd_lsid = Some(ssd_lsid);
         if self._IsSegmentFull(ssd_lsid) {
@@ -135,7 +138,7 @@ impl BlockManager {
         opt_ssd_lsid
     }
 
-    fn _AllocateSegmentAndStripe(&self) -> Option<StripeId> {
+    fn _AllocateSegmentAndStripe(&mut self) -> Option<StripeId> {
         match self.contextManager.AllocateFreeSegment() {
             Some(segment_id) => {
                 let new_stripe = segment_id * self.addrInfo.stripes_per_segment;
@@ -156,7 +159,9 @@ impl BlockManager {
     }
 
     fn _AllocateBlocksFromActiveStripe(&mut self, as_tail_array_idx: u32, num_blks: u32) -> VirtualBlks {
-        let cur_vsa = self.allocCtx.GetActiveStripeTail(as_tail_array_idx).unwrap();
+        let cur_vsa = self.allocCtx.GetActiveStripeTail(as_tail_array_idx)
+            .expect(format!("Cannot enter here without having an active stripe tail: volume_id: {}", as_tail_array_idx).as_str());
+
         let mut updated_tail = cur_vsa.clone();
         let mut allocated_blks = VirtualBlks {
             start_vsa: cur_vsa.clone(),
@@ -179,6 +184,7 @@ impl BlockManager {
 mod tests {
     use std::collections::HashMap;
     use std::io::empty;
+    use std::sync::{Arc, Mutex};
     use crate::allocator::address::allocator_address_info::AllocatorAddressInfo;
     use crate::allocator::block_manager::block_manager::BlockManager;
     use crate::allocator::context_manager::allocator_ctx::allocator_ctx::AllocatorCtx;
@@ -188,6 +194,7 @@ mod tests {
     use crate::allocator::i_wbstripe_allocator::*;
     use crate::allocator::context_manager::block_allocation_status;
     use crate::allocator::i_block_allocator::IBlockAllocator;
+    use crate::allocator::stripe::stripe::Stripe;
     use crate::include::address_type::{StripeId, VirtualBlkAddr};
     use crate::volume::volume_base::MAX_VOLUME_COUNT;
 
@@ -205,11 +212,11 @@ mod tests {
 
         let block_manager = BlockManager {
             allocStatus: block_allocation_status,
-            allocCtx: AllocatorCtx { activeStripeTail: Default::default() },
+            allocCtx: Default::default(),
             addrInfo: AllocatorAddressInfo::default(),
             arrayId: 0,
             iStripeMap: Box::new(mock_stripe_map),
-            contextManager: ContextManager,
+            contextManager: Default::default(),
             iWBStripeAllocator: Box::new(mock_wb_stripe_allocator),
         };
 
@@ -233,11 +240,11 @@ mod tests {
         };
         let block_manager = BlockManager {
             allocStatus: block_allocation_status,
-            allocCtx: AllocatorCtx { activeStripeTail: Default::default() },
+            allocCtx: Default::default(),
             addrInfo: AllocatorAddressInfo::default(),
             arrayId: 0,
             iStripeMap: Box::new(mock_stripe_map),
-            contextManager: ContextManager,
+            contextManager: Default::default(),
             iWBStripeAllocator: Box::new(mock_wb_stripe_allocator),
         };
         let mut iBlockAllocator = Box::new(block_manager);
@@ -259,17 +266,11 @@ mod tests {
             .times(1)
             .return_const(expected_stripe_id);
 
-        let allocCtx = AllocatorCtx {
-            activeStripeTail: {
-                let active_tail = VirtualBlkAddr {
-                    stripe_id: 123,
-                    offset: 0 /* stripe이 텅 비어 있으므로, "enough remaining blocks" 가 된다. */
-                };
-                let mut empty_map = HashMap::<u32, VirtualBlkAddr>::new();
-                empty_map.insert(0 /* vol id */, active_tail);
-                empty_map
-            }
-        };
+        let mut allocCtx = AllocatorCtx::default();
+        allocCtx.SetActiveStripeTail(0, VirtualBlkAddr {
+            stripe_id: 123,
+            offset: 0 /* stripe이 텅 비어 있으므로, "enough remaining blocks" 가 된다. */
+        });
         let block_manager = BlockManager {
             allocStatus: BlockAllocationStatus::default(),
             allocCtx,
@@ -305,17 +306,11 @@ mod tests {
             .times(1)
             .return_const(expected_stripe_id);
 
-        let allocCtx = AllocatorCtx {
-            activeStripeTail: {
-                let active_tail = VirtualBlkAddr {
-                    stripe_id: 123,
-                    offset: 64 /* stripe을 half-full로 만든다 */
-                };
-                let mut empty_map = HashMap::<u32, VirtualBlkAddr>::new();
-                empty_map.insert(0 /* vol id */, active_tail);
-                empty_map
-            }
-        };
+        let mut allocCtx = AllocatorCtx::default();
+        allocCtx.SetActiveStripeTail(0, VirtualBlkAddr {
+            stripe_id: 123,
+            offset: 64 /* stripe을 half-full로 만든다 */
+        });
         let block_manager = BlockManager {
             allocStatus: BlockAllocationStatus::default(),
             allocCtx,
@@ -341,7 +336,58 @@ mod tests {
         assert_eq!(123, allocated_user_stripe_id);
     }
 
-    // TODO: stripe full 로 인해, new stripe, new segment 를 할당해야 하는 경우들에 대한 테스트 추가되어야 함
-    // => 이 경우 AllocatorCtx의 real impl. 이 필요해서 다음 PR에 AllocatorCtx 구현 + BlockManager IT 를 추가해야 할듯.
+    #[test]
+    fn test_allocator_allocates_blocks_from_new_userstripe_from_new_segment() {
+        // Given: a full stripe
+        let expected_stripe: Stripe = Stripe {};
+        let mut mock_wb_stripe_allocator = MockIWBStripeAllocator::new();
+        let expected_allocated_stripe_id: StripeId = 123;
+        mock_wb_stripe_allocator.expect_GetStripe()
+            .return_const(expected_stripe);
+        mock_wb_stripe_allocator.expect_GetUserStripeId()
+            .times(1)
+            .return_const(expected_allocated_stripe_id);
+        let mut mock_stripe_map = MockIStripeMap::new();
+        mock_stripe_map.expect_SetLSA()
+            .times(1)
+            .return_const(0 /* success */);
+
+        let addr_info = {
+            let mut addr_info = AllocatorAddressInfo::default();
+            addr_info.blks_per_stripe = 128;
+            addr_info.num_wb_stripes = 500;
+            addr_info.stripes_per_segment = 1024;
+            addr_info
+        };
+        let mut allocCtx = AllocatorCtx::new(&addr_info);
+        allocCtx.Init();
+
+        let current_lsid = expected_allocated_stripe_id - 1;
+        allocCtx.SetActiveStripeTail(0, VirtualBlkAddr {
+            stripe_id: current_lsid,
+            offset: 128 /* stripe을 full로 만든다 */
+        });
+        allocCtx.SetCurrentSsdLsid(Some(current_lsid));
+
+        let block_manager = BlockManager {
+            allocStatus: BlockAllocationStatus::default(),
+            allocCtx,
+            addrInfo: addr_info,
+            arrayId: 0,
+            iStripeMap: Box::new(mock_stripe_map),
+            contextManager: ContextManager::default(),
+            iWBStripeAllocator: Box::new(mock_wb_stripe_allocator),
+        };
+        let mut iBlockAllocator = Box::new(block_manager);
+
+        // When: allocate 1 block
+        let actual = iBlockAllocator.AllocateWriteBufferBlks(0, 1);
+
+        // Then: the allocated block should be in the "expected_stripe_id" stripe
+        let (virtual_blks, stripe_id) = actual.unwrap();
+        assert_eq!(expected_allocated_stripe_id, stripe_id);
+        assert_eq!(expected_allocated_stripe_id, virtual_blks.start_vsa.stripe_id);
+        assert_eq!(1, virtual_blks.num_blks);
+    }
 
 }

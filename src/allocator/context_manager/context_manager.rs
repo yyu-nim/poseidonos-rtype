@@ -1,15 +1,23 @@
 use crate::include::address_type::SegmentId;
 
-pub struct ContextManager;
+/* This is a Fake at the moment */
+pub struct ContextManager {
+    next_segment_to_allocate: SegmentId,
+}
 
 impl ContextManager {
-    pub fn AllocateFreeSegment(&self) -> Option<SegmentId> {
-        todo!()
+    // Fake
+    pub fn AllocateFreeSegment(&mut self) -> Option<SegmentId> {
+        let allocated = self.next_segment_to_allocate;
+        self.next_segment_to_allocate += 1;
+        Some(allocated)
     }
 }
 
 impl Default for ContextManager {
     fn default() -> Self {
-        ContextManager
+        ContextManager {
+            next_segment_to_allocate: 0
+        }
     }
 }

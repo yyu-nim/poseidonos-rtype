@@ -102,50 +102,53 @@ impl WriteSubmission {
         let mut remain_block_count = self.block_count - self.allocated_block_count;
         while remain_block_count > 0 {
             let allocated = self.i_block_allocator.AllocateWriteBufferBlks(volume_id.unwrap(), remain_block_count);
-            if allocated.is_none() {
-                println!("No free space in write buffer");
-                let array_id = {
-                    self.volume_io.ubio.as_ref().unwrap().lock().unwrap().arrayId.clone() as u32
-                };
-                let state_control = StateManagerSingleton.lock().unwrap().GetStateControl(array_id);
-                if state_control.GetStateEnum() == StateEnum::STOP {
-                    let event_id = WRHDLR_FAIL_BY_SYSTEM_STOP;
-                    error!("[{}] System Stop incurs write fail", event_id.to_string());
-                    if !self.i_block_allocator.Unlock(volume_id.unwrap()) {
-                        let event_id = WRHDLR_FAIL_TO_UNLOCK;
-                        debug!("[{}] volume_id = {}", event_id.to_string(), volume_id.unwrap());
+            match allocated {
+                None => {
+                    println!("No free space in write buffer");
+                    let array_id = {
+                        self.volume_io.ubio.as_ref().unwrap().lock().unwrap().arrayId.clone() as u32
+                    };
+                    let state_control = StateManagerSingleton.lock().unwrap().GetStateControl(array_id);
+                    if state_control.GetStateEnum() == StateEnum::STOP {
+                        let event_id = WRHDLR_FAIL_BY_SYSTEM_STOP;
+                        error!("[{}] System Stop incurs write fail", event_id.to_string());
+                        if !self.i_block_allocator.Unlock(volume_id.unwrap()) {
+                            let event_id = WRHDLR_FAIL_TO_UNLOCK;
+                            debug!("[{}] volume_id = {}", event_id.to_string(), volume_id.unwrap());
+                            return Err(event_id);
+                        }
                         return Err(event_id);
                     }
-                    return Err(event_id);
+                    break;
                 }
-                break;
-            }
-            let (virtual_blks, stripe_id) = allocated.unwrap();
-            let target_vsa_range: VirtualBlks = virtual_blks;
+                Some((virtual_blks, stripe_id)) => {
+                    let target_vsa_range: VirtualBlks = virtual_blks;
 
-            if is_wt_enabled {
-                let mut start_vsa = target_vsa_range.start_vsa;
-                let mut remaining_blks = target_vsa_range.num_blks;
-                while remaining_blks > 0 {
-                    let mut num_blks = array_config::BLOCKS_PER_CHUNK
-                        - (start_vsa.offset as u32 % array_config::BLOCKS_PER_CHUNK);
-                    if num_blks > remaining_blks {
-                        num_blks = remaining_blks;
+                    if is_wt_enabled {
+                        let mut start_vsa = target_vsa_range.start_vsa;
+                        let mut remaining_blks = target_vsa_range.num_blks;
+                        while remaining_blks > 0 {
+                            let mut num_blks = array_config::BLOCKS_PER_CHUNK
+                                - (start_vsa.offset as u32 % array_config::BLOCKS_PER_CHUNK);
+                            if num_blks > remaining_blks {
+                                num_blks = remaining_blks;
+                            }
+                            let vsa_info = VirtualBlks {
+                                start_vsa,
+                                num_blks
+                            };
+                            let info = (vsa_info, stripe_id);
+                            self._AddVirtualBlks(info);
+                            start_vsa.offset += num_blks as u64;
+                            remaining_blks -= num_blks;
+                        }
+                    } else {
+                        let info = (virtual_blks, stripe_id);
+                        self._AddVirtualBlks(info);
                     }
-                    let vsa_info = VirtualBlks {
-                        start_vsa,
-                        num_blks
-                    };
-                    let info = (vsa_info, stripe_id);
-                    self._AddVirtualBlks(info);
-                    start_vsa.offset += num_blks as u64;
-                    remaining_blks -= num_blks;
+                    remain_block_count -= target_vsa_range.num_blks;
                 }
-            } else {
-                let info = (virtual_blks, stripe_id);
-                self._AddVirtualBlks(info);
             }
-            remain_block_count -= target_vsa_range.num_blks;
         }
 
         if !self.i_block_allocator.Unlock(volume_id.unwrap()) {
