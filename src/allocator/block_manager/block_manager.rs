@@ -1,14 +1,19 @@
+use std::sync::{Arc, Mutex};
 use log::{error, warn};
 use crate::allocator::address::allocator_address_info::AllocatorAddressInfo;
 use crate::allocator::context_manager::allocator_ctx::allocator_ctx::AllocatorCtx;
 use crate::allocator::context_manager::block_allocation_status::BlockAllocationStatus;
 use crate::allocator::context_manager::context_manager::ContextManager;
 use crate::allocator::i_block_allocator::IBlockAllocator;
+use crate::allocator::i_wbstripe_allocator;
 use crate::allocator::i_wbstripe_allocator::IWBStripeAllocator;
 use crate::allocator::stripe::stripe::Stripe;
 use crate::include::address_type::{BlkOffset, IsUnMapStripe, StripeId, StripeLoc, UNMAP_OFFSET, UNMAP_STRIPE, VirtualBlkAddr, VirtualBlks};
 use crate::include::pos_event_id::PosEventId::ALLOCATOR_FAILED_TO_ASSIGN_STRIPE;
+use crate::mapper::i_reversemap::IReverseMap;
 use crate::mapper::i_stripemap::IStripeMap;
+use crate::mapper::i_stripemap;
+use crate::mapper_service::mapper_service::MapperServiceSingleton;
 use crate::qos::qos_manager::QosManagerSingleton;
 
 pub struct BlockManager {
@@ -16,9 +21,25 @@ pub struct BlockManager {
     allocCtx: AllocatorCtx,
     addrInfo: AllocatorAddressInfo,
     arrayId: u32,
-    iStripeMap: Box<dyn IStripeMap>,
+    iStripeMap: Option<Arc<Mutex<Box<dyn IStripeMap>>>>,
+    iReverseMap: Option<Arc<Mutex<Box<dyn IReverseMap>>>>,
     contextManager: ContextManager,
-    iWBStripeAllocator: Box<dyn IWBStripeAllocator>,
+    iWBStripeAllocator: Arc<Mutex<Box<dyn IWBStripeAllocator>>>,
+}
+
+impl Default for BlockManager {
+    fn default() -> Self {
+        BlockManager {
+            allocStatus: Default::default(),
+            allocCtx: Default::default(),
+            addrInfo: Default::default(),
+            arrayId: 0,
+            iStripeMap: None,
+            iReverseMap: None,
+            contextManager: Default::default(),
+            iWBStripeAllocator: Arc::new(Mutex::new(i_wbstripe_allocator::boxed_default())),
+        }
+    }
 }
 
 impl IBlockAllocator for BlockManager {
@@ -65,6 +86,17 @@ impl IBlockAllocator for BlockManager {
 
 impl BlockManager {
 
+    pub fn Init(&mut self, wb_stripe_manager: Arc<Mutex<Box<dyn IWBStripeAllocator>>>) {
+        self.iWBStripeAllocator = wb_stripe_manager;
+        let m = MapperServiceSingleton.lock().unwrap();
+        if self.iReverseMap.is_none() {
+            self.iReverseMap = m.GetIReverseMap(self.arrayId);
+        }
+        if self.iStripeMap.is_none() {
+            self.iStripeMap = m.GetIStripeMap(self.arrayId);
+        }
+    }
+
     fn _AllocateBlks(&mut self, as_tail_array_idx: u32, num_blks: u32) -> Option<(VirtualBlks, StripeId)> {
         assert_ne!(num_blks, 0);
         let tail_lock = self.allocCtx.GetActiveStripeTailLock(as_tail_array_idx);
@@ -105,7 +137,7 @@ impl BlockManager {
             if let Some(user_lsid) = self._AllocateSsdStripeForUser(as_tail_array_idx) {
                 QosManagerSingleton.IncreaseUsedStripeCnt(self.arrayId);
                 self._AssignStripe(user_lsid, wb_lsid, as_tail_array_idx);
-                self.iStripeMap.SetLSA(user_lsid, wb_lsid, StripeLoc::IN_WRITE_BUFFER_AREA);
+                self.iStripeMap.unwrap().SetLSA(user_lsid, wb_lsid, StripeLoc::IN_WRITE_BUFFER_AREA);
                 let cur_vsa = VirtualBlkAddr {
                     stripe_id: user_lsid,
                     offset: 0
@@ -215,9 +247,10 @@ mod tests {
             allocCtx: Default::default(),
             addrInfo: AllocatorAddressInfo::default(),
             arrayId: 0,
-            iStripeMap: Box::new(mock_stripe_map),
+            iStripeMap: Some(Box::new(mock_stripe_map)),
+            iReverseMap: None,
             contextManager: Default::default(),
-            iWBStripeAllocator: Box::new(mock_wb_stripe_allocator),
+            iWBStripeAllocator: Arc::new(Mutex::new(Box::new(mock_wb_stripe_allocator))),
         };
 
         let mut iBlockAllocator = Box::new(block_manager);

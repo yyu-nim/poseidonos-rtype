@@ -72,7 +72,7 @@ impl VolumeEvent for Nvmf {
 }
 
 impl IMountSequence for Nvmf {
-    fn Init(&self) -> i32 {
+    fn Init(&mut self) -> i32 {
         // TODO
         info!("Init: {}", self.arrayInfo.name);
         0

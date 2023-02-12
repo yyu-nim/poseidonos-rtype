@@ -1,9 +1,10 @@
 use lazy_static::lazy_static;
+use std::sync::{Arc, Mutex};
 use crate::event_scheduler::callback::Callback;
 use crate::event_scheduler::event::Event;
 lazy_static!{
-    pub static ref EventSchedulerSingleton : EventScheduler = {
-        EventScheduler
+    pub static ref EventSchedulerSingleton : Arc<Mutex<EventScheduler>> = {
+        Arc::new(Mutex::new(EventScheduler))
     };
 }
 

@@ -6,3 +6,4 @@ pub mod context_manager;
 pub mod address;
 pub mod i_wbstripe_allocator;
 pub mod include;
+pub mod wbstripe_manager;

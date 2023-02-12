@@ -134,7 +134,7 @@ impl Poseidonos {
         QosManagerSingleton.InitializeSpdkManager();
         QosManagerSingleton.Initialize();
 
-        EventSchedulerSingleton.Initialize(8 /* TODO */, Vec::new(), Vec::new());
+        EventSchedulerSingleton.lock().unwrap().Initialize(8 /* TODO */, Vec::new(), Vec::new());
         DeviceManagerSingleton.Initialize();
         MetaFsServiceSingleton.Initialize(0 /* TODO */, Vec::new(), Vec::new());
         FlushCmdManagerSingleton.borrow(); // do nothing but instantiate

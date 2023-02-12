@@ -29,7 +29,7 @@ pub trait Callback : Event {
 
             //error[E0658]: trait upcasting coercion is experimental => EnqueueEvent 대신 EnqueueCall을 구현해야 할듯.
             //EventSchedulerSingleton.EnqueueEvent(callee);
-            EventSchedulerSingleton.EnqueueCallback(callee);
+            EventSchedulerSingleton.lock().unwrap().EnqueueCallback(callee);
         }
     }
 

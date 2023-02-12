@@ -12,6 +12,10 @@ impl ContextManager {
         self.next_segment_to_allocate += 1;
         Some(allocated)
     }
+
+    pub fn Init(&self) {
+        // TODO
+    }
 }
 
 impl Default for ContextManager {

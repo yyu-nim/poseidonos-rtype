@@ -29,7 +29,9 @@ pub mod allocator;
 pub mod journal_manager;
 pub mod gc;
 pub mod allocator_service;
+pub mod mapper_service;
 pub mod mapper;
+pub mod resource_manager;
 
 // This is to avoid ambiguity due to src/lib.rs
 #[path="./lib/mod.rs"]

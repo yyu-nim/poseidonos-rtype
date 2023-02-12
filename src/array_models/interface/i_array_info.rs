@@ -19,3 +19,17 @@ impl std::fmt::Display for ArrayInfo {
         write!(f, "{:?}", self)
     }
 }
+
+impl Default for ArrayInfo {
+    fn default() -> Self {
+        ArrayInfo {
+            name: "array-name".to_string(),
+            index: 0,
+            meta_raid_type: "no-raid".to_string(),
+            data_raid_type: "no-raid".to_string(),
+            unique_id: 0,
+            partition_size_info: Default::default(),
+            is_write_through_enabled: false
+        }
+    }
+}
