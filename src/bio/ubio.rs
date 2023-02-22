@@ -77,3 +77,6 @@ pub enum UbioDir {
 
 pub const BYTES_PER_UNIT: u32 = SECTOR_SIZE as u32;
 pub const UNITS_PER_BLOCK: u32 = (BLOCK_SIZE / BYTES_PER_UNIT as usize) as u32;
+
+pub const MAX_PROCESSABLE_BLOCK_COUNT: u64 = 33;
+pub const MAX_DUMP_ENTRIES_UBIO: u64 = 100;
