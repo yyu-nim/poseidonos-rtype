@@ -188,14 +188,8 @@ mod tests {
         // Should enable accessible
         vsamap_manager.EnableVsaMapAccess(volume_id);
 
-        // Test vsa range is like this..
-        let start_rba = 0;
-        let virtual_blks = VirtualBlks {
-            start_vsa: VirtualBlkAddr { stripe_id: 0, offset: 0 },
-            num_blks: 10,
-        };
-
         // Try to get VSAs, and result should be UNMAP VSAs
+        let start_rba = 0;
         let get_result = vsamap_manager.GetVSAs(volume_id, start_rba, 10);
         assert_eq!(get_result.is_ok(), true);
         let vsa_array = get_result.unwrap();
