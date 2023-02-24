@@ -26,6 +26,7 @@ dashmap = "5.4.0"
 mockall = "0.11.3"
 bit-vec = "0.6"
 bitvec = "1.0.1"
+atomic_enum = "0.2.0"
 
 [build-dependencies]
 bindgen = "0.60.1"

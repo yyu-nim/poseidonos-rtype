@@ -19,7 +19,7 @@ pub struct VSAMapContent {
 }
 
 impl VSAMapContent {
-    pub fn new(map_id: u32, addr_info: &MapperAddressInfo) -> Self {
+    pub fn new(map_id: i32, addr_info: &MapperAddressInfo) -> Self {
         let fileName = format!("VSAMap.{}.bin", map_id);
         Self {
             map_content: MapContent::new(map_id, &addr_info, fileName, MetaFileType::Map),
@@ -28,13 +28,15 @@ impl VSAMapContent {
         }
     }
 
-    pub fn InMemoryInit(&mut self, vol_id: u64, blk_cnt: u64, mpage_size: u64) {
+    pub fn InMemoryInit(&mut self, vol_id: u64, blk_cnt: u64, mpage_size: u64) -> Result<(), PosEventId> {
         self.total_blks = blk_cnt;
         self.map_content.Init(
             self.total_blks,
             std::mem::size_of::<VirtualBlkAddr>() as u64,
             mpage_size,
         );
+
+        Ok(())
     }
 
     pub fn GetEntry(&mut self, rba: BlkAddr) -> VirtualBlkAddr {
@@ -127,6 +129,11 @@ impl VSAMapContent {
     pub fn InvalidateAllBlocks(&mut self) {
         todo!();
     }
+
+    pub fn OpenMapFile(&self) -> Result<(), PosEventId> {
+        // TODO
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -143,7 +150,7 @@ mod tests {
             array_id: 0,
         };
         let mut vsamap_content = VSAMapContent::new(0, &addr_info);
-        vsamap_content.InMemoryInit(0, 128 * 1000, 4032);
+        assert_eq!(vsamap_content.InMemoryInit(0, 128 * 1000, 4032).is_ok(), true);
 
         assert_eq!(vsamap_content.GetEntry(10), UNMAP_VSA);
         let expected = VirtualBlkAddr {
@@ -164,7 +171,7 @@ mod tests {
             array_id: 0,
         };
         let mut vsamap_content = VSAMapContent::new(0, &addr_info);
-        vsamap_content.InMemoryInit(0, 128 * 1000, 4032);
+        assert_eq!(vsamap_content.InMemoryInit(0, 128 * 1000, 4032).is_ok(), true);
 
         // sizeof(VirtualBlkAddr) = 16
         // entries_per_mpage = 4032 / sizeof(VirtualBlkAddr) = 4032/16 = 252 expected

@@ -5,7 +5,7 @@ pub struct StripeMapContent {
 }
 
 impl StripeMapContent {
-    pub fn new(map_id: u32, addr_info: &MapperAddressInfo) -> Self {
+    pub fn new(map_id: i32, addr_info: &MapperAddressInfo) -> Self {
         Self {
             map_content: MapContent::new(map_id, addr_info, "StripeMap.bin".to_string(), MetaFileType::Map),
         }

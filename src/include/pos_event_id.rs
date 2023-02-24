@@ -63,6 +63,11 @@ pub enum PosEventId {
 
     VSAMAP_SET_FAILURE,
     STRIPEMAP_SET_FAILURE,
+
+    NEED_TO_INITIAL_STORE,
+    MAPPER_FAILED,
+
+    VSAMAP_NOT_ACCESSIBLE,
 }
 
 #[cfg(test)]

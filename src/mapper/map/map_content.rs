@@ -12,7 +12,7 @@ pub struct MapContent {
     // TODO add mapIoHandler
     file_name: String,
     file_type: MetaFileType,
-    map_id: u32,
+    map_id: i32,
     entries_per_page: u64,
     addr_info: MapperAddressInfo,
     is_initialized: bool,
@@ -20,7 +20,7 @@ pub struct MapContent {
 
 impl MapContent {
     pub fn new(
-        mapId: u32,
+        mapId: i32,
         addrInfo: &MapperAddressInfo,
         fileName: String,
         fileType: MetaFileType,
